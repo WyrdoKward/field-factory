@@ -14,7 +14,6 @@
 
       <div />
     </div>
-    <TilesContainer />
     <nav>
       <ul>
         <li>Go to</li>
@@ -34,7 +33,6 @@ export default {
 
   components: {
     HelloWorld: () => import(/* webpackChunkName: 'hello-world' */ '@/components/HelloWorld.vue'),
-    TilesContainer: () => import('@/components/map/TilesContainer.vue')
   }
 }
 </script>
