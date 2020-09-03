@@ -14,7 +14,8 @@ export default {
   },
   data() {
     return {
-      imgPath: 'tileDef'
+      //imgPath: 'tileDef'
+      imgPath: 'tile'+imgName
     }
   },
   methods: {
