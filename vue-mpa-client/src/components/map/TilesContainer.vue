@@ -1,20 +1,7 @@
 <template>
     <div id="tilesContainer">
       <h1>La carte du monde</h1>
-      <!--<Tile v-repeat="hex" :imgName={img} />-->
-      <div v-for="h in hex" :key="h.img" >
-         <Tile :imgName="h.img" />
-      </div>
-
-      <!--
-        <template v-for="u in users">
-          <user :user="u" :key="user.id"></user>
-        </template>
-
-<Tile :imgName="0"/>
-      <Tile :imgName="1"/>
-      <Tile :imgName="0"/>
-      <Tile :imgName="1"/>-->
+      <Tile v-for="h in hex" :key="h.id" :imgName="h.img" />
     </div>
 </template>
 
@@ -42,37 +29,37 @@ export default {
           x: 0,
           y: 0,
           img: '0',
-
+          id:0
       },
       {
           x: 0,
           y: 1,
           img: '1',
-
+          id:1
       },
       {
           x: 0,
           y: 2,
           img: '1',
-
+          id:2
       },
       {
           x: 1,
           y: 0,
           img: '1',
-
+          id:3
       },
       {
           x: 1,
           y: 1,
           img: '0',
-
+          id:4
       },
       {
           x: 1,
           y: 2,
-          img: '0,'
-
+          img: '0',
+          id:5
       },
     ]
     }

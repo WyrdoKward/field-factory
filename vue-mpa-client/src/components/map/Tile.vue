@@ -14,8 +14,8 @@ export default {
   },
   data() {
     return {
-      //imgPath: 'tileDef'
-      imgPath: 'tile'+imgName
+      imgPath: 'tileDef'
+      //imgPath: 'tile'+this.imgName
     }
   },
   methods: {
@@ -29,6 +29,6 @@ export default {
 <style lang="scss">
 .tile{
   width: fit-content;
-  float: left;
+  display: inline-block;
 }
 </style>
