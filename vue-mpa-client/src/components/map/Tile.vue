@@ -28,7 +28,9 @@ export default {
 
 <style lang="scss">
 .tile{
-  width: fit-content;
+  height: 198px;
+  width: 174px;
+  margin: auto;
   display: inline-block;
 }
 </style>
