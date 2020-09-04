@@ -80,4 +80,8 @@ export default {
     width:fit-content;
     margin:auto;
   }
+  
+  .mapRow:nth-child(even){
+    padding-left:174px;
+  }
 </style>
