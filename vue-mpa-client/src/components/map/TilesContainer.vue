@@ -1,7 +1,9 @@
 <template>
     <div id="tilesContainer">
       <h1>La carte du monde</h1>
-      <Tile v-for="h in hex" :key="h.id" :imgName="h.img" />
+      <div class="mapRow" v-for="line in hexes">
+        <Tile v-for="h in line" :key="h.id" :imgName="h.img" />
+      </div>
     </div>
 </template>
 
@@ -24,7 +26,7 @@ export default {
   data () {
     return {
       img0: 'tile0',
-      hex: [
+      hexes: [[
       {
           x: 0,
           y: 0,
@@ -42,7 +44,8 @@ export default {
           y: 2,
           img: '1',
           id:2
-      },
+      }],
+      [
       {
           x: 1,
           y: 0,
@@ -60,23 +63,20 @@ export default {
           y: 2,
           img: '0',
           id:5
-      },
-    ]
+      }]]
     }
   }
 }
-
-/*new Vue({
-  el: '#tilesContainer',
-  data: {
-    
-  }
-});*/
 </script>
 
 <style>
   #tilesContainer{
     width:fit-content;
     margin:auto;
+  }
+  
+  .mapRow{
+    height: fit-content;
+    margin: auto;
   }
 </style>
