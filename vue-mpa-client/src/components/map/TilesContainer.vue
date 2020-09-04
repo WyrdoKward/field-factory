@@ -76,7 +76,8 @@ export default {
   }
   
   .mapRow{
-    height: fit-content;
-    margin: auto;
+    height : fit-content;
+    width:fit-content;
+    margin:auto;
   }
 </style>
