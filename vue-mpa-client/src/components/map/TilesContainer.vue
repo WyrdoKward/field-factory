@@ -1,6 +1,7 @@
 <template>
     <div id="tilesContainer">
       <h1>La carte du monde</h1>
+      <button type="button" v-on:click="saveFile()" style="margin-bottom: 80px;">Generate Map</button>
       <div class="mapRow" v-for="line in hexes">
         <Tile v-for="h in line" :key="h.id" :imgName="h.img" />
       </div>
@@ -30,40 +31,78 @@ export default {
       {
           x: 0,
           y: 0,
-          img: '0',
+          img: 'grass0',
           id:0
       },
       {
           x: 0,
           y: 1,
-          img: '1',
+          img: 'grass1',
           id:1
       },
       {
           x: 0,
           y: 2,
-          img: '1',
+          img: 'hills1',
           id:2
       }],
       [
       {
           x: 1,
           y: 0,
-          img: '1',
+          img: 'grass1',
           id:3
       },
       {
           x: 1,
           y: 1,
-          img: '0',
+          img: 'forest0',
           id:4
       },
       {
           x: 1,
           y: 2,
-          img: '0',
+          img: 'forest1',
           id:5
+      }],
+      [
+      {
+          x: 2,
+          y: 0,
+          img: 'hills0',
+          id:6
+      },
+      {
+          x: 2,
+          y: 1,
+          img: 'ocean0',
+          id:7
+      },
+      {
+          x: 2,
+          y: 2,
+          img: 'ocean0',
+          id:8
       }]]
+    }
+  },
+  methods: {
+    generateHexes: function(){
+      for (let i = 0; i < array.length; i++) {
+        const element = array[i];
+        
+      }
+    },
+    saveFile: function() {
+      const data = JSON.stringify(this.hexes)
+      const blob = new Blob([data], {type: 'text/plain'})
+      const e = document.createEvent('MouseEvents'),
+      a = document.createElement('a');
+      a.download = "map.json";
+      a.href = window.URL.createObjectURL(blob);
+      a.dataset.downloadurl = ['text/json', a.download, a.href].join(':');
+      e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      a.dispatchEvent(e);
     }
   }
 }
@@ -82,6 +121,6 @@ export default {
   }
   
   .mapRow:nth-child(even){
-    padding-left:174px;
+    padding-left:167px;
   }
 </style>
