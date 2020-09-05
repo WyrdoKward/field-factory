@@ -1,12 +1,12 @@
 <template>
 
-    <!--<div class="tile" @click="revealTile()" 
-    v-bind:style="tileStyle">
-    </div>-->
+    <div class="tile" @click="revealTile()" 
+    :style="{ backgroundImage: 'url(assets/map/' + imgPath + '.png)' }">
+    </div>
     
-      <img class="tile" alt="tile" 
+      <!--<img class="tile" alt="tile" 
         :src="require(`@/assets/map/${imgPath}.png`)"
-        @click="revealTile()"/>
+        @click="revealTile()"/>-->
 </template>
 
 <script>
@@ -20,11 +20,8 @@
     data() {
       return {
         imgPath: 'tileDef',
-        //imgPath: 'tile'+this.imgName
-        tileStyle:  {
-          //background: require(`url('@/assets/map/${imgPath}.png')`)
-        }
-        
+        //imgPath: "http://1.bp.blogspot.com/-8PfnHfgrH4I/TylX2v8pTMI/AAAAAAAAJJ4/TICBoSEI57o/s1600/search_by_image_image.png"
+               
       }
       
     },
@@ -38,10 +35,11 @@
 
 <style lang="scss">
 .tile{
-  /*height: 198px;
-  width: 174px;*/
-  margin: -35px -20px;
+  height: 198px;
+  width: 174px;
+  margin: -30px -2px;
   display: inline-block;
+  background-position: center;
   //background-image: var(--bgTile);
   //background-image: url(@/assets/map/tileDef.png);
 }

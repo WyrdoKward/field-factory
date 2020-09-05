@@ -37,7 +37,7 @@ export default {
       {
           x: 0,
           y: 1,
-          img: 'grass1',
+          img: 'hills0',
           id:1
       },
       {
@@ -75,6 +75,25 @@ export default {
       {
           x: 2,
           y: 1,
+          img: 'forest1',
+          id:7
+      },
+      {
+          x: 2,
+          y: 2,
+          img: 'ocean0',
+          id:8
+      }],
+      [
+      {
+          x: 2,
+          y: 0,
+          img: 'hills0',
+          id:6
+      },
+      {
+          x: 2,
+          y: 1,
           img: 'ocean0',
           id:7
       },
@@ -82,6 +101,25 @@ export default {
           x: 2,
           y: 2,
           img: 'ocean0',
+          id:8
+      }],
+      [
+      {
+          x: 2,
+          y: 0,
+          img: 'forest1',
+          id:6
+      },
+      {
+          x: 2,
+          y: 1,
+          img: 'forest0',
+          id:7
+      },
+      {
+          x: 2,
+          y: 2,
+          img: 'hills0',
           id:8
       }]]
     }
