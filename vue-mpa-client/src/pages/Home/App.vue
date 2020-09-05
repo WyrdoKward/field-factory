@@ -21,6 +21,9 @@
         <li>
           <a href="world.html">World Map</a>
         </li>
+        <li>
+          <a href="test.html">Test</a>
+        </li>
       </ul>
     </nav>
   </div>

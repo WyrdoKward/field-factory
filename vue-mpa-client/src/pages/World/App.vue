@@ -2,6 +2,8 @@
   <div id="app">
     <h1>World</h1>
     <TilesContainer/>
+    <a href="home.html">Home</a>
+    <a href="test.html">Test</a>
   </div>
 </template>
 
