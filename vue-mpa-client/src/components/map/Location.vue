@@ -1,6 +1,6 @@
 <template>    
     <canvas class="location mine" alt="location" 
-      :style="{ backgroundImage: 'url(assets/map/locations/' + loc.img + '.png)' }"
+      :style="{ backgroundImage: 'url(assets/map/locations/' + loc.type + '.png)' }"
         @click="showLocationDialog()"
         @mousehover="hoverEffect()"/>
 
@@ -26,18 +26,22 @@
     methods: {
       showLocationDialog() {
         //Vérif coté serveur pour savoir quelles actions en cours
-        console.log(this.actions);
         this.actions = this.getLocationActions(this.loc.id);
-        console.log(this.actions);
-        alert(this.loc.msg+ '\r\n'+ 'You can :\r\n' + this.actions);
+        console.log(this.loc.id + ' - ' + this.actions);
+        alert(this.loc.msg+ '\r\n\r\n'+ 'You can :\r\n' + this.actions);
+        this.displayActionsWindow();
       },
       hoverEffect(){
 
       },
       getLocationActions(locId){
         // GET /location/getAction/{locId}
-        console.log('Getting actions for location '+locId );
+        //console.log('Getting actions for location '+locId );
         return ['Explore', 'Meditate'];
+      },
+      displayActionsWindow(){
+        //Nouveau composant
+        console.log('displayActionsWindow')
       }
     }
   }

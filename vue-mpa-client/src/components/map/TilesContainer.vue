@@ -35,7 +35,7 @@ export default {
           id:0,
           location:{
             id:1,
-            img:'mine',
+            type:'mine',
             msg:'Is there a quest here ?',
             //actions:['Explore', 'Meditate']
           }
@@ -66,7 +66,7 @@ export default {
           id:4,
           location:{
             id:2,
-            img:'mine',
+            type:'mine',
             msg:'There is something to explore in this forest.',
             //actions:['Explore', 'Meditate']
           }
