@@ -3,7 +3,7 @@
       <h1>La carte du monde</h1>
       <button type="button" v-on:click="saveFile()" style="margin-bottom: 80px;">Generate Map</button>
       <div class="mapRow" v-for="line in hexes">
-        <Tile v-for="h in line" :key="h.id" :imgName="h.img" />
+        <Tile v-for="h in line" :key="h.id" :hex="h" />
       </div>
     </div>
 </template>
@@ -32,7 +32,11 @@ export default {
           x: 0,
           y: 0,
           img: 'grass0',
-          id:0
+          id:0,
+          location:{
+            img:'mine',
+            msg:'Message'
+          }
       },
       {
           x: 0,

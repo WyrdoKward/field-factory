@@ -1,10 +1,17 @@
 <template>
 
-    <div class="tile" @click="revealTile()" 
-    :style="{ backgroundImage: 'url(assets/map/' + imgPath + '.png)' }">
+    <div class="wrapper " v-bind:class="{active: isActive}" @click="revealTile()" >
+
+
+      <div class="tile" v-if="isActive" 
+      :style="{ backgroundImage: 'url(assets/map/tiles/' + hex.img + '.png)' }">
+        <Location v-if="hex.location" :loc="hex.location"/>
+      </div>
+      <div class="mask" v-else>
+      </div>
     </div>
     
-      <!--<img class="tile" alt="tile" 
+    <!--  <img class="tile" alt="tile" 
         :src="require(`@/assets/map/${imgPath}.png`)"
         @click="revealTile()"/>-->
 </template>
@@ -14,27 +21,52 @@
 
   export default {
     name: 'Tile',
+    components: {
+      Location: () => import('@/components/map/Location.vue')
+    },
     props: {
-      imgName: String
+      imgName: String,
+      hex : Object,
+      //isActive: Boolean
+      /*isActive: {
+        type: Boolean,
+        default: false,
+      }*/
     },
     data() {
       return {
-        imgPath: 'tileDef',
+        isActive: false,
         //imgPath: "http://1.bp.blogspot.com/-8PfnHfgrH4I/TylX2v8pTMI/AAAAAAAAJJ4/TICBoSEI57o/s1600/search_by_image_image.png"
+        url : "http://localhost:8080/"
                
       }
       
     },
     methods: {
       revealTile() {
-        this.imgPath = this.imgName
+        //this.imgPath = this.hex.img
+        this.isActive = true;
+        //alert(this.isActive);
       }
     }
   }
 </script>
 
 <style lang="scss">
-.tile{
+
+$baseUrl: 'http://localhost:8080/';
+
+.wrapper{
+  display: inline-block;
+  height: fit-content;
+  width: fit-content;
+}
+
+.wrapper:hover{
+  box-shadow: 4px 4px 8px #aaa;
+}
+
+.tile, .mask{
   height: 198px;
   width: 174px;
   margin: -30px -2px;
@@ -42,9 +74,16 @@
   background-position: center;
   //background-image: var(--bgTile);
   //background-image: url(@/assets/map/tileDef.png);
+  //background-image: url($baseUrl+ 'assets/map/tiles/tileDef.png');
 }
 
-.tile:hover{
-  box-shadow: 4px 4px 8px #aaa;
+.wrapper > .mask{
+  //background-image: url('assets/map/tiles/tileDef.png');
+  background-image: url(http://localhost:8080/assets/map/tiles/tileDef.png);
+  //margin:auto;
+}
+
+.active{
+
 }
 </style>
