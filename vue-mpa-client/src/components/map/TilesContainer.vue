@@ -34,8 +34,10 @@ export default {
           img: 'grass0',
           id:0,
           location:{
+            id:1,
             img:'mine',
-            msg:'Message'
+            msg:'Is there a quest here ?',
+            //actions:['Explore', 'Meditate']
           }
       },
       {
@@ -61,7 +63,13 @@ export default {
           x: 1,
           y: 1,
           img: 'forest0',
-          id:4
+          id:4,
+          location:{
+            id:2,
+            img:'mine',
+            msg:'There is something to explore in this forest.',
+            //actions:['Explore', 'Meditate']
+          }
       },
       {
           x: 1,

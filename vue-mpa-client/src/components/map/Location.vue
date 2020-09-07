@@ -19,15 +19,25 @@
     },
     data() {
       return {
+        actions: []
       }
       
     },
     methods: {
       showLocationDialog() {
-        alert('Is there a quest here ?');
+        //Vérif coté serveur pour savoir quelles actions en cours
+        console.log(this.actions);
+        this.actions = this.getLocationActions(this.loc.id);
+        console.log(this.actions);
+        alert(this.loc.msg+ '\r\n'+ 'You can :\r\n' + this.actions);
       },
       hoverEffect(){
 
+      },
+      getLocationActions(locId){
+        // GET /location/getAction/{locId}
+        console.log('Getting actions for location '+locId );
+        return ['Explore', 'Meditate'];
       }
     }
   }
