@@ -2,7 +2,6 @@
 
     <div class="wrapper " v-bind:class="{active: isActive}" @click="revealTile()" >
 
-
       <div class="tile" v-if="isActive" 
       :style="{ backgroundImage: 'url(assets/map/tiles/' + hex.img + '.png)' }">
         <Location v-if="hex.location" :loc="hex.location"/>
@@ -27,11 +26,6 @@
     props: {
       imgName: String,
       hex : Object,
-      //isActive: Boolean
-      /*isActive: {
-        type: Boolean,
-        default: false,
-      }*/
     },
     data() {
       return {
@@ -63,7 +57,7 @@ $baseUrl: 'http://localhost:8080/';
 }
 
 .wrapper:hover{
-  box-shadow: 4px 4px 8px #aaa;
+  //box-shadow: 4px 4px 8px #aaa;
 }
 
 .tile, .mask{
@@ -80,10 +74,9 @@ $baseUrl: 'http://localhost:8080/';
 .wrapper > .mask{
   //background-image: url('assets/map/tiles/tileDef.png');
   background-image: url(http://localhost:8080/assets/map/tiles/tileDef.png);
-  //margin:auto;
 }
 
 .active{
-
+  text-align: center;
 }
 </style>

@@ -7,16 +7,9 @@
 </head>
 <body>
 <a href="world.html">World Map</a>
-<canvas class="canvas" width="150" height="150">
-    <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
-</canvas>
-<canvas class="canvas" width="150" height="150">
-    <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
-</canvas><canvas class="canvas" width="150" height="150">
-    <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
-</canvas><canvas class="canvas" width="150" height="150">
-    <p>Désolé, votre navigateur ne supporte pas Canvas. Mettez-vous à jour</p>
-</canvas>
+
+<canvas id=canvas width=500 height=500></canvas>
+
 <svg viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <defs>
       <pattern id="img" patternUnits="userSpaceOnUse" width="100" height="100">
@@ -56,19 +49,45 @@
     </table>
 </div>
 <script>
-var canvasArray  = document.getElementsByClassName('canvas');
-canvasArray = Array.prototype.slice.call(canvasArray);
 
-canvasArray.forEach(el => {
-  var context = el.getContext('2d');
-context.fillStyle = "gold";
-context.fillRect(0, 0, 50, 80);
-});
+var ctx = canvas.getContext('2d'),
+    img = new Image;
+
+img.onload = draw;
+img.src = "http://i.stack.imgur.com/UFBxY.png";
+
+function draw() {
+
+  var dArr = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1], // offset array
+      s = 2,  // thickness scale
+      i = 0,  // iterator
+      x = 5,  // final position
+      y = 5;
+  
+  // draw images at offsets from the array scaled by s
+  for(; i < dArr.length; i += 2)
+    ctx.drawImage(img, x + dArr[i]*s, y + dArr[i+1]*s);
+  
+  // fill with color
+  ctx.globalCompositeOperation = "source-in";
+  ctx.fillStyle = "red";
+  ctx.fillRect(0,0,canvas.width, canvas.height);
+  
+  // draw original image in normal mode
+  ctx.globalCompositeOperation = "source-over";
+  ctx.drawImage(img, x, y);
+}
+
 
 </script>
 <style>
     svg{
         width: 30%;
+    }
+
+    #canvas:hover{
+
+  box-shadow: 4px 4px 8px #aaa;e
     }
 </style>
 <script src="src/utils/jsonWriter.js"></script>

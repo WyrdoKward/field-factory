@@ -4,6 +4,16 @@
     <TilesContainer/>
     <a href="home.html">Home</a>
     <a href="test.html">Test</a>
+    <svg>
+      <defs>
+        <clipPath id="clip_mine">
+          <polygon 
+            points="50,0  61,35 98,35
+                    68,57 79,91 50,70
+                    21,91 32,57 2,35 39,35"/>
+        </clipPath>
+      </defs>
+    </svg>
   </div>
 </template>
 
@@ -31,4 +41,5 @@ $baseUrl: 'http://localhost:8080/';
   color: #2c3e50;
   margin-top: 60px;
 }
+
 </style>
