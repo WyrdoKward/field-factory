@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FieldFactory.Core.Entities.Map;
+using FieldFactory.Core.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace FieldFactory.Api.Controllers.Map
 {
@@ -13,9 +16,11 @@ namespace FieldFactory.Api.Controllers.Map
     {
         // GET: api/Map
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            var res = MapGenerator.GenerateMap(MapGenerator.Template1);
+            string json = JsonConvert.SerializeObject(res);
+            return json;
         }
 
         // GET: api/Map/5
