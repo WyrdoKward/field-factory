@@ -72,8 +72,7 @@ $baseUrl: 'http://localhost:8080/';
 }
 
 .wrapper > .mask{
-  //background-image: url('assets/map/tiles/tileDef.png');
-  background-image: url(http://localhost:8080/assets/map/tiles/tileDef.png);
+  background-image: url('/assets/map/tiles/tileDef.png');
 }
 
 .active{

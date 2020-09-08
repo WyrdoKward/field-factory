@@ -1,8 +1,10 @@
-<template>    
-    <canvas class="location mine" alt="location" 
+<template> 
+    <Town v-if="loc.type=='townCenter'" :loc="loc" />   
+    <canvas v-else class="location"
       :style="{ backgroundImage: 'url(assets/map/locations/' + loc.type + '.png)' }"
         @click="showLocationDialog()"
-        @mousehover="hoverEffect()"/>
+        @mousehover="hoverEffect()">
+    </canvas>
 
 
         <!--:src="require(`@/assets/map/locations/${hoverPath}${loc.img}.png`)"-->
@@ -14,6 +16,9 @@
 
   export default {
     name: 'Location',
+    components: {
+      Town: () => import('@/components/map/Town.vue')
+    },
     props: {
       loc : Object
     },
@@ -59,19 +64,5 @@
 
 .location:hover{
   background-position-x: 190px;
-}
-
-//Effet de déplacement du marqueur (bounce ?)
-.tile:hover{
-  //box-shadow: 4px 4px 8px #aaa;
-}
-
-.mine{
-  //clip-path: url(#clip_mine);
-}
-
-.mine:hover{
-  //box-shadow: 10px 10px 2px #000000;
-
 }
 </style>

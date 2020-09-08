@@ -101,7 +101,13 @@ export default {
           x: 2,
           y: 0,
           img: 'hills0',
-          id:6
+          id:6,
+          location:{
+            id:3,
+            type:'townCenter',
+            msg:'The little bourg where it all begins.',
+            //actions:['Explore', 'Meditate']
+          }
       },
       {
           x: 2,
