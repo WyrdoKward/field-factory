@@ -22,10 +22,10 @@ namespace FieldFactory.Core.Entities.Map
             string path = "tile_" + model.ToString() + "_green_" + variation;
 
             if (path.Contains("ocean"))
-                path.Replace("green", "dark");
+                path = path.Replace("green", "dark");
 
             if (path.Contains("moor"))
-                path.Replace("green", "blue");
+                path = path.Replace("green", "blue");
 
             LandType = path;
         }

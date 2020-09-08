@@ -33,7 +33,6 @@ namespace FieldFactory.Core.Utils
             int mapWidth = Template.GetLength(0);
             int mapHeight = Template.GetLength(1);
             Random rnd = new Random();
-            int variation = rnd.Next(10);
 
             for (int i = 0; i < mapWidth; i++)
             {
@@ -41,6 +40,7 @@ namespace FieldFactory.Core.Utils
 
                 for (int j = 0; j < mapHeight; j++)
                 {
+                    int variation = rnd.Next(10);
                     Tile tile = new Tile() { Id = currentId, X = i, Y = j, Location = TemplateLocations1[i][j] };
                     tile.GenerateLandType(Template1[i, j], variation);
                     row.Add(tile);
