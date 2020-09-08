@@ -1,8 +1,10 @@
 <template>    
-    <canvas class="location mine" alt="location" 
+    <canvas class="location"
       :style="{ backgroundImage: 'url(assets/map/locations/' + loc.type + '.png)' }"
         @click="showLocationDialog()"
-        @mousehover="hoverEffect()"/>
+        @mousehover="hoverEffect()">
+    <Town v-if="loc.type=='townCenter'" :loc="loc" />
+    </canvas>
 
 
         <!--:src="require(`@/assets/map/locations/${hoverPath}${loc.img}.png`)"-->
@@ -14,6 +16,9 @@
 
   export default {
     name: 'Location',
+    components: {
+      Town: () => import('@/components/map/Town.vue')
+    },
     props: {
       loc : Object
     },
