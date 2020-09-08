@@ -19,7 +19,7 @@ namespace FieldFactory.Api.Controllers.Map
         public string Get()
         {
             var res = MapGenerator.GenerateMap(MapGenerator.Template1);
-            string json = JsonConvert.SerializeObject(res);
+            string json = JsonConvert.SerializeObject(res, new Newtonsoft.Json.Converters.StringEnumConverter());
             return json;
         }
 

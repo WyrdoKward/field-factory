@@ -1,7 +1,9 @@
 ﻿using FieldFactory.Core.Enum;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace FieldFactory.Core.Entities.Map
 {
@@ -10,14 +12,12 @@ namespace FieldFactory.Core.Entities.Map
         public int Id;
         public string Title;
         public string Description;
-        public ELocationType LocationType;
-        public EVerb[] Verbs;
+
+        public ELocationType LocationType { get; set; }
+
+        public EVerb[] Verbs { get; set; }
 
         public Location() { }
 
-        public Location(int id)
-        {
-            //GetLocationbyId(id); depuis le conteneur
-        }
     }
 }

@@ -26,21 +26,24 @@ namespace FieldFactory.Core.Utils
             new Location?[]{null, null, null, null, null},
         };
 
-        public static List<Tile> GenerateMap(ELandType[,] Template)
+        public static List<List<Tile>> GenerateMap(ELandType[,] Template)
         {
-            List<Tile> res = new List<Tile>();
+            List<List<Tile>> res = new List<List<Tile>>();
             int currentId = 0;
             int mapWidth = Template.GetLength(0);
             int mapHeight = Template.GetLength(1);
 
             for (int i = 0; i < mapWidth; i++)
             {
+                List<Tile> row = new List<Tile>();
+
                 for (int j = 0; j < mapHeight; j++)
                 {
-                    res.Add(new Tile() { Id = currentId, LandType = Template[i,j], X = i, Y = j, Location = TemplateLocations1[i][j] });
-                    
+                    row.Add(new Tile() { Id = currentId, LandType = Template[i, j], X = i, Y = j, Location = TemplateLocations1[i][j] });
+
                     currentId++;
                 }
+                res.Add(row);
             }
 
             return res;
