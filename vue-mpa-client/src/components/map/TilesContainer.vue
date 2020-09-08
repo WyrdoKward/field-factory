@@ -171,6 +171,6 @@ export default {
   }
   
   .mapRow:nth-child(even){
-    padding-left:167px;
+    padding-left:156px;
   }
 </style>

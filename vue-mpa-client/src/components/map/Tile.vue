@@ -63,7 +63,7 @@ $baseUrl: 'http://localhost:8080/';
 .tile, .mask{
   height: 198px;
   width: 174px;
-  margin: -30px -2px;
+  margin: -32px -8px;
   display: inline-block;
   background-position: center;
   //background-image: var(--bgTile);
