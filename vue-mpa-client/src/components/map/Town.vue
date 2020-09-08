@@ -16,6 +16,7 @@
     },
     methods: {
       diplayTownMapWindow() {
+        console.log('diplayTownMapWindow')
         alert("In town #" + this.loc.id);
       }
     }
@@ -25,8 +26,11 @@
 <style lang="scss">
 
 .town{
-  background-image: url(assets/map/locations/townCenter.png);
+  background-image: url('/assets/map/locations/townCenter.png');
   margin: auto;
+  width: 174px;
+  height: 198px;
+  background-position-x: -18px;
 }
 
 </style>
