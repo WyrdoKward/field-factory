@@ -5,8 +5,6 @@
         @click="showLocationDialog()"
         @mousehover="hoverEffect()">
     </canvas>
-        <!--:src="require(`@/assets/map/locations/${hoverPath}${loc.img}.png`)"-->
-
 </template>
 
 <script>

@@ -9,10 +9,6 @@
       <div class="mask" v-else>
       </div>
     </div>
-    
-    <!--  <img class="tile" alt="tile" 
-        :src="require(`@/assets/map/${imgPath}.png`)"
-        @click="revealTile()"/>-->
 </template>
 
 <script>
@@ -30,17 +26,12 @@
     data() {
       return {
         isActive: false,
-        //imgPath: "http://1.bp.blogspot.com/-8PfnHfgrH4I/TylX2v8pTMI/AAAAAAAAJJ4/TICBoSEI57o/s1600/search_by_image_image.png"
-        url : "http://localhost:8080/"
-               
       }
       
     },
     methods: {
       revealTile() {
-        //this.imgPath = this.hex.img
         this.isActive = true;
-        //alert(this.isActive);
       }
     }
   }
@@ -48,16 +39,10 @@
 
 <style lang="scss">
 
-$baseUrl: 'http://localhost:8080/';
-
 .wrapper{
   display: inline-block;
   height: fit-content;
   width: fit-content;
-}
-
-.wrapper:hover{
-  //box-shadow: 4px 4px 8px #aaa;
 }
 
 .tile, .mask{
@@ -66,9 +51,6 @@ $baseUrl: 'http://localhost:8080/';
   margin: -32px -8px;
   display: inline-block;
   background-position: center;
-  //background-image: var(--bgTile);
-  //background-image: url(@/assets/map/tileDef.png);
-  //background-image: url($baseUrl+ 'assets/map/tiles/tileDef.png');
 }
 
 .wrapper > .mask{
