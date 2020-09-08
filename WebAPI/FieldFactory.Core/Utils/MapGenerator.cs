@@ -10,11 +10,11 @@ namespace FieldFactory.Core.Utils
     {
         public static ELandType[,] Template1 = new ELandType[,]
         {
-            { ELandType.forest, ELandType.hills, ELandType.grass, ELandType.grass, ELandType.forest  },
-            { ELandType.forest, ELandType.hills, ELandType.hills, ELandType.grass, ELandType.forest  },
-            { ELandType.ocean, ELandType.ocean, ELandType.hills, ELandType.forest, ELandType.forest  },
-            { ELandType.ocean, ELandType.ocean, ELandType.grass, ELandType.forest, ELandType.ocean  },
-            { ELandType.ocean, ELandType.ocean, ELandType.ocean, ELandType.ocean, ELandType.ocean  },
+            { ELandType.forest_conifer_dense_covered, ELandType.hills_dense_covered, ELandType.grassland_sparse_clear, ELandType.grassland_sparse_clear, ELandType.forest_deciduous_dense_covered  },
+            { ELandType.forest_conifer_dense_covered, ELandType.hills_sparse_covered, ELandType.hills_sparse_covered, ELandType.grassland_sparse_covered, ELandType.forest_deciduous_sparse_covered  },
+            { ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.grassland_dense_covered, ELandType.forest_deciduous_sparse_clear, ELandType.forest_conifer_sparse_covered  },
+            { ELandType.ocean_waves_big, ELandType.ocean_waves_small, ELandType.grassland_sparse_covered, ELandType.hills_sparse_covered, ELandType.ocean_waves_small  },
+            { ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_big  },
         };
 
         public static Location?[][] TemplateLocations1 = new Location?[][]
@@ -32,6 +32,8 @@ namespace FieldFactory.Core.Utils
             int currentId = 0;
             int mapWidth = Template.GetLength(0);
             int mapHeight = Template.GetLength(1);
+            Random rnd = new Random();
+            int variation = rnd.Next(10);
 
             for (int i = 0; i < mapWidth; i++)
             {
@@ -39,7 +41,9 @@ namespace FieldFactory.Core.Utils
 
                 for (int j = 0; j < mapHeight; j++)
                 {
-                    row.Add(new Tile() { Id = currentId, LandType = Template[i, j], X = i, Y = j, Location = TemplateLocations1[i][j] });
+                    Tile tile = new Tile() { Id = currentId, X = i, Y = j, Location = TemplateLocations1[i][j] };
+                    tile.GenerateLandType(Template1[i, j], variation);
+                    row.Add(tile);
 
                     currentId++;
                 }
