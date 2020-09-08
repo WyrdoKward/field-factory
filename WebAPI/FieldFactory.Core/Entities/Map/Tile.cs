@@ -13,9 +13,21 @@ namespace FieldFactory.Core.Entities.Map
         public int X;
         public int Y;
 
-        public ELandType LandType { get; set; }
+        public string LandType { get; set; }
 
         public Location Location { get; set; }
 
+        public void GenerateLandType(ELandType model, int variation)
+        {
+            string path = "tile_" + model.ToString() + "_green_" + variation;
+
+            if (path.Contains("ocean"))
+                path = path.Replace("green", "dark");
+
+            if (path.Contains("moor"))
+                path = path.Replace("green", "blue");
+
+            LandType = path;
+        }
     }
 }
