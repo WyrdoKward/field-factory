@@ -1,12 +1,10 @@
 <template> 
-    <Town v-if="loc.type=='townCenter'" :loc="loc" />   
+    <Town v-if="loc.LocationType=='townCenter'" :loc="loc" />   
     <canvas v-else class="location"
-      :style="{ backgroundImage: 'url(assets/map/locations/' + loc.type + '.png)' }"
+      :style="{ backgroundImage: 'url(assets/map/locations/' + loc.LocationType + '.png)' }"
         @click="showLocationDialog()"
         @mousehover="hoverEffect()">
     </canvas>
-
-
         <!--:src="require(`@/assets/map/locations/${hoverPath}${loc.img}.png`)"-->
 
 </template>
@@ -31,9 +29,9 @@
     methods: {
       showLocationDialog() {
         //Vérif coté serveur pour savoir quelles actions en cours
-        this.actions = this.getLocationActions(this.loc.id);
+        this.actions = this.getLocationActions(this.loc.Id);
         console.log(this.loc.id + ' - ' + this.actions);
-        alert(this.loc.msg+ '\r\n\r\n'+ 'You can :\r\n' + this.actions);
+        alert(this.loc.Title+ '\r\n\r\n'+ this.loc.Description + '\r\n\r\nYou can :\r\n' + this.actions);
         this.displayActionsWindow();
       },
       hoverEffect(){
@@ -42,7 +40,7 @@
       getLocationActions(locId){
         // GET /location/getAction/{locId}
         //console.log('Getting actions for location '+locId );
-        return ['Explore', 'Meditate'];
+        return this.loc.Verbs;
       },
       displayActionsWindow(){
         //Nouveau composant

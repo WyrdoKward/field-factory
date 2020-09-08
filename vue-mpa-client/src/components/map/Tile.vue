@@ -3,8 +3,8 @@
     <div class="wrapper " v-bind:class="{active: isActive}" @click="revealTile()" >
 
       <div class="tile" v-if="isActive" 
-      :style="{ backgroundImage: 'url(assets/map/tiles/' + hex.img + '.png)' }">
-        <Location v-if="hex.location" :loc="hex.location"/>
+      :style="{ backgroundImage: 'url(assets/map/tiles/' + hex.LandType + '0.png)' }">
+        <Location v-if="hex.Location" :loc="hex.Location"/>
       </div>
       <div class="mask" v-else>
       </div>

@@ -17,7 +17,7 @@
     methods: {
       diplayTownMapWindow() {
         console.log('diplayTownMapWindow')
-        alert("In town #" + this.loc.id);
+        alert(this.loc.Title+ '\r\n\r\n'+ this.loc.Description + '\r\n\r\nYou can :\r\n' + this.loc.Verbs);
       }
     }
   }
