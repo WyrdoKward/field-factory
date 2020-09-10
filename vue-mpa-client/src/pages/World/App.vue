@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <h1>World</h1>
+    <h1>World Page</h1>
     <TilesContainer/>
+    <SelectedLocationContainer />
     <a href="home.html">Home</a>
     <a href="test.html">Test</a>
     <svg>
@@ -18,14 +19,12 @@
 </template>
 
 <script>
-//import { TilesContainer } from "@components/map/TilesContainer.vue";
-
-
 
 export default {
   name: 'World',
   components: {
     TilesContainer: () => import('@/components/map/TilesContainer.vue')
+    SelectedLocationContainer: () => import('@/components/map/SelectedLocationContainer.vue')
   }
 }
 
