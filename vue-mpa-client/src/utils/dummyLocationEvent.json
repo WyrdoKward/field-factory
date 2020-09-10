@@ -8,12 +8,12 @@
     "choices": [
       {
         "id": 1,
-        "text": "Step 0 - Choice 1 ",
+        "text": "Step 0 - Choice 1 (15 gold & fin OU ca continue)",
         "nextStepId" : 1
        },
       {
         "id": 2,
-        "text": "Step 0 - Choice 2 ",
+        "text": "Step 0 - Choice 2 (GOTO step 2)",
         "nextStepId" : 2
        }
     ]
@@ -34,7 +34,7 @@
     ]
   },{
     "stepId": 2,
-    "text": "This is the step 2 text of the quest. Here is the outcome, chosen server-side.",
+    "text": "This is the step 2 text of the quest.",
     "choices": [
       {
         "id": 1,

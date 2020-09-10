@@ -1,0 +1,16 @@
+{
+  "stepId": 2,
+  "text": "This is the step 2 text of the quest. Here is the outcome, chosen server-side.",
+  "choices": [
+    {
+      "id": 1,
+      "text": "Step 2 - Choice 1",
+      "nextStepId" : 3
+     },
+    {
+      "id": 2,
+      "text": "Step 2 - Choice 2",
+      "nextStepId" : 4
+     }
+  ]
+}
