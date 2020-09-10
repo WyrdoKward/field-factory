@@ -1,3 +1,13 @@
+# Ressources
+## Tuto composants
+https://mbaron.developpez.com/tutoriels/vuejs/developper-application-web-vuejs-vuecli-mise-en-oeuvre/
+
+https://code.visualstudio.com/docs/nodejs/vuejs-tutorial
+
+### Event bus
+https://blog.logrocket.com/using-event-bus-in-vue-js-to-pass-data-between-components/
+
+
 # Building a MPA application
 
 Look at the code, it's pretty easier.
@@ -39,9 +49,4 @@ npm run lint
 ### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
-
-## Tuto composants
-https://mbaron.developpez.com/tutoriels/vuejs/developper-application-web-vuejs-vuecli-mise-en-oeuvre/
-
-https://code.visualstudio.com/docs/nodejs/vuejs-tutorial
 
