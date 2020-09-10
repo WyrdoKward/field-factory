@@ -25,7 +25,7 @@
     },
     data() {
       return {
-        isActive: false,
+        isActive: true, //à true pour le debug
       }
       
     },

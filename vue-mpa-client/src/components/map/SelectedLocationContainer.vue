@@ -2,7 +2,7 @@
   <div v-if="isActive" class="selectedLocationContainer" >
     <h1>{{loc.Title}}</h1>
     <p>{{loc.Description}}<p>
-    <div class="actions" >
+    <div v-if="!eventActive" class="actions" >
       <!--<div v-for="action in loc.Actions" >
         <h2>{{action}}</h2>
       </div>-->

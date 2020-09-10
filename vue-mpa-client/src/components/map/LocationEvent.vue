@@ -77,7 +77,7 @@ steps[4] = step4;
           return Math.floor(Math.random() * (max));
       },
       resetQuest(){
-          this.event = steps[0];
+          this.event = "{}";
       }
 
     }
