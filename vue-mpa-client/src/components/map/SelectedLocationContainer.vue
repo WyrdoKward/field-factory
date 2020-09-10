@@ -14,13 +14,17 @@
 </template>
 
 <script>
-import { bus } from "../main";
+import { bus } from "@/pages/World/main";
+import json from '@/utils/dummyLocationEventStep0.json'
+
 export default {
   name: "SelectedLocationContainer",
   props: {
     loc : Object,
   },
-  
+  components :{
+    LocationEvent : () => import('@/components/map/LocationEvent.vue')
+  },
   data() {
     return {
       isActive: false,
@@ -38,24 +42,26 @@ export default {
     explore(locId){
         // GET /location/{locId}/event
         //console.log('Getting a random event for location '+locId );
-        this.event = getEvent(locId);
-        eventActive = true;
+        this.event = this.getEventFirstStep(locId);
+        this.eventActive = true;
       },
-    getEvent(locId){ //return que le step 1
-      return "{}";
+    getEventFirstStep(locId){ //return que le step 1
+      console.log('getEvent('+locId );
+      return json;
     }
   },
 };
 </script>
 
-</style scoped>
+<style scoped>
+
 .selectedLocationContainer{
  float:right;
  width: 20%;
- height:400px;
+ height:600px;
 }
 
 .empty{
-  //bgimage
+  /*bgimage*/
 }
 </style>

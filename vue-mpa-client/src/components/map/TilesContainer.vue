@@ -55,6 +55,8 @@ export default {
   #tilesContainer{
     width:fit-content;
     margin:auto;
+    float:left;
+    width:80%;
   }
   
   .mapRow{
