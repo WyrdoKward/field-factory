@@ -12,7 +12,7 @@ sudo service nginx start
 sudo systemctl enable field-factory-service.service
 
 #Then you need to start your service:
-sudo systemctl startfield-factory-service.service
+sudo systemctl start field-factory-service.service
 
 #Check that it is running as follows:
 sudo systemctl status field-factory-service.service
