@@ -9,6 +9,7 @@
 
 <script>
 
+  import { bus } from "../main";
 
   export default {
     name: 'Location',
@@ -43,6 +44,8 @@
       displayActionsWindow(){
         //Nouveau composant
         console.log('displayActionsWindow')
+        
+        bus.$emit("selectLocation", loc);
       }
     }
   }
