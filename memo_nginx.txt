@@ -1,0 +1,21 @@
+service name : field-factory-service
+#sudo vim /etc/systemd/system/field-factory-service.service
+
+server name : api.pb-field-factory.com
+
+folder :  /home/pierre-baptiste/Dropbox/PublishedWebSites/field-factory
+
+#https://medium.com/@hbhhathorn/install-an-asp-net-core-web-api-on-linux-ubuntu-18-04-and-host-with-nginx-and-ssl-2ed9df7371fb
+sudo service nginx start
+
+#Save the file and you can enable the service as follows:
+sudo systemctl enable field-factory-service.service
+
+#Then you need to start your service:
+sudo systemctl startfield-factory-service.service
+
+#Check that it is running as follows:
+sudo systemctl status field-factory-service.service
+
+#If the application is not running successfully when you check the status you may need to look at verbose logs for debugging. To do this run use the journalctl interface:
+sudo journalctl -fu field-factory-service.service
