@@ -9,6 +9,7 @@
 
 <script>
 
+  import { bus } from "@/pages/World/main";
 
   export default {
     name: 'Location',
@@ -28,8 +29,7 @@
       showLocationDialog() {
         //Vérif coté serveur pour savoir quelles actions en cours
         this.actions = this.getLocationActions(this.loc.Id);
-        console.log(this.loc.id + ' - ' + this.actions);
-        alert(this.loc.Title+ '\r\n\r\n'+ this.loc.Description + '\r\n\r\nYou can :\r\n' + this.actions);
+        console.log(this.loc.id +' : ' +this.loc.Title+ '\r\n\r\n'+ this.loc.Description + '\r\n\r\nYou can :\r\n' + this.actions);
         this.displayActionsWindow();
       },
       hoverEffect(){
@@ -43,6 +43,8 @@
       displayActionsWindow(){
         //Nouveau composant
         console.log('displayActionsWindow')
+        
+        bus.$emit("selectLocation", this.loc);
       }
     }
   }

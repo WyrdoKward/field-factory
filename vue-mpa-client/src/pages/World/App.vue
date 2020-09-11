@@ -1,9 +1,14 @@
 <template>
   <div id="app">
-    <h1>World</h1>
-    <TilesContainer/>
-    <a href="home.html">Home</a>
-    <a href="test.html">Test</a>
+    <h1>World Page</h1>
+    <div>
+      <TilesContainer/>
+      <SelectedLocationContainer />
+    </div>
+    <!--<footer>
+      <a href="home.html">Home</a>
+      <a href="test.html">Test</a>
+    </footer>-->
     <svg>
       <defs>
         <clipPath id="clip_mine">
@@ -18,14 +23,12 @@
 </template>
 
 <script>
-//import { TilesContainer } from "@components/map/TilesContainer.vue";
-
-
 
 export default {
   name: 'World',
   components: {
-    TilesContainer: () => import('@/components/map/TilesContainer.vue')
+    TilesContainer: () => import('@/components/map/TilesContainer.vue'),
+    SelectedLocationContainer: () => import('@/components/map/SelectedLocationContainer.vue')
   }
 }
 
@@ -40,6 +43,10 @@ $baseUrl: 'http://localhost:8080/';
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+footer{
+  margin: 10px;
 }
 
 </style>

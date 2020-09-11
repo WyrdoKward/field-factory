@@ -1,0 +1,15 @@
+{
+  
+  "stepId": 4,
+  "text": "This is the step 4 text of the quest. Here is the outcome, chosen server-side.",
+  "outcomes": [
+    {
+      "id": 1,
+      "text": "Outcome 1 : you hear about some secret place"
+     },
+    {
+      "id": 2,
+      "text": "Outcome 2 : you find an interesting book to study once back home"
+     }
+  ]
+}

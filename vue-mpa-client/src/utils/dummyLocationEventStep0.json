@@ -1,0 +1,16 @@
+{
+    "stepId": 0,
+    "text": "This is the first text of the quest. What do you do ?",
+    "choices": [
+      {
+        "id": 1,
+        "text": "Step 0 - Choice 1 ",
+        "nextStepId" : 1
+       },
+      {
+        "id": 2,
+        "text": "Step 0 - Choice 2 ",
+        "nextStepId" : 2
+       }
+    ]
+  }
