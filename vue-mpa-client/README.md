@@ -7,6 +7,8 @@ https://code.visualstudio.com/docs/nodejs/vuejs-tutorial
 ### Event bus
 https://blog.logrocket.com/using-event-bus-in-vue-js-to-pass-data-between-components/
 
+### Lifecycle
+https://blog.logrocket.com/introduction-to-vue-lifecycle-hooks/
 
 # Building a MPA application
 
