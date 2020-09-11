@@ -9,7 +9,7 @@
 
 <script>
 //Mock Map
-import jsonMap from '@/utils/generatedmap.json';
+import jsonMap from '@/utils/generatedMap.json';
 
 export default {
   name: 'TilesContainer',
