@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace FieldFactory.Api.Controllers.Map
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class MapController : ControllerBase
     {
