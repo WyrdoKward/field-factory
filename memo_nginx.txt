@@ -19,3 +19,10 @@ sudo systemctl status field-factory-service.service
 
 #If the application is not running successfully when you check the status you may need to look at verbose logs for debugging. To do this run use the journalctl interface:
 sudo journalctl -fu field-factory-service.service
+
+
+##########################
+#Methode manuelle:
+/usr/bin/dotnet /home/pierre-baptiste/Dropbox/PublishedWebSites/field-factory/FieldFactory.Api.dll
+
+#http://localhost:5000

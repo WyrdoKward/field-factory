@@ -12,5 +12,10 @@ module.exports = {
       title: 'World Map',
       chunks: [ 'chunk-vendors', 'chunk-common', 'world' ]
     }
+  },
+  devServer: {
+      //port: 5000,
+      proxy: 'http://localhost:5000',
   }
+  
 }
