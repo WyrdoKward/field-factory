@@ -20,7 +20,8 @@ namespace FieldFactory.Api
         {
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowMyOrigin", builder => builder.WithOrigins("http://localhost.com"));
+                options.AddPolicy("LocalPolicy",
+                    builder => builder.WithOrigins("http://localhost").AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             });
 
             services.AddControllers();
@@ -38,7 +39,18 @@ namespace FieldFactory.Api
 
             app.UseRouting();
 
-            app.UseCors("AllowMyOrigin");
+            /*app.UseCors(
+                options => options.WithOrigins("http://localhost").AllowAnyMethod()
+            );*/
+            /*app.UseCors(builder =>
+            {
+                builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+                //.AllowCredentials();
+            });*/
+            app.UseCors("LocalPolicy");
 
             app.UseAuthorization();
 
