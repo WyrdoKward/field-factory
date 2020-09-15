@@ -13,7 +13,6 @@
 
 <script>
 
-
   export default {
     name: 'Tile',
     components: {
@@ -29,9 +28,25 @@
       }
       
     },
+    created: function () {
+      if(this.hex.LandType.indexOf('ocean') > 0){
+        setInterval(() => {
+          this.refreshOceanTile();
+        }, 5000);
+      }
+    },
     methods: {
       revealTile() {
         this.isActive = true;
+      },
+      refreshOceanTile(){
+        let rnd = Math.floor(Math.random() * Math.floor(10));
+        this.hex.LandType = this.radical+rnd;
+      }
+    },
+    computed :{
+      radical : function(){ 
+        return this.hex.LandType.slice(0, this.hex.LandType.length-1);
       }
     }
   }
