@@ -9,10 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Map\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\FieldFactory.DataAccess\FieldFactory.DataAccess.csproj" />
   </ItemGroup>
 

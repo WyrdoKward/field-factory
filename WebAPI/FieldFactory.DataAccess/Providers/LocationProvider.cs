@@ -5,11 +5,11 @@ namespace FieldFactory.DataAccess.Providers
 {
     public class LocationProvider : SQLiteBaseProvider
     {
-        public LocationDTO GetLocation(int idLocation)
+        public LocationDTO Get(int idLocation)
         {
             var query = SQLiteLocationStringBuilder.SelectLocationByIdQuery(idLocation);
             var location = Read(query);
-            return new LocationDTO();
+            return new LocationDTO(); // convertir résultat de sqlite en dto
         }
     }
 }
