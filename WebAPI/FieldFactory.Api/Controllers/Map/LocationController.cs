@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FieldFactory.Core.Entities.Map.Event;
 using FieldFactory.Framework.Executor;
 using FieldFactory.Framework.Query;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace FieldFactory.Api.Controllers.Map
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationController : ControllerBase
+    public class LocationController : BaseController
     {
         LocationExecutor executor = new LocationExecutor();
 
@@ -22,26 +24,18 @@ namespace FieldFactory.Api.Controllers.Map
             return new string[] { "value1", "value2" };
         }
 
-        // GET: api/Location/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST: api/Location/5/explore
         [HttpPost("{idLocation}/explore", Name = "ExploreLocation")]
         public string ExploreLocation(int idLocation)
         {
-            var query = new GetRandomEventForLocationQuery(idLocation);
-            var eventStep = executor.Execute(query);
-
             // Get location from db
             // Select a random event for this location
             //Return the step 0 of event
 
+            var query = new GetRandomEventForLocationQuery(idLocation);
+            var eventStep = executor.Execute(query);
 
-            return "value";
+            return ConvertResponseToJson(eventStep);
         }
 
 

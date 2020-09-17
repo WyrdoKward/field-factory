@@ -3,7 +3,7 @@
   "title": "Dummy quest",
   "steps": [
   {
-    "stepId": 0,
+    "id": 0,
     "text": "This is the first text of the quest. What do you do ?",
     "choices": [
       {
@@ -19,7 +19,7 @@
     ]
   },
   {
-    "stepId": 1,
+    "id": 1,
     "text": "This is the step 1 text of the quest. Here is the outcome, chosen server-side.",
     "outcomes": [
       {
@@ -33,7 +33,7 @@
        }
     ]
   },{
-    "stepId": 2,
+    "id": 2,
     "text": "This is the step 2 text of the quest.",
     "choices": [
       {
@@ -49,7 +49,7 @@
     ]
   },{
   
-    "stepId": 3,
+    "id": 3,
     "text": "This is the step 3 text of the quest. Here is the outcome, chosen server-side.",
     "outcomes": [
       {
@@ -63,7 +63,7 @@
     ]
   },{
   
-    "stepId": 4,
+    "id": 4,
     "text": "This is the step 4 text of the quest. Here is the outcome, chosen server-side.",
     "outcomes": [
       {

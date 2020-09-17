@@ -1,5 +1,6 @@
 ﻿using FieldFactory.Core.Enum;
-using FieldFactory.DataAccess.DTO;
+using System;
+using System.Collections.Generic;
 
 namespace FieldFactory.Core.Entities.Map
 {
@@ -13,11 +14,16 @@ namespace FieldFactory.Core.Entities.Map
 
         public EVerb[] Verbs { get; set; }
 
+        public List<string> RandomEvents { get; set; }
+
         public Location() { }
 
-        public Location(LocationDTO dto)
+        public string GetARandomEvent()
         {
-
+            Random rnd = new Random();
+            int e = rnd.Next(RandomEvents.Count - 1);
+            return RandomEvents[e];
         }
+
     }
 }

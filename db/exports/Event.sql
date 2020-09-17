@@ -1,13 +1,13 @@
 DROP TABLE IF EXISTS "Event";
-CREATE TABLE "Event" ("idEvent" integer,"name" text,"json" text, PRIMARY KEY ("idEvent"));
+CREATE TABLE "Event" ("idEvent" text,"json" text, PRIMARY KEY ("idEvent"));
 
-INSERT INTO "Event" ("idEvent", "name", "json") VALUES
-(1, 'dummyLocationEvent', '{
+INSERT INTO "Event" ("idEvent", "json") VALUES
+('dummyLocationEvent', '{
   "id": 0,
   "title": "Dummy quest",
   "steps": [
   {
-    "stepId": 0,
+    "id": 0,
     "text": "This is the first text of the quest. What do you do ?",
     "choices": [
       {
@@ -23,7 +23,7 @@ INSERT INTO "Event" ("idEvent", "name", "json") VALUES
     ]
   },
   {
-    "stepId": 1,
+    "id": 1,
     "text": "This is the step 1 text of the quest. Here is the outcome, chosen server-side.",
     "outcomes": [
       {
@@ -37,7 +37,7 @@ INSERT INTO "Event" ("idEvent", "name", "json") VALUES
        }
     ]
   },{
-    "stepId": 2,
+    "id": 2,
     "text": "This is the step 2 text of the quest.",
     "choices": [
       {
@@ -53,7 +53,7 @@ INSERT INTO "Event" ("idEvent", "name", "json") VALUES
     ]
   },{
   
-    "stepId": 3,
+    "id": 3,
     "text": "This is the step 3 text of the quest. Here is the outcome, chosen server-side.",
     "outcomes": [
       {
@@ -67,7 +67,7 @@ INSERT INTO "Event" ("idEvent", "name", "json") VALUES
     ]
   },{
   
-    "stepId": 4,
+    "id": 4,
     "text": "This is the step 4 text of the quest. Here is the outcome, chosen server-side.",
     "outcomes": [
       {

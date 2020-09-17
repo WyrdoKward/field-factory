@@ -2,8 +2,13 @@
 {
     public class EventDTO
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public string Id { get; set; }
         public string Json { get; set; }
+
+        public EventDTO(string idEvent, string json)
+        {
+            Id = idEvent;
+            Json = json;
+        }
     }
 }

@@ -12,12 +12,17 @@ namespace FieldFactory.Core.Map
     {
         LocationProvider locationProvider = new LocationProvider();
         EventProvider eventProvider = new EventProvider();
+
         public EventStep GetRandomEventForLocation(int idLocation)
         {
             var locationDto = locationProvider.Get(idLocation);
             var location = JsonConvert.DeserializeObject<Location>(locationDto.Json);
+            var randomEvent = location.GetARandomEvent();
 
-            return null;
+
+            var eventDTO = eventProvider.Get(randomEvent);
+            var evt = JsonConvert.DeserializeObject<Event>(eventDTO.Json);
+            return evt.Steps[0];
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
+using System;
 using System.Collections.Generic;
 
 namespace FieldFactory.DataAccess.SQLite
@@ -43,9 +44,16 @@ namespace FieldFactory.DataAccess.SQLite
             }
         }
 
-        internal List<string> Read(string selectQuery)
+        /// <summary>
+        /// Retourne sous form de string un objet complet en BDD
+        /// </summary>
+        /// <param name="selectQuery">Ne marche que pour les SELECT *</param>
+        /// <param name="nbCols">Le nombre de colunes de la table en BDD</param>
+        /// <returns></returns>
+        internal Dictionary<int, List<string>> ReadColumns(string selectQuery, int nbCols = 1)
         {
-            List<string> res = new List<string>();
+            Dictionary<int, List<string>> res = new Dictionary<int, List<string>>();
+            int row = 0;
 
             using (var connection = new SqliteConnection(ConnectionStringBuilder.ConnectionString))
             {
@@ -57,9 +65,29 @@ namespace FieldFactory.DataAccess.SQLite
                 {
                     while (reader.Read())
                     {
-                        res.Add(reader.GetString(0));
+                        res.Add(row, new List<string>());
+                        for (int i = 0; i < nbCols; i++)
+                        {
+                            res[row].Add(reader.GetString(i));
+                        }
+                        row++;
                     }
                 }
+            }
+
+            return res;
+        }
+
+        internal object ReadScalar(string selectQuery)
+        {
+            object res;
+            using (var connection = new SqliteConnection(ConnectionStringBuilder.ConnectionString))
+            {
+                connection.Open();
+                var selectCmd = connection.CreateCommand();
+                selectCmd.CommandText = selectQuery;
+
+                res = selectCmd.ExecuteScalar();
             }
 
             return res;
