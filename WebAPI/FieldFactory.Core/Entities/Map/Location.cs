@@ -1,9 +1,5 @@
 ﻿using FieldFactory.Core.Enum;
-using Newtonsoft.Json.Converters;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
+using FieldFactory.DataAccess.DTO;
 
 namespace FieldFactory.Core.Entities.Map
 {
@@ -19,5 +15,9 @@ namespace FieldFactory.Core.Entities.Map
 
         public Location() { }
 
+        public Location(LocationDTO dto)
+        {
+
+        }
     }
 }
