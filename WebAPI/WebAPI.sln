@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FieldFactory.Api", "FieldFactory.Api\FieldFactory.Api.csproj", "{AE7E7E82-433A-4A4D-AB24-704E8E3920AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldFactory.Framework", "FieldFactory.Framework\FieldFactory.Framework.csproj", "{F708B7A3-631D-43F7-81C4-06BE30F9C48B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FieldFactory.Framework", "FieldFactory.Framework\FieldFactory.Framework.csproj", "{F708B7A3-631D-43F7-81C4-06BE30F9C48B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldFactory.Core", "FieldFactory.Core\FieldFactory.Core.csproj", "{51B93646-7229-4A01-8286-1358EC7A4954}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FieldFactory.Core", "FieldFactory.Core\FieldFactory.Core.csproj", "{51B93646-7229-4A01-8286-1358EC7A4954}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldFactory.DataAccess", "FieldFactory.DataAccess\FieldFactory.DataAccess.csproj", "{77FB4F42-7011-495F-BF76-D1862217B342}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{51B93646-7229-4A01-8286-1358EC7A4954}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51B93646-7229-4A01-8286-1358EC7A4954}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51B93646-7229-4A01-8286-1358EC7A4954}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77FB4F42-7011-495F-BF76-D1862217B342}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77FB4F42-7011-495F-BF76-D1862217B342}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77FB4F42-7011-495F-BF76-D1862217B342}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77FB4F42-7011-495F-BF76-D1862217B342}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
