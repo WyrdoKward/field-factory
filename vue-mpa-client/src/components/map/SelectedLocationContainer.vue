@@ -16,6 +16,7 @@
 <script>
 import { bus } from "@/pages/World/main";
 import json from '@/utils/dummyLocationEventStep0.json'
+const axios = require('axios');
 
 export default {
   name: "SelectedLocationContainer",
@@ -42,12 +43,21 @@ export default {
     explore(locId){
         // GET /location/{locId}/event
         //console.log('Getting a random event for location '+locId );
-        this.event = this.getEventFirstStep(locId);
+        this.getEventFirstStep(locId);
         this.eventActive = true;
       },
     getEventFirstStep(locId){ //return que le step 1
       console.log('getEvent('+locId );
-      return json;
+      axios
+      .post('http://localhost:8080/api/location/'+locId+'/explore')
+      .then(res => {
+        this.event = res.data;
+        console.log('SUCCES');
+        console.log(res.data);
+      }).catch(err => {
+        console.log('FAIL');
+        console.log(err.response);
+      });
     }
   },
 };
