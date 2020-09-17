@@ -1,9 +1,6 @@
 ﻿using FieldFactory.Core.Enum;
-using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
 
 namespace FieldFactory.Core.Entities.Map
 {
@@ -17,7 +14,16 @@ namespace FieldFactory.Core.Entities.Map
 
         public EVerb[] Verbs { get; set; }
 
+        public List<string> RandomEvents { get; set; }
+
         public Location() { }
+
+        public string GetARandomEvent()
+        {
+            Random rnd = new Random();
+            int e = rnd.Next(RandomEvents.Count - 1);
+            return RandomEvents[e];
+        }
 
     }
 }

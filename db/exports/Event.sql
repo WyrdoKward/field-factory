@@ -1,4 +1,8 @@
-{
+DROP TABLE IF EXISTS "Event";
+CREATE TABLE "Event" ("idEvent" text,"json" text, PRIMARY KEY ("idEvent"));
+
+INSERT INTO "Event" ("idEvent", "json") VALUES
+('dummyLocationEvent', '{
   "id": 0,
   "title": "Dummy quest",
   "steps": [
@@ -78,3 +82,4 @@
   }
   ]
 }
+');

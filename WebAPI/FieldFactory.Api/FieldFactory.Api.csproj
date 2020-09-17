@@ -6,11 +6,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\FieldFactory.Core\FieldFactory.Core.csproj" />
+    <ProjectReference Include="..\FieldFactory.DataAccess\FieldFactory.DataAccess.csproj" />
     <ProjectReference Include="..\FieldFactory.Framework\FieldFactory.Framework.csproj" />
   </ItemGroup>
 
