@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FieldFactory.DataAccess.DTO
+﻿namespace FieldFactory.DataAccess.DTO
 {
     internal class UserDTO
     {
