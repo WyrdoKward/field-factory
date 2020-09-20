@@ -15,6 +15,9 @@ namespace FieldFactory.DataAccess.SQLite
             ConnectionStringBuilder.DataSource = "./field-factory.db";
         }
 
+        /// <summary>
+        /// Exécute une unique requete de modification
+        /// </summary>
         internal void ExecuteSingleNonQuery(string sqlCommand)
         {
             using (var connection = new SqliteConnection(ConnectionStringBuilder.ConnectionString))
@@ -26,6 +29,9 @@ namespace FieldFactory.DataAccess.SQLite
             }
         }
 
+        /// <summary>
+        /// Exécute une suite de requetes de modification
+        /// </summary>
         internal void ExecuteTransaction(List<string> transactionLines)
         {
             using (var connection = new SqliteConnection(ConnectionStringBuilder.ConnectionString))
@@ -52,6 +58,8 @@ namespace FieldFactory.DataAccess.SQLite
         /// <returns></returns>
         internal Dictionary<int, List<string>> ReadColumns(string selectQuery, int nbCols = 1)
         {
+            // int = num Row
+            // List<string> = les val des cols
             Dictionary<int, List<string>> res = new Dictionary<int, List<string>>();
             int row = 0;
 
