@@ -32,6 +32,7 @@ namespace FieldFactory.Api.Controllers.Map
             // Select a random event for this location
             //Return the step 0 of event
 
+            // TODO ajouter l'enregistrer de la position courrante du player
             var query = new GetRandomEventForLocationQuery(idLocation);
             var eventStep = executor.Execute(query);
 
