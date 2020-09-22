@@ -21,5 +21,13 @@ namespace FieldFactory.Framework.Executor
 
             return step0;
         }
+
+        public IEnumerable<string> Execute(GetVerbsForLocation query)
+        {
+            LocationInteractor locationInteractor = new LocationInteractor();
+            var verbs = locationInteractor.GetVerbsForLocation(query.LocationId);
+
+            return verbs;
+        }
     }
 }

@@ -17,11 +17,14 @@ namespace FieldFactory.Api.Controllers.Map
     {
         LocationExecutor executor = new LocationExecutor();
 
-        // GET: api/Location
-        [HttpGet]
-        public IEnumerable<string> Get()
+        // GET: api/Location/1/verbs
+        [HttpGet("{idLocation}/verbs", Name = "GetVerbs")]
+        public IEnumerable<string> Get(int idLocation)
         {
-            return new string[] { "value1", "value2" };
+            var query = new GetVerbsForLocation(idLocation);
+            var verbs = executor.Execute(query);
+
+            return verbs;
         }
 
         // POST: api/Location/5/explore
