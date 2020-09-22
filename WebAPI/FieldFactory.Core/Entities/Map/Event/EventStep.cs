@@ -11,5 +11,7 @@ namespace FieldFactory.Core.Entities.Map.Event
 
         public List<Choice> Choices;
         public List<Outcome> Outcomes;
+
+        //Duration ?
     }
 }

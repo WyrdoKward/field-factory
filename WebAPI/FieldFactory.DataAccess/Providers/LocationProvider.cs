@@ -6,8 +6,8 @@ namespace FieldFactory.DataAccess.Providers
 {
     public class LocationProvider : SQLiteBaseProvider
     {
-        private const int NB_COL_IN_TABLE = 3;
-        public LocationDTO Get(int idLocation)
+        private const int NB_COL_IN_TABLE = 2;
+        public LocationDTO Get(string idLocation)
         {
             var query = SQLiteLocationStringBuilder.SelectLocationByIdQuery(idLocation);
             var location = ConvertIntoDto(ReadColumns(query, NB_COL_IN_TABLE));
@@ -21,7 +21,7 @@ namespace FieldFactory.DataAccess.Providers
 
             foreach (var rawLocation in rawLocations)
             {
-                res.Add(new LocationDTO() { Id = int.Parse(rawLocation.Value[0]), Name = rawLocation.Value[1], Json = rawLocation.Value[2] });
+                res.Add(new LocationDTO() { Id = rawLocation.Value[0], Json = rawLocation.Value[1] });
             }
                 
             return res;

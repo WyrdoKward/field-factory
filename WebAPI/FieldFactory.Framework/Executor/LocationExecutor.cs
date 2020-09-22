@@ -16,10 +16,18 @@ namespace FieldFactory.Framework.Executor
             //Droit d'accéder à cette lcoation ?
 
 
-            EventGetter eventGetter = new EventGetter();
+            EventInteractor eventGetter = new EventInteractor();
             var step0 = eventGetter.GetRandomEventForLocation(query.LocationId);
 
-            return step0;
+            return step0.Item2.Steps[0];
+        }
+
+        public Location Execute(GetLocation query)
+        {
+            LocationInteractor locationInteractor = new LocationInteractor();
+            var location = locationInteractor.GetLocation(query.LocationId);
+
+            return location;
         }
     }
 }

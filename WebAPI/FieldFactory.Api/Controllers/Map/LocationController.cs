@@ -17,13 +17,28 @@ namespace FieldFactory.Api.Controllers.Map
     {
         LocationExecutor executor = new LocationExecutor();
 
-        // GET: api/Location
-        [HttpGet]
-        public IEnumerable<string> Get()
+        // GET: api/Location/dummyLocation/
+        [HttpGet("{idLocation}")]
+        public string Get(string idLocation)
         {
-            return new string[] { "value1", "value2" };
+            var query = new GetLocation(idLocation);
+            var location = executor.Execute(query);
+
+            return ConvertResponseToJson(location);
         }
 
+        // GET: api/Location/dummyLocation/verbs
+        [HttpGet("{idLocation}/verbs", Name = "GetVerbs")]
+        public IEnumerable<string> GetVerbs(string idLocation)
+        {
+            var query = new GetLocation(idLocation);
+            var location = executor.Execute(query);
+
+            var verbs = location.Verbs.Select(v => v.ToString());
+            return verbs;
+        }
+
+        [Obsolete("Passer par ExploreController")]
         // POST: api/Location/5/explore
         [HttpPost("{idLocation}/explore", Name = "ExploreLocation")]
         public string ExploreLocation(int idLocation)
@@ -32,7 +47,8 @@ namespace FieldFactory.Api.Controllers.Map
             // Select a random event for this location
             //Return the step 0 of event
 
-            var query = new GetRandomEventForLocationQuery(idLocation);
+            // TODO ajouter l'enregistrer de la position courrante du player
+            var query = new GetRandomEventForLocationQuery(idLocation.ToString());
             var eventStep = executor.Execute(query);
 
             return ConvertResponseToJson(eventStep);

@@ -10,9 +10,9 @@ namespace FieldFactory.Core.Utils
     {
         public static ELandType[,] Template1 = new ELandType[,]
         {
-            { ELandType.forest_conifer_dense_covered, ELandType.hills_dense_covered, ELandType.grassland_sparse_clear, ELandType.grassland_sparse_clear, ELandType.forest_deciduous_dense_covered  },
-            { ELandType.forest_conifer_dense_covered, ELandType.hills_sparse_covered, ELandType.hills_sparse_covered, ELandType.grassland_sparse_covered, ELandType.forest_deciduous_sparse_covered  },
-            { ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.grassland_dense_covered, ELandType.forest_deciduous_sparse_clear, ELandType.forest_conifer_sparse_covered  },
+            { ELandType.forest_conifer_dense_covered, ELandType.forest_conifer_sparse_covered, ELandType.grassland_sparse_clear, ELandType.grassland_sparse_clear, ELandType.forest_deciduous_dense_covered  },
+            { ELandType.forest_conifer_dense_covered, ELandType.forest_conifer_sparse_clear, ELandType.hills_sparse_covered, ELandType.grassland_sparse_covered, ELandType.forest_deciduous_sparse_covered  },
+            { ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.grassland_dense_covered, ELandType.forest_deciduous_sparse_clear, ELandType.hills_dense_covered  },
             { ELandType.ocean_waves_big, ELandType.ocean_waves_small, ELandType.grassland_sparse_covered, ELandType.hills_sparse_covered, ELandType.ocean_waves_small  },
             { ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_big  },
         };

@@ -4,12 +4,15 @@ using System.Text;
 
 namespace FieldFactory.Framework.Query
 {
-    public class GetRandomEventForLocationQuery
+    public class GetLocation
     {
         public string LocationId { get; set; }
 
-        public GetRandomEventForLocationQuery(string idLocation)
-        {            
+        public GetLocation(string idLocation)
+        {
+            if (string.IsNullOrEmpty(idLocation))
+                throw new ArgumentOutOfRangeException("idLocation");
+
             LocationId = idLocation;
         }
     }
