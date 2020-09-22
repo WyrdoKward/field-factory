@@ -22,12 +22,12 @@ namespace FieldFactory.Framework.Executor
             return step0;
         }
 
-        public IEnumerable<string> Execute(GetVerbsForLocation query)
+        public Location Execute(GetLocation query)
         {
             LocationInteractor locationInteractor = new LocationInteractor();
-            var verbs = locationInteractor.GetVerbsForLocation(query.LocationId);
+            var location = locationInteractor.GetLocation(query.LocationId);
 
-            return verbs;
+            return location;
         }
     }
 }

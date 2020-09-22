@@ -4,11 +4,11 @@ using System.Text;
 
 namespace FieldFactory.Framework.Query
 {
-    public class GetVerbsForLocation
+    public class GetLocation
     {
         public int LocationId { get; set; }
 
-        public GetVerbsForLocation(int idLocation)
+        public GetLocation(int idLocation)
         {
             if (idLocation <= 0)
                 throw new ArgumentOutOfRangeException("idLocation");
