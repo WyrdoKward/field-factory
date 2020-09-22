@@ -6,11 +6,11 @@ namespace FieldFactory.Framework.Query
 {
     public class GetLocation
     {
-        public int LocationId { get; set; }
+        public string LocationId { get; set; }
 
-        public GetLocation(int idLocation)
+        public GetLocation(string idLocation)
         {
-            if (idLocation <= 0)
+            if (string.IsNullOrEmpty(idLocation))
                 throw new ArgumentOutOfRangeException("idLocation");
 
             LocationId = idLocation;

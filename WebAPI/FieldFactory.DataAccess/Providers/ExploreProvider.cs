@@ -9,9 +9,9 @@ namespace FieldFactory.DataAccess.Providers
     public class ExploreProvider : SQLiteBaseProvider
     {
         private const int NB_COL_IN_TABLE = 6;
-        public void Add(string idPlayer, string idFollower, string idLocation, string idEvent, int idStep, DateTime dateNextStep)
+        public void Add(ExploreDTO exploration)
         {
-            var query = SQLiteExploreStringBuilder.AddExploreQuery(idPlayer, idFollower, idLocation, idEvent, idStep, dateNextStep);
+            var query = SQLiteExploreStringBuilder.AddExploreQuery(exploration);
             ExecuteSingleNonQuery(query);
         }
 

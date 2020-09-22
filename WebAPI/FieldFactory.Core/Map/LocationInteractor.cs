@@ -8,7 +8,7 @@ namespace FieldFactory.Core.Map
     {
         LocationProvider locationProvider = new LocationProvider();
 
-        public Location GetLocation(int locationId)
+        public Location GetLocation(string locationId)
         {
             var locationDto = locationProvider.Get(locationId);
             var location = JsonConvert.DeserializeObject<Location>(locationDto.Json);

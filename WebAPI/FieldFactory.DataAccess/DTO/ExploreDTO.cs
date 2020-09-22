@@ -13,7 +13,9 @@ namespace FieldFactory.DataAccess.DTO
         public int IdStep { get; set; }
         public DateTime DateNextStep { get; set; }
 
-        public ExploreDTO(string idPlayer, string idFollower, string idLocation, string idEvent, int idStep, DateTime dateNextStep)
+        public string StepHistory { get; set; }
+
+        public ExploreDTO(string idPlayer, string idFollower, string idLocation, string idEvent, int idStep, DateTime dateNextStep, string stepHistory)
         {
             IdPlayer = idPlayer;
             IdFollower = idFollower;
@@ -21,6 +23,7 @@ namespace FieldFactory.DataAccess.DTO
             IdEvent = idEvent;
             IdStep = idStep;
             DateNextStep = dateNextStep;
+            StepHistory = stepHistory;
         }
     }
 }

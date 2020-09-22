@@ -16,7 +16,7 @@ namespace FieldFactory.Framework.Executor
             //Droit d'accéder à cette lcoation ?
 
 
-            EventGetter eventGetter = new EventGetter();
+            EventInteractor eventGetter = new EventInteractor();
             var step0 = eventGetter.GetRandomEventForLocation(query.LocationId);
 
             return step0;
