@@ -2,6 +2,7 @@
 using FieldFactory.Core.Entities.Map.Event;
 using FieldFactory.DataAccess.Providers;
 using Newtonsoft.Json;
+using System;
 
 namespace FieldFactory.Core.Map
 {
@@ -10,16 +11,16 @@ namespace FieldFactory.Core.Map
         LocationProvider locationProvider = new LocationProvider();
         EventProvider eventProvider = new EventProvider();
 
-        public EventStep GetRandomEventForLocation(string idLocation)
+        public Tuple<string, Event> GetRandomEventForLocation(string idLocation)
         {
             var locationDto = locationProvider.Get(idLocation);
             var location = JsonConvert.DeserializeObject<Location>(locationDto.Json);
             var randomEvent = location.GetARandomEvent();
 
-
             var eventDTO = eventProvider.Get(randomEvent);
             var evt = JsonConvert.DeserializeObject<Event>(eventDTO.Json);
-            return evt.Steps[0];
+
+            return new Tuple<string, Event>(randomEvent, evt);
         }
     }
 }

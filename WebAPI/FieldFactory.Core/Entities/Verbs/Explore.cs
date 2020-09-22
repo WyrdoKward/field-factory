@@ -21,6 +21,12 @@ namespace FieldFactory.Core.Entities.Verbs
 
         public List<EventStep> Steps { get; set; }
 
+        public Explore()
+        {
+            Steps = new List<EventStep>();
+            IdStep = 0;
+        }
+
         public ExploreDTO ConvertToDTO()
         {
             var steps = JsonConvert.SerializeObject(Steps);

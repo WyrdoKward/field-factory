@@ -14,9 +14,11 @@ namespace FieldFactory.Core.Verbs
         public void AddNewExploration(Explore exploration)
         {
             EventInteractor eventGetter = new EventInteractor();
-            exploration.Steps.Add(eventGetter.GetRandomEventForLocation(exploration.IdLocation));
+            var tuple = eventGetter.GetRandomEventForLocation(exploration.IdLocation);
+
+            exploration.IdEvent = tuple.Item1;
+            exploration.Steps.Add(tuple.Item2.Steps[0]);                
             exploration.DateNextStep = DateTime.Now.AddMinutes(1);
-            exploration.IdStep = 0;
 
             exploreProvider.Add(exploration.ConvertToDTO());
         }

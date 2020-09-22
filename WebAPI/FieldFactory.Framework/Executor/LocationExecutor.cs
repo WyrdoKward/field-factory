@@ -19,7 +19,7 @@ namespace FieldFactory.Framework.Executor
             EventInteractor eventGetter = new EventInteractor();
             var step0 = eventGetter.GetRandomEventForLocation(query.LocationId);
 
-            return step0;
+            return step0.Item2.Steps[0];
         }
 
         public Location Execute(GetLocation query)
