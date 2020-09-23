@@ -1,6 +1,7 @@
 ﻿using FieldFactory.Core.Entities.Verbs;
 using FieldFactory.Core.Map;
 using FieldFactory.DataAccess.Providers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -21,6 +22,14 @@ namespace FieldFactory.Core.Verbs
             exploration.DateNextStep = DateTime.Now.AddMinutes(1);
 
             exploreProvider.Add(exploration.ConvertToDTO());
+        }
+
+        public Explore GetExplorationForLocation(string idPlayer, string idLocation)
+        {
+            var exploreDto = exploreProvider.Get(idPlayer, idLocation);
+            var explore = new Explore(exploreDto);
+
+            return explore;
         }
     }
 }

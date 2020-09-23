@@ -27,6 +27,17 @@ namespace FieldFactory.Core.Entities.Verbs
             IdStep = 0;
         }
 
+        public Explore(ExploreDTO dto)
+        {
+            IdPlayer = dto.IdPlayer;
+            IdFollower = dto.IdFollower;
+            IdLocation = dto.IdLocation;
+            IdEvent = dto.IdEvent;
+            IdStep = dto.IdStep;
+            DateNextStep = dto.DateNextStep;
+            Steps = JsonConvert.DeserializeObject<List<EventStep>>(dto.StepHistory);
+        }
+
         public ExploreDTO ConvertToDTO()
         {
             var steps = JsonConvert.SerializeObject(Steps);

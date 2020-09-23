@@ -15,7 +15,13 @@ namespace FieldFactory.Api.Controllers.Map
     [ApiController]
     public class LocationController : BaseController
     {
-        LocationExecutor executor = new LocationExecutor();
+        LocationExecutor executor
+        {
+            get
+            {
+                return new LocationExecutor(GetIdentity());
+            }
+        }
 
         // GET: api/Location/dummyLocation/
         [HttpGet("{idLocation}")]
@@ -26,6 +32,21 @@ namespace FieldFactory.Api.Controllers.Map
 
             return ConvertResponseToJson(location);
         }
+        /// <summary>
+        /// Renvoie une location et les actions en cours dessus
+        /// </summary>
+        /// <param name="idLocation"></param>
+        /// <returns></returns>
+        // GET: api/Location/dummyLocation/withactions
+        [HttpGet("{idLocation}/withactions")]
+        public string GetWithActions(string idLocation)
+        {
+            var query = new GetLocationWithActions(idLocation);
+            var locationWithActions = executor.Execute(query);
+
+            return locationWithActions;
+        }
+
 
         // GET: api/Location/dummyLocation/verbs
         [HttpGet("{idLocation}/verbs", Name = "GetVerbs")]

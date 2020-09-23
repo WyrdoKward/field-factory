@@ -8,8 +8,4 @@
     <ProjectReference Include="..\FieldFactory.Core\FieldFactory.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Authorizer\" />
-  </ItemGroup>
-
 </Project>
