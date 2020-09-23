@@ -12,7 +12,13 @@ namespace FieldFactory.Api.Controllers
     [ApiController]
     public class FollowerController : BaseController
     {
-        FollowerExecutor executor = new FollowerExecutor();
+        FollowerExecutor executor
+        {
+            get
+            {
+                return new FollowerExecutor(GetIdentity());
+            }
+        }
 
         // GET: api/Follower
         // Get all followers of player

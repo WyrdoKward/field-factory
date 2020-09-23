@@ -12,9 +12,15 @@ namespace FieldFactory.Api.Controllers.Verbs
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExploreController : ControllerBase
+    public class ExploreController : BaseController
     {
-        ExploreExecutor executor = new ExploreExecutor();
+        ExploreExecutor executor
+        {
+            get
+            {
+                return new ExploreExecutor(GetIdentity());
+            }
+        }
 
         // POST: api/Explore
         [HttpPost]
