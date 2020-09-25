@@ -12,6 +12,7 @@ namespace FieldFactory.Api.Controllers
 {
     public class BaseController : ControllerBase
     {
+        private const string AUTH_COOKIE = "ffauthtoken";
 
         internal string ConvertResponseToJson<T>(T objectToSerialize)
         {
@@ -25,11 +26,16 @@ namespace FieldFactory.Api.Controllers
         {
             if (_identity == null)
             {
-                var idPlayer = CookieHelper.GetFromCookie(HttpContext, "ffidentity");
+                var idPlayer = CookieHelper.GetFromCookie(HttpContext, AUTH_COOKIE);
                 _identity = new Identity() { IdPlayer = idPlayer };
             }
 
             return _identity;
+        }
+        
+        public void SetIdentityCookie(string token)
+        {
+             CookieHelper.SetCookie(HttpContext, AUTH_COOKIE);
         }
 
     }
