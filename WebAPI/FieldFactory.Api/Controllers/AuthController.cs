@@ -42,6 +42,8 @@ namespace FieldFactory.Api.Controllers
         public void Post([FromBody] LoginQuery query)
         {
             var token = executor.Execute(query);
+            if(!string.IsNullOrEmpty(token))
+                SetIdentityCookie(token);
         }
 
     }
