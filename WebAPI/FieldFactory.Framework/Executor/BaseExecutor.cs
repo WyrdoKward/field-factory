@@ -4,6 +4,6 @@ namespace FieldFactory.Framework.Executor
 {
     public class BaseExecutor
     {
-        internal Identity Identity { get; set; }
+        public Identity Identity { get; set; }
     }
 }

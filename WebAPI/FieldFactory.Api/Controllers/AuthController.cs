@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FieldFactory.Core.Entities;
 using FieldFactory.Framework.Executor;
 using FieldFactory.Framework.Query;
 using Microsoft.AspNetCore.Http;
@@ -13,12 +14,15 @@ namespace FieldFactory.Api.Controllers
     [ApiController]
     public class AuthController : BaseController
     {
-
+        AuthExecutor _executor;
         AuthExecutor executor
         {
             get
             {
-                return new AuthExecutor(GetIdentity());
+                if(_executor == null)
+                    _executor = new AuthExecutor(null);
+
+                return _executor;
             }
         }  
 
@@ -39,11 +43,15 @@ namespace FieldFactory.Api.Controllers
         
         // POST: api/Auth/login
         [HttpPost("login")]
-        public void Post([FromBody] LoginQuery query)
+        public string Post([FromBody] LoginQuery query)
         {
-            var token = executor.Execute(query);
-            if(!string.IsNullOrEmpty(token))
-                SetIdentityCookie(token);
+            var player = executor.Execute(query);
+            if (string.IsNullOrEmpty(player.Token))
+                throw new Exception("Pas loggué");
+
+            SetIdentityCookie(player.Token);
+            return "Hello "+executor.Identity.Player.IdPlayer;
+            //return "Hello "+player.IdPlayer;
         }
 
     }

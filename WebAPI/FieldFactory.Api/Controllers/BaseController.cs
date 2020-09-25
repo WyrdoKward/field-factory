@@ -1,4 +1,5 @@
-﻿using FieldFactory.Core.Utils;
+﻿using FieldFactory.Core.Secutity;
+using FieldFactory.Core.Utils;
 using FieldFactory.Framework.Authorizer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +27,15 @@ namespace FieldFactory.Api.Controllers
         {
             if (_identity == null)
             {
-                var idPlayer = CookieHelper.GetFromCookie(HttpContext, AUTH_COOKIE);
-                _identity = new Identity() { IdPlayer = idPlayer };
+                var token = CookieHelper.GetFromCookie(HttpContext, AUTH_COOKIE);
+                if (!string.IsNullOrEmpty(token))
+                {
+                    AuthInteractor authInteractor = new AuthInteractor();
+                    var player = authInteractor.GetPlayerFromToken(token);
+                    _identity = new Identity(player);
+                }
+                else
+                    throw new Exception("Pas loggué"); //403
             }
 
             return _identity;

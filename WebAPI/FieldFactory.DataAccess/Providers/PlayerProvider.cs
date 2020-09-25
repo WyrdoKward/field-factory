@@ -8,11 +8,18 @@ namespace FieldFactory.DataAccess.Providers
     public class PlayerProvider : SQLiteBaseProvider
     {
         private const int NB_COL_IN_TABLE = 4;
-        public PlayerDTO Get(string idPlayer)
+        public PlayerDTO GetById(string idPlayer)
         {
             var query = SQLitePlayerStringBuilder.SelectPlayerByIdQuery(idPlayer);
             var player = ConvertIntoDto(ReadColumns(query, NB_COL_IN_TABLE));
             return player[0]; 
+        }
+
+        public PlayerDTO GetByToken(string token)
+        {
+            var query = SQLitePlayerStringBuilder.SelectPlayerByTokenQuery(token);
+            var player = ConvertIntoDto(ReadColumns(query, NB_COL_IN_TABLE));
+            return player[0];
         }
 
         public PlayerDTO GetWithPassword(string idPlayer, string hashPwd)

@@ -1,4 +1,5 @@
-﻿using FieldFactory.DataAccess.Providers;
+﻿using FieldFactory.Core.Entities;
+using FieldFactory.DataAccess.Providers;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,21 +12,27 @@ namespace FieldFactory.Core.Secutity
 
         public string GetLoginToken(string idPlayer)
         {
-            var player = playerProvider.Get(idPlayer);
-            return player.Token;
+            var playerDto = playerProvider.GetById(idPlayer);
+            return playerDto.Token;
         }
 
-        public string LoginPlayer(string idPlayer, string mdp)
+        public Player LoginPlayer(string idPlayer, string mdp)
         {
             string token = string.Empty;
             //hasher le mdp
-            var player = playerProvider.GetWithPassword(idPlayer, mdp);
-            if(player != null)
+            var playerDto = playerProvider.GetWithPassword(idPlayer, mdp);
+            if(playerDto != null)
             {
-                token = GenerateToken();
-                playerProvider.SetToken(player.IdPlayer, token);
+                playerDto.Token = GenerateToken();
+                playerProvider.SetToken(playerDto.IdPlayer, playerDto.Token);
             }
-            return token;
+            return new Player(playerDto);
+        }
+
+        public Player GetPlayerFromToken(string token)
+        {
+            var playerDto = playerProvider.GetByToken(token);
+            return new Player(playerDto);
         }
 
         private string GenerateToken()
@@ -36,5 +43,6 @@ namespace FieldFactory.Core.Secutity
 
             return token;
         }
+
     }
 }

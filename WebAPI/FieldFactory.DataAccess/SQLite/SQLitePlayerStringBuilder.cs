@@ -9,14 +9,20 @@ namespace FieldFactory.DataAccess.SQLite
             return $"SELECT * FROM Player WHERE idPlayer = '{idPlayer}'";
         }
 
-        internal static string SetTokenQuery(string idPlayer, string token)
+        internal static string SelectPlayerByTokenQuery(string token)
         {
-            return $"UPDATE Player SET token = '{token}' WHERE idPlayer = '{idPlayer}'";
+            return $"SELECT * FROM Player WHERE token = '{token}'";
         }
 
         internal static string SelectPlayerWithPwdQuery(string idPlayer, string hashPwd)
         {
             return $"SELECT * FROM Player WHERE idPlayer = '{idPlayer}' AND hashpwd = '{hashPwd}'";
         }
+
+        internal static string SetTokenQuery(string idPlayer, string token)
+        {
+            return $"UPDATE Player SET token = '{token}' WHERE idPlayer = '{idPlayer}'";
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using FieldFactory.Core.Secutity;
+﻿using FieldFactory.Core.Entities;
+using FieldFactory.Core.Secutity;
 using FieldFactory.Framework.Authorizer;
 using FieldFactory.Framework.Query;
 using System;
@@ -12,18 +13,19 @@ namespace FieldFactory.Framework.Executor
             Identity = identity;
         }
 
-        public string Execute(LoginQuery query)
+        public Player Execute(LoginQuery query)
         {
             //Validation ?
             //Droit d'accéder à cette lcoation ?
 
             // TODO créer une vraie exception
             AuthInteractor authInteractor = new AuthInteractor();
-            var token = authInteractor.LoginPlayer(query.IdPlayer, query.Mdp);
-            if (string.IsNullOrEmpty(token))
+            var player = authInteractor.LoginPlayer(query.IdPlayer, query.Mdp);
+            if (string.IsNullOrEmpty(player.Token))
                 throw new Exception("Login failed");
 
-            return token;
+            Identity = new Identity(player);
+            return player;
         }
     }
 }
