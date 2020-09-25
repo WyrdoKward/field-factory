@@ -11,7 +11,7 @@ namespace FieldFactory.Framework.Query
 
         public LoginQuery(string idPlayer, string mdp)
         {
-            IdPlayer = IdPlayer;
+            IdPlayer = idPlayer;
             Mdp = mdp;
         }
     }

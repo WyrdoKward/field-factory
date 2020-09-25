@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 
 namespace FieldFactory.Core.Utils
 {
@@ -19,7 +20,7 @@ namespace FieldFactory.Core.Utils
            options.Expires = DateTime.Now.AddHours(AUTH_COKKIE_EXPIRE_TIME_H);  
            options.HttpOnly = true;
 
-           Response.Cookies.Append(cookieName, cookieValue, options); 
+           httpContext.Response.Cookies.Append(cookieName, cookieValue, options); 
         }
     }
     
