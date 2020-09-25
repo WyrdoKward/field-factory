@@ -23,10 +23,24 @@ namespace FieldFactory.Api.Controllers
         }  
 
         // POST: api/Auth/login
-        [HttpPost("login")]
+       /* [HttpPost("login")]
         public void Post([FromBody] string idPlayer, string pwd)
         {
             var query = new LoginQuery(idPlayer, pwd);
+            var token = executor.Execute(query);
+        }*/
+        
+        ///POST /api/Person/UnProtected HTTP/1.1
+        ///Host: localhost:5000
+        ///Accept: application/json, text/javascript, */*; q=0.01
+        ///Content-Type: application/json; charset=UTF-8
+        ///
+        ///{"IdPlayer":"wyrdokward","Mdp":"123456"}
+        
+        // POST: api/Auth/login
+        [HttpPost("login")]
+        public void Post([FromBody] LoginQuery query)
+        {
             var token = executor.Execute(query);
         }
 
