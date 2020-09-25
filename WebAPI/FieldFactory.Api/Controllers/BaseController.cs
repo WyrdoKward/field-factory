@@ -35,7 +35,7 @@ namespace FieldFactory.Api.Controllers
         
         public void SetIdentityCookie(string token)
         {
-             CookieHelper.SetCookie(HttpContext, AUTH_COOKIE);
+             CookieHelper.SetCookie(HttpContext, AUTH_COOKIE, token);
         }
 
     }
