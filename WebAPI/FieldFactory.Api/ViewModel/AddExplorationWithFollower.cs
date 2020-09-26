@@ -7,7 +7,6 @@ namespace FieldFactory.Api.ViewModel
 {
     public class AddExplorationWithFollower
     {
-        public string IdPlayer { get; set; }
         public string IdFollower { get; set; }
         public string IdLocation { get; set; }
         public string IdEvent { get; set; }
