@@ -43,15 +43,17 @@ namespace FieldFactory.Api.Controllers
         
         // POST: api/Auth/login
         [HttpPost("login")]
-        public string Post([FromBody] LoginQuery query)
+        public Player Post([FromBody] LoginQuery query)
         {
             var player = executor.Execute(query);
             if (string.IsNullOrEmpty(player.Token))
                 throw new Exception("Pas loggué");
 
             SetIdentityCookie(player.Token);
-            return "Hello "+executor.Identity.Player.IdPlayer;
-            //return "Hello "+player.IdPlayer;
+
+            player.SanitizePlayer();
+            //return "Hello "+executor.Identity.Player.IdPlayer;
+            return player;
         }
 
     }

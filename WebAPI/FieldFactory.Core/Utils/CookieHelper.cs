@@ -19,6 +19,7 @@ namespace FieldFactory.Core.Utils
            CookieOptions options = new CookieOptions();  
            options.Expires = DateTime.Now.AddHours(AUTH_COKKIE_EXPIRE_TIME_H);  
            options.HttpOnly = true;
+           options.SameSite = SameSiteMode.Lax;
 
            httpContext.Response.Cookies.Append(cookieName, cookieValue, options); 
         }
