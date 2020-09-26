@@ -35,7 +35,7 @@ namespace FieldFactory.Api.Controllers
         public Player GetSession()
         {
             var identity = GetIdentity();
-
+            identity.Player.SanitizePlayer();
             return identity.Player;
         }
 
