@@ -23,7 +23,7 @@ namespace FieldFactory.Api.Controllers
         }
 
         private Identity _identity;
-        public Identity GetIdentity()
+        internal Identity GetIdentity()
         {
             if (_identity == null)
             {
@@ -41,7 +41,7 @@ namespace FieldFactory.Api.Controllers
             return _identity;
         }
         
-        public void SetIdentityCookie(string token)
+        internal void SetIdentityCookie(string token)
         {
              CookieHelper.SetCookie(HttpContext, AUTH_COOKIE, token);
         }

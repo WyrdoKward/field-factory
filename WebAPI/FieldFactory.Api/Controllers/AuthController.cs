@@ -24,24 +24,23 @@ namespace FieldFactory.Api.Controllers
 
                 return _executor;
             }
-        }  
+        }
+
+        /// <summary>
+        /// Returns current player if a session is active (cookie ffauthtoken)
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/Auth/session
+        [HttpGet("session", Name = "GetSession")]
+        public Player GetSession()
+        {
+            var identity = GetIdentity();
+
+            return identity.Player;
+        }
 
         // POST: api/Auth/login
-       /* [HttpPost("login")]
-        public void Post([FromBody] string idPlayer, string pwd)
-        {
-            var query = new LoginQuery(idPlayer, pwd);
-            var token = executor.Execute(query);
-        }*/
-        
-        ///POST /api/Person/UnProtected HTTP/1.1
-        ///Host: localhost:5000
-        ///Accept: application/json, text/javascript, */*; q=0.01
-        ///Content-Type: application/json; charset=UTF-8
-        ///
-        ///{"IdPlayer":"wyrdokward","Mdp":"123456"}
-        
-        // POST: api/Auth/login
+        //{"IdPlayer":"wyrdokward","Mdp":"123456"}
         [HttpPost("login")]
         public Player Post([FromBody] LoginQuery query)
         {
