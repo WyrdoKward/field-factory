@@ -1,10 +1,16 @@
 ﻿using FieldFactory.Core.Characters;
 using FieldFactory.Core.Entities;
+using FieldFactory.Framework.Authorizer;
 
 namespace FieldFactory.Framework.Executor
 {
-    public class FollowerExecutor
+    public class FollowerExecutor : BaseExecutor
     {
+
+        public FollowerExecutor(Identity identity)
+        {
+            Identity = identity;
+        }
         /// <summary>
         /// Get a follower based on id
         /// </summary>

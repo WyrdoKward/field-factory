@@ -76,7 +76,8 @@ namespace FieldFactory.DataAccess.SQLite
                         res.Add(row, new List<string>());
                         for (int i = 0; i < nbCols; i++)
                         {
-                            res[row].Add(reader.GetString(i));
+                            var rawRes = reader.IsDBNull(i) ? "" : reader.GetString(i);
+                            res[row].Add(rawRes);
                         }
                         row++;
                     }
