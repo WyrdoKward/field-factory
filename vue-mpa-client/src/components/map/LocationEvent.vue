@@ -1,14 +1,14 @@
 <template>
     <div class="locationEvent" >
-        <h2>{{event.text}}</h2>
-        <ul v-if="event.choices" class="choices">
-            <li v-for="choice in event.choices" :key="choice.id">
-                <span @click="processChoice(choice.nextStepId)">{{choice.text}} (nextStep: {{choice.nextStepId}}</span>
+        <h2>{{event.Text}}</h2>
+        <ul v-if="event.Choices" class="choices">
+            <li v-for="choice in event.Choices" :key="choice.id">
+                <span @click="processChoice(choice.nextStepId)">{{choice.Text}} (nextStep: {{choice.NextStepId}}</span>
             </li>
         </ul>
-        <div v-else-if="event.outcome" class="outcome">
-            <p >{{event.outcome.text}}</p>
-            <p v-if="event.outcome.nextStepId" @click="processOutcome(event.outcome.nextStepId)">Continuer...</p>
+        <div v-else-if="event.Outcome" class="outcome">
+            <p >{{event.Outcome.text}}</p>
+            <p v-if="event.Outcome.NextStepId" @click="processOutcome(event.Outcome.NextStepId)">Continuer...</p>
             <p v-else>QUETE TERMINEE</p>
             <!--<li v-for="outcome in event.outcomes" :key="outcome.id">
                 <span @click="processOutcome()">{{outcome.text}}</span>
@@ -20,17 +20,6 @@
 </template>
 
 <script>
-/*
-import { activeCountries } from '@/utils/CountryConstants'
-
-const homepageComponents = {}
-
-activeCountries.map(country => {
-  const pageName = `HomePage${country.code.toUpperCase()}`
-  homepageComponents[pageName] = () => import(`@/pages/homepage/${pageName}`)
-})
-
-*/
 
 import step0 from '@/utils/dummyLocationEventStep0.json'
 import step1 from '@/utils/dummyLocationEventStep1.json'
@@ -59,6 +48,7 @@ steps[4] = step4;
         console.log('Next Step is #'+nextStepId);
         // GET /event/{eventId}/step/{nextStepId}
         //on selectionne un seul outcome random coté serveur
+        // Vérification du timer coté server
         this.event = steps[nextStepId];
         var rnd = this.getRandom(Object.keys(this.event.outcomes).length);
         console.log('Outcome generated : '+rnd);
@@ -70,6 +60,8 @@ steps[4] = step4;
 
       processOutcome(nextStepId) {
         //On get juste le step suivant
+        // Soit c'est fini
+        // Soit y'a un choix immédiat à faire
         this.event = steps[nextStepId];
         
       },
