@@ -26,9 +26,11 @@ namespace FieldFactory.Api.Controllers.Verbs
         [HttpPost]
         public void Post([FromBody] AddExplorationWithFollower vm)
         {
-            //Apeller ici GetRandomEventForLocation ?
+            //Apeller ici GetRandomEventForLocation !
             var query = new AddExplorationWithFollowerQuery(executor.Identity.Player.IdPlayer, vm.IdFollower, vm.IdLocation, vm.IdEvent, 0, DateTime.Now.AddSeconds(10));
             executor.Execute(query);
+
+            //Doit renvoyer le step 0
 
             //Renvoyer un 200 via IActionResult ?
         }

@@ -9,6 +9,6 @@ namespace FieldFactory.Api.ViewModel
     {
         public string IdFollower { get; set; }
         public string IdLocation { get; set; }
-        public string IdEvent { get; set; }
+        public string IdEvent { get; set; } // Calculé aléatoirement, ne fait pas partie de la requete
     }
 }
