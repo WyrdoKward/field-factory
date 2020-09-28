@@ -15,7 +15,7 @@ namespace FieldFactory.Core.Entities.Map
 
         public string LandType { get; set; }
 
-        public Location Location { get; set; }
+        public string IdLocation { get; set; }
 
         public void GenerateLandType(ELandType model, int variation)
         {
