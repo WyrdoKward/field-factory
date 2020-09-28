@@ -38,6 +38,7 @@
         .get('http://localhost:8080/api/location/'+this.locId+'')
         .then(res => {
           this.location = res.data;
+          this.location.IdLocation = this.locId;
           console.log('SUCCES');
           console.log(res.data);
         bus.$emit("selectLocation", this.location);

@@ -6,7 +6,7 @@
       <!--<div v-for="action in loc.Actions" >
         <h2>{{action}}</h2>
       </div>-->
-      <button type="button" @click="explore(loc.Id)" style="margin-bottom: 80px;">Explore</button>
+      <button type="button" @click="explore(loc.IdLocation)" style="margin-bottom: 80px;">Explore</button>
     </div>
     <LocationEvent v-if="eventActive" :event="this.event" />
   </div>
@@ -50,8 +50,10 @@ export default {
       },
     getEventFirstStep(locId){ //return que le step 1
       console.log('getEvent('+locId );
+        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: locId, IdEvent: 'dummyuLocationEvent'});
+        const options = {headers: {'Content-Type': 'application/json'}};
       axios
-      .post('http://localhost:8080/api/location/'+locId+'/explore')
+      .post('http://localhost:8080/api/Explore', json, options)
       .then(res => {
         this.event = res.data;
         console.log('SUCCES');
