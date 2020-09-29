@@ -1,4 +1,5 @@
-﻿using FieldFactory.Core.Entities.Verbs;
+﻿using FieldFactory.Core.Entities.Map.Event;
+using FieldFactory.Core.Entities.Verbs;
 using FieldFactory.Core.Map;
 using FieldFactory.DataAccess.Providers;
 using Newtonsoft.Json;
@@ -12,7 +13,7 @@ namespace FieldFactory.Core.Verbs
     {
         ExploreProvider exploreProvider = new ExploreProvider();
 
-        public void AddNewExploration(Explore exploration)
+        public EventStep AddNewExploration(Explore exploration)
         {
             EventInteractor eventGetter = new EventInteractor();
             var tuple = eventGetter.GetRandomEventForLocation(exploration.IdLocation);
@@ -22,6 +23,8 @@ namespace FieldFactory.Core.Verbs
             exploration.DateNextStep = DateTime.Now.AddMinutes(1);
 
             exploreProvider.Add(exploration.ConvertToDTO());
+
+            return exploration.Steps[0];
         }
 
         public Explore GetExplorationForLocation(string idPlayer, string idLocation)

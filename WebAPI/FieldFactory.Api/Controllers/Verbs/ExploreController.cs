@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FieldFactory.Api.ViewModel;
+using FieldFactory.Core.Entities.Map.Event;
 using FieldFactory.Framework.Executor;
 using FieldFactory.Framework.Query;
 using Microsoft.AspNetCore.Http;
@@ -24,13 +25,12 @@ namespace FieldFactory.Api.Controllers.Verbs
 
         // POST: api/Explore
         [HttpPost]
-        public void Post([FromBody] AddExplorationWithFollower vm)
+        public EventStep Post([FromBody] AddExplorationWithFollower vm)
         {
-            //Apeller ici GetRandomEventForLocation !
-            var query = new AddExplorationWithFollowerQuery(executor.Identity.Player.IdPlayer, vm.IdFollower, vm.IdLocation, vm.IdEvent, 0, DateTime.Now.AddSeconds(10));
-            executor.Execute(query);
+            var query = new AddExplorationWithFollowerQuery(executor.Identity.Player.IdPlayer, vm.IdFollower, vm.IdLocation);
+            var step0 = executor.Execute(query);
 
-            //Doit renvoyer le step 0
+            return step0;
 
             //Renvoyer un 200 via IActionResult ?
         }

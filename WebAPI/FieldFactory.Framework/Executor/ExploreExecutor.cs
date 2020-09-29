@@ -1,4 +1,5 @@
-﻿using FieldFactory.Core.Entities.Verbs;
+﻿using FieldFactory.Core.Entities.Map.Event;
+using FieldFactory.Core.Entities.Verbs;
 using FieldFactory.Core.Verbs;
 using FieldFactory.Framework.Authorizer;
 using FieldFactory.Framework.Query;
@@ -12,7 +13,7 @@ namespace FieldFactory.Framework.Executor
             Identity = identity;
         }
 
-        public void Execute(AddExplorationWithFollowerQuery query)
+        public EventStep Execute(AddExplorationWithFollowerQuery query)
         {
             ExploreInteractor exploreWriter = new ExploreInteractor();
             Explore exploration = new Explore()
@@ -21,7 +22,7 @@ namespace FieldFactory.Framework.Executor
                 IdFollower = query.IdFollower,
                 IdLocation = query.IdLocation
             };
-            exploreWriter.AddNewExploration(exploration);
+            return exploreWriter.AddNewExploration(exploration);
         }
     }
 }

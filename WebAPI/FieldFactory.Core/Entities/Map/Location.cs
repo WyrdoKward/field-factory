@@ -6,6 +6,7 @@ namespace FieldFactory.Core.Entities.Map
 {
     public class Location
     {
+        //Ajouter string IdLocation
         public int Id;
         public string Title;
         public string Description;
