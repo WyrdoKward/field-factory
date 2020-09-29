@@ -35,7 +35,7 @@ namespace FieldFactory.Api.Controllers
         public Player GetSession()
         {
             var identity = GetIdentity();
-            identity.Player.SanitizePlayer();
+            identity.Player.Sanitize();
             return identity.Player;
         }
 
@@ -50,7 +50,7 @@ namespace FieldFactory.Api.Controllers
 
             SetIdentityCookie(player.Token);
 
-            player.SanitizePlayer();
+            player.Sanitize();
             //return "Hello "+executor.Identity.Player.IdPlayer;
             return player;
         }

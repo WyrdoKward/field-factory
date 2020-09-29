@@ -10,5 +10,10 @@ namespace FieldFactory.DataAccess.SQLite
             return $"INSERT INTO Explore (idPlayer, idFollower, idLocation, idEvent, idStep, dateNextStep, stepsHistory) VALUES " +
                 $"('{dto.IdPlayer}', '{dto.IdFollower}', '{dto.IdLocation}', '{dto.IdEvent}', '{dto.IdStep}', '{dto.DateNextStep}', '{dto.StepHistory}')";
         }
+
+        internal static string GetExploreQuery(string idPlayer, string idLocation)
+        {
+            return $"SELECT * FROM Explore Where idPlayer = '{idPlayer}' and idLocation = '{idLocation}'";
+        }
     }
 }

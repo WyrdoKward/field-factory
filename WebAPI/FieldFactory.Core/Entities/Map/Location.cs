@@ -1,6 +1,7 @@
 ﻿using FieldFactory.Core.Enum;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace FieldFactory.Core.Entities.Map
 {
@@ -15,6 +16,7 @@ namespace FieldFactory.Core.Entities.Map
 
         public EVerb[] Verbs { get; set; }
 
+        [JsonIgnore]
         public List<string> RandomEvents { get; set; }
 
         public Location() { }

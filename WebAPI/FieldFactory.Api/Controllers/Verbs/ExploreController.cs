@@ -30,7 +30,7 @@ namespace FieldFactory.Api.Controllers.Verbs
             var query = new AddExplorationWithFollowerQuery(executor.Identity.Player.IdPlayer, vm.IdFollower, vm.IdLocation);
             var step0 = executor.Execute(query);
 
-            return step0;
+            return step0; //déjà renvoyer un array avec juste 1 step ?
 
             //Renvoyer un 200 via IActionResult ?
         }
