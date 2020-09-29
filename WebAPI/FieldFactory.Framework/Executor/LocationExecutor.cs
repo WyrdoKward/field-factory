@@ -57,6 +57,7 @@ namespace FieldFactory.Framework.Executor
                     case EVerb.Explorer:
                         ExploreInteractor exploreInteractor = new ExploreInteractor();
                         var explore = exploreInteractor.GetExplorationForLocation(Identity.Player.IdPlayer, query.LocationId);
+                        json = "'Explore': {" + explore.ToJson() + "},";
                         break;
                     default:
                         break;
@@ -66,11 +67,15 @@ namespace FieldFactory.Framework.Executor
                 currentActions.Add(v, json);
             }
 
-            //On concatène la location avec les actions et on sérialize en json
-            string res = "";
-
-
-
+            //On concatène la location avec les actions et on sérialize en json (utiliser un stringBuilder)
+            string res = "{";
+            res += "'Location': {" + location.ToJson() + "},";
+            
+            foreach(var value in currentActions){
+                res+= value;
+            }
+            
+            res += "}";
             return res;
             
         }
