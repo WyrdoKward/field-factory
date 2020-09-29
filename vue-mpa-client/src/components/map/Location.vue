@@ -41,8 +41,8 @@
           this.location.IdLocation = this.locId;
           console.log('SUCCES');
           console.log(res.data);
-        bus.$emit("selectLocation", this.location);
-        console.log(this.location.id +' : ' +this.location.Title+ '\r\n\r\n'+ this.location.Description + '\r\n\r\nYou can :\r\n' + this.location.Verbs);
+          bus.$emit("selectLocation", this.location);
+          console.log(this.location.id +' : ' +this.location.Title+ '\r\n\r\n'+ this.location.Description + '\r\n\r\nYou can :\r\n' + this.location.Verbs);
       
         }).catch(err => {
           console.log('FAIL');

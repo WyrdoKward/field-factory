@@ -8,7 +8,7 @@
       </div>-->
       <button type="button" @click="explore(loc.IdLocation)" style="margin-bottom: 80px;">Explore</button>
     </div>
-    <LocationEvent v-if="eventActive" :event="this.event" />
+    <LocationEvent v-if="this.eventActive" :event="this.event" />
   </div>
   <div v-else class="selectedLocationContainer empty"></div> 
 </template>
@@ -43,19 +43,17 @@ export default {
   },
   methods:{
     explore(locId){
-        // GET /location/{locId}/event
-        //console.log('Getting a random event for location '+locId );
         this.getEventFirstStep(locId);
-        this.eventActive = true;
       },
-    getEventFirstStep(locId){ //return que le step 1
+    getEventFirstStep(locId){ //return que le step 0
       console.log('getEvent('+locId );
-        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: locId, IdEvent: 'dummyuLocationEvent'});
+        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: locId});
         const options = {headers: {'Content-Type': 'application/json'}};
       axios
       .post('http://localhost:8080/api/Explore', json, options)
       .then(res => {
         this.event = res.data;
+        this.eventActive = true;
         console.log('SUCCES');
         console.log(res.data);
       }).catch(err => {
