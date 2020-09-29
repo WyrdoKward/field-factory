@@ -44,7 +44,7 @@ namespace FieldFactory.Api.Controllers.Map
         {
             var query = new GetLocationWithActions(idLocation);
             var locationWithActions = executor.Execute(query);
-            //locationWithActions.Sanitize();
+            locationWithActions.Sanitize();
 
             return ConvertResponseToJson(locationWithActions);
         }

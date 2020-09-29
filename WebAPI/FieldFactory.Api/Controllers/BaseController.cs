@@ -20,7 +20,7 @@ namespace FieldFactory.Api.Controllers
         /// </summary>
         internal string ConvertResponseToJson<T>(T objectToSerialize)
         {
-            var json = JsonConvert.SerializeObject(objectToSerialize, new Newtonsoft.Json.Converters.StringEnumConverter(),);
+            var json = JsonConvert.SerializeObject(objectToSerialize, new Newtonsoft.Json.Converters.StringEnumConverter());
 
             return json;
         }
