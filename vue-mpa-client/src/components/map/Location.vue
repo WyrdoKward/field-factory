@@ -23,7 +23,7 @@
     data() {
       return {
         actions: [],
-        location : ""
+        locationWithActions : ""
       }
       
     },
@@ -35,14 +35,14 @@
         //Nouveau composant
         console.log('displayLocationInfos')
         axios
-        .get('http://localhost:8080/api/location/'+this.locId+'')
+        .get('http://localhost:8080/api/location/'+this.locId+'/withactions')
         .then(res => {
-          this.location = res.data;
+          this.locationWithActions = res.data;
           this.location.IdLocation = this.locId;
           console.log('SUCCES');
           console.log(res.data);
-          bus.$emit("selectLocation", this.location);
-          console.log(this.location.id +' : ' +this.location.Title+ '\r\n\r\n'+ this.location.Description + '\r\n\r\nYou can :\r\n' + this.location.Verbs);
+          bus.$emit("selectLocation", this.locationWithActions.Location.Title);
+          console.log(this.locationWithActions.Location.Id +' : ' +this.locationWithActions.Location.Title+ '\r\n\r\n'+ this.locationWithActions.Location.Description + '\r\n\r\nYou can :\r\n' + this.locationWithActions.Location.Verbs);
       
         }).catch(err => {
           console.log('FAIL');

@@ -1,12 +1,12 @@
 <template>
   <div v-if="isActive" class="selectedLocationContainer" >
-    <h1>{{this.loc.Title}}</h1>
-    <p>{{this.loc.Description}}<p>
+    <h1>{{this.locationWithActions.Title}}</h1>
+    <p>{{this.locationWithActions.Description}}<p>
     <div v-if="!eventActive" class="actions" >
-      <!--<div v-for="action in loc.Actions" >
+      <!--<div v-for="action in locationWithActions.Actions" >
         <h2>{{action}}</h2>
       </div>-->
-      <button type="button" @click="explore(loc.IdLocation)" style="margin-bottom: 80px;">Explore</button>
+      <button type="button" @click="explore(locationWithActions.IdLocation)" style="margin-bottom: 80px;">Explore</button>
     </div>
     <LocationEvent v-if="this.eventActive" :event="this.event" />
   </div>
@@ -21,7 +21,7 @@ const axios = require('axios');
 export default {
   name: "SelectedLocationContainer",
   props: {
-    loc : Object
+    locationWithActions : Object
   },
   components :{
     LocationEvent : () => import('@/components/map/LocationEvent.vue')
@@ -36,9 +36,13 @@ export default {
   },
   created() {
     bus.$on("selectLocation", data => {
-      console.log('EVENT : Entering selectLocation : data = '+data.Title);
+      console.log('EVENT : Entering selectLocation : data = '+data.Location.Title);
       this.isActive = true;
-      this.loc = data;
+      this.locationWithActions = data;
+      if(data.Explore){        
+        this.eventActive = true;
+        this.event = data.Explore.Steps;
+      }
     });
   },
   methods:{
