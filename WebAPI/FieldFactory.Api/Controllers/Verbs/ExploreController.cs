@@ -25,12 +25,12 @@ namespace FieldFactory.Api.Controllers.Verbs
 
         // POST: api/Explore
         [HttpPost]
-        public EventStep Post([FromBody] AddExplorationWithFollower vm)
+        public string Post([FromBody] AddExplorationWithFollower vm)
         {
             var query = new AddExplorationWithFollowerQuery(executor.Identity.Player.IdPlayer, vm.IdFollower, vm.IdLocation);
             var step0 = executor.Execute(query);
 
-            return step0; //déjà renvoyer un array avec juste 1 step ?
+            return ConvertResponseToJson(step0); //déjà renvoyer un array avec juste 1 step ?
 
             //Renvoyer un 200 via IActionResult ?
         }
