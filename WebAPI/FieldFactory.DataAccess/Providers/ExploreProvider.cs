@@ -12,20 +12,20 @@ namespace FieldFactory.DataAccess.Providers
         public void Add(ExploreDTO exploration)
         {
             //Ajouter unicité sur IdPlayer/idlocation
-            var query = SQLiteExploreStringBuilder.AddExploreQuery(exploration);
+            var query = SQLiteExploreQueryBuilder.AddExploreQuery(exploration);
             ExecuteSingleNonQuery(query);
         }
 
         public ExploreDTO Get(string idPlayer, string idLocation)
         {
-            var query = SQLiteExploreStringBuilder.GetExploreQuery(idPlayer, idLocation);
+            var query = SQLiteExploreQueryBuilder.GetExploreQuery(idPlayer, idLocation);
             var rawExploreDto = ReadColumns(query, NB_COL_IN_TABLE);
             return ConvertIntoDto(rawExploreDto)[0]; //On devrait en recevoir qu'un seul
         }
 
         public void Update(ExploreDTO explore)
         {
-            var query = SQLiteExploreStringBuilder.UpdateExploreQuery(explore);
+            var query = SQLiteExploreQueryBuilder.UpdateExploreQuery(explore);
             ExecuteSingleNonQuery(query);
         }
 

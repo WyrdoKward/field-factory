@@ -9,7 +9,7 @@ namespace FieldFactory.DataAccess.Providers
         private const int NB_COL_IN_TABLE = 2;
         public LocationDTO Get(string idLocation)
         {
-            var query = SQLiteLocationStringBuilder.SelectLocationByIdQuery(idLocation);
+            var query = SQLiteLocationQueryBuilder.SelectLocationByIdQuery(idLocation);
             var location = ConvertIntoDto(ReadColumns(query, NB_COL_IN_TABLE));
             return location[0]; 
         }

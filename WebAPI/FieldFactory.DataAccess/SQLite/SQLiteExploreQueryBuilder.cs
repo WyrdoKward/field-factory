@@ -3,7 +3,7 @@ using System;
 
 namespace FieldFactory.DataAccess.SQLite
 {
-    internal static class SQLiteExploreStringBuilder
+    internal static class SQLiteExploreQueryBuilder
     {
         internal static string AddExploreQuery(ExploreDTO dto)
         {

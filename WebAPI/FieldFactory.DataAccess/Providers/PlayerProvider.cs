@@ -10,28 +10,28 @@ namespace FieldFactory.DataAccess.Providers
         private const int NB_COL_IN_TABLE = 4;
         public PlayerDTO GetById(string idPlayer)
         {
-            var query = SQLitePlayerStringBuilder.SelectPlayerByIdQuery(idPlayer);
+            var query = SQLitePlayerQueryBuilder.SelectPlayerByIdQuery(idPlayer);
             var player = ConvertIntoDto(ReadColumns(query, NB_COL_IN_TABLE));
             return player[0]; 
         }
 
         public PlayerDTO GetByToken(string token)
         {
-            var query = SQLitePlayerStringBuilder.SelectPlayerByTokenQuery(token);
+            var query = SQLitePlayerQueryBuilder.SelectPlayerByTokenQuery(token);
             var player = ConvertIntoDto(ReadColumns(query, NB_COL_IN_TABLE));
             return player[0];
         }
 
         public PlayerDTO GetWithPassword(string idPlayer, string hashPwd)
         {
-            var query = SQLitePlayerStringBuilder.SelectPlayerWithPwdQuery(idPlayer, hashPwd);
+            var query = SQLitePlayerQueryBuilder.SelectPlayerWithPwdQuery(idPlayer, hashPwd);
             var player = ConvertIntoDto(ReadColumns(query, NB_COL_IN_TABLE));
             return player[0];
         }
 
         public void SetToken(string idPlayer, string token)
         {
-            var query = SQLitePlayerStringBuilder.SetTokenQuery(idPlayer, token);
+            var query = SQLitePlayerQueryBuilder.SetTokenQuery(idPlayer, token);
             ExecuteSingleNonQuery(query);
         }
 

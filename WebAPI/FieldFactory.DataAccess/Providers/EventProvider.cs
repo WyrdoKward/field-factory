@@ -7,7 +7,7 @@ namespace FieldFactory.DataAccess.Providers
     {
         public EventDTO Get(string idEvent)
         {
-            var query = SQLiteEventStringBuilder.SelectEventByIdQuery(idEvent);
+            var query = SQLiteEventQueryBuilder.SelectEventByIdQuery(idEvent);
             var evt = ReadScalar(query);
             return new EventDTO(idEvent, evt.ToString());
         }
