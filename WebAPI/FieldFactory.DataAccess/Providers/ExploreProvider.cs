@@ -23,6 +23,11 @@ namespace FieldFactory.DataAccess.Providers
             return ConvertIntoDto(rawExploreDto)[0]; //On devrait en recevoir qu'un seul
         }
 
+        public void Update(ExploreDTO explore)
+        {
+            var query = SQLiteExploreStringBuilder.UpdateExploreQuery(explore);
+            ExecuteSingleNonQuery(query);
+        }
 
         private List<ExploreDTO> ConvertIntoDto(Dictionary<int, List<string>> rawLocations)
         {
@@ -35,5 +40,6 @@ namespace FieldFactory.DataAccess.Providers
 
             return res;
         }
+
     }
 }

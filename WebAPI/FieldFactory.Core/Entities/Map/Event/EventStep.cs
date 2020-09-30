@@ -13,5 +13,6 @@ namespace FieldFactory.Core.Entities.Map.Event
         public List<Outcome> Outcomes;
 
         //Duration ?
+        public int DurationInMin = 5;
     }
 }

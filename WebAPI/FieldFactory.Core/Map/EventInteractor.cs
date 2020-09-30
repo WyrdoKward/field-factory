@@ -15,12 +15,13 @@ namespace FieldFactory.Core.Map
         {
             var locationDto = locationProvider.Get(idLocation);
             var location = JsonConvert.DeserializeObject<Location>(locationDto.Json);
-            var randomEvent = location.GetARandomEvent();
+            var randomEventId = location.GetARandomEvent();
 
-            var eventDTO = eventProvider.Get(randomEvent);
+            var eventDTO = eventProvider.Get(randomEventId);
             var evt = JsonConvert.DeserializeObject<Event>(eventDTO.Json);
 
-            return new Tuple<string, Event>(randomEvent, evt);
+            return new Tuple<string, Event>(randomEventId, evt);
         }
+
     }
 }

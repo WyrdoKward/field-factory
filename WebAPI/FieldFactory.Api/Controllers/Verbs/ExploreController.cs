@@ -34,5 +34,16 @@ namespace FieldFactory.Api.Controllers.Verbs
 
             //Renvoyer un 200 via IActionResult ?
         }
+
+        // PUT: api/Explore/
+        // {"IdLocation": "dummyLocation", "NextStepId": 2}
+        [HttpPut]
+        public string Put([FromBody] ProcessChoiceOnLocation vm)
+        {
+            var query = new ProcessChoiceOnLocationQuey(executor.Identity.Player.IdPlayer, vm.IdLocation, vm.NextStepId);
+            var explore = executor.Execute(query);
+
+            return ConvertResponseToJson(explore);
+        }
     }
 }

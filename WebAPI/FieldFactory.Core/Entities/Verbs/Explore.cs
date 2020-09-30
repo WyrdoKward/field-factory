@@ -43,5 +43,13 @@ namespace FieldFactory.Core.Entities.Verbs
             var steps = JsonConvert.SerializeObject(Steps);
             return new ExploreDTO(IdPlayer, IdFollower, IdLocation, IdEvent, IdStep, DateNextStep, steps);
         }
+
+        /// <summary>
+        /// Returns true if DateNextStep is over, meaning that the step is complete
+        /// </summary>
+        public bool IsFinished()
+        {
+            return DateTime.Compare(DateNextStep, DateTime.Now) < 0;
+        }
     }
 }
