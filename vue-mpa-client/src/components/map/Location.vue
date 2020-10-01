@@ -38,10 +38,10 @@
         .get('http://localhost:8080/api/location/'+this.locId+'/withactions')
         .then(res => {
           this.locationWithActions = res.data;
-          this.location.IdLocation = this.locId;
+          this.locationWithActions.IdLocation = this.locId;
           console.log('SUCCES');
           console.log(res.data);
-          bus.$emit("selectLocation", this.locationWithActions.Location.Title);
+          bus.$emit("selectLocation", this.locationWithActions);
           console.log(this.locationWithActions.Location.Id +' : ' +this.locationWithActions.Location.Title+ '\r\n\r\n'+ this.locationWithActions.Location.Description + '\r\n\r\nYou can :\r\n' + this.locationWithActions.Location.Verbs);
       
         }).catch(err => {
