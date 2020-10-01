@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FieldFactory.Framework", "F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FieldFactory.Core", "FieldFactory.Core\FieldFactory.Core.csproj", "{51B93646-7229-4A01-8286-1358EC7A4954}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldFactory.DataAccess", "FieldFactory.DataAccess\FieldFactory.DataAccess.csproj", "{77FB4F42-7011-495F-BF76-D1862217B342}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FieldFactory.DataAccess", "FieldFactory.DataAccess\FieldFactory.DataAccess.csproj", "{77FB4F42-7011-495F-BF76-D1862217B342}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldFactory.Tests", "FieldFactory.Tests\FieldFactory.Tests.csproj", "{7260DC02-1254-46C6-9C6B-D097C355C375}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{77FB4F42-7011-495F-BF76-D1862217B342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77FB4F42-7011-495F-BF76-D1862217B342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77FB4F42-7011-495F-BF76-D1862217B342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7260DC02-1254-46C6-9C6B-D097C355C375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7260DC02-1254-46C6-9C6B-D097C355C375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7260DC02-1254-46C6-9C6B-D097C355C375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7260DC02-1254-46C6-9C6B-D097C355C375}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
