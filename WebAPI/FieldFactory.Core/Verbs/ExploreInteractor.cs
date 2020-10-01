@@ -66,7 +66,8 @@ namespace FieldFactory.Core.Verbs
 
             // On extrait le step suivant à partir du choix du player
             var userChoice = currentStep.Choices.Where(c => c.Id == idChoice).FirstOrDefault();
-            var nextStep = evt.Steps.Where(s => s.Id == userChoice.ChooseRandomNextStep()).FirstOrDefault(); // TODO bug ici il boucle sur le random avec le linq !
+            int randomeOutcome = userChoice.ChooseRandomNextStep();
+            var nextStep = evt.Steps.Where(s => s.Id == randomeOutcome).FirstOrDefault(); 
             
             //On met à jour l'explo en BDD avec le nouveau Step et timer
             exploration.IdFollower = oldExplore.IdFollower;
