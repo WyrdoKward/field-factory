@@ -63,6 +63,7 @@ namespace FieldFactory.Core.Verbs
             //On met à jour l'explo en BDD avec le nouveau Step et timer
             exploration.IdFollower = oldExplore.IdFollower;
             exploration.IdEvent = oldExplore.IdEvent;
+            exploration.IdStep = nextStep.Id;
             exploration.DateNextStep = DateTime.Now.AddMinutes(nextStep.DurationInMin);
             exploration.Event.Steps = oldExplore.Event.Steps;
             exploration.Event.Steps.Add(nextStep);
