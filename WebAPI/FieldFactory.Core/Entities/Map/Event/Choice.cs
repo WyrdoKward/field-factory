@@ -38,5 +38,14 @@ namespace FieldFactory.Core.Entities.Map.Event
             return nextStepIdsWeightedArray[indexInArray];
 
         }
+
+
+        /// <summary>
+        /// Vide les éléments qu'on ne veut pas montrer à l'utilisateur
+        /// </summary>
+        internal void Sanitize()
+        {
+            Outcomes = null;
+        }
     }
 }

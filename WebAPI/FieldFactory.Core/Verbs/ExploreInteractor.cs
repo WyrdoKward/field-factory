@@ -22,8 +22,11 @@ namespace FieldFactory.Core.Verbs
             var tuple = eventInteractor.GetRandomEventForLocation(exploration.IdLocation);
 
             exploration.IdEvent = tuple.Item1;
-            exploration.Event.Steps.Add(tuple.Item2.Steps[0]);                
-            exploration.DateNextStep = DateTime.Now.AddMinutes(tuple.Item2.Steps[0].DurationInMin);
+
+            var nextStep = tuple.Item2.Steps[0];
+            nextStep.Sanitize();
+            exploration.Event.Steps.Add(nextStep);                
+            exploration.DateNextStep = DateTime.Now.AddMinutes(nextStep.DurationInMin);
 
             exploreProvider.Add(exploration.ConvertToDTO());
 
@@ -41,24 +44,29 @@ namespace FieldFactory.Core.Verbs
             return explore;
         }
 
-        public Explore ProcessChoice(int idCHoice, Explore exploration)
+        public Explore ProcessChoice(int idChoice, Explore exploration)
         {
             // On récupère l'explo du joueur sur cette location
             var oldExplore = GetExplorationForLocation(exploration.IdPlayer, exploration.IdLocation);
-            var currentStep = oldExplore.GetCurrentStep();
+            //var currentStep = oldExplore.GetCurrentStep();
 
-            if(!oldExplore.IsFinished())
+            if (!oldExplore.IsFinished())
                 throw new Exception("Le step n'est pas encore terminé");
             
-            //On vérifie que le choix envoyé existe dans le step courrant
-            if (!currentStep.IsChoiceInputValid(idCHoice))
-                throw new Exception("Step pas valide");
 
-            // On récupère l'event et on extrait le step suivant à partir du choix du player
+            // On récupère l'event pour pouvoir piocher le step courant complet ainsi que le step suivant
             var eventDTO = eventProvider.Get(oldExplore.IdEvent);
             var evt = JsonConvert.DeserializeObject<Event>(eventDTO.Json);
-            var userChoice = currentStep.Choices.Where(c => c.Id == idCHoice).FirstOrDefault();
-            var nextStep = evt.Steps.Where(s => s.Id == userChoice.ChooseRandomNextStep()).FirstOrDefault();
+
+            var currentStep = evt.Steps.Where(s => s.Id == oldExplore.IdStep).FirstOrDefault();
+
+            //On vérifie que le choix envoyé existe dans le step courrant
+            if (!currentStep.IsChoiceInputValid(idChoice))
+                throw new Exception("Step pas valide");
+
+            // On extrait le step suivant à partir du choix du player
+            var userChoice = currentStep.Choices.Where(c => c.Id == idChoice).FirstOrDefault();
+            var nextStep = evt.Steps.Where(s => s.Id == userChoice.ChooseRandomNextStep()).FirstOrDefault(); // TODO bug ici il boucle sur le random avec le linq !
             
             //On met à jour l'explo en BDD avec le nouveau Step et timer
             exploration.IdFollower = oldExplore.IdFollower;
@@ -66,7 +74,15 @@ namespace FieldFactory.Core.Verbs
             exploration.IdStep = nextStep.Id;
             exploration.DateNextStep = DateTime.Now.AddMinutes(nextStep.DurationInMin);
             exploration.Event.Steps = oldExplore.Event.Steps;
+
+            // TODO Sanitize aussi le current step pour enlever les choices pas faits ( != idChoice)?
+            nextStep.Sanitize();
             exploration.Event.Steps.Add(nextStep);
+
+            if(nextStep.Choices == null)
+            {
+                //Fin de quete => Delete Explore au lieu d'update ?
+            }
 
             exploreProvider.Update(exploration.ConvertToDTO());
 
