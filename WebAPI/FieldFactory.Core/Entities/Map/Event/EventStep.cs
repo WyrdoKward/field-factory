@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FieldFactory.Core.Entities.Map.Event
@@ -10,9 +11,19 @@ namespace FieldFactory.Core.Entities.Map.Event
         public string Text;
 
         public List<Choice> Choices;
-        public List<Outcome> Outcomes;
 
         //Duration ?
         public int DurationInMin = 5;
+
+        /// <summary>
+        /// Vérifie l'existence d'un id de Choice pour ce step
+        /// </summary>
+        /// <param name="choiceInput"></param>
+        /// <returns></returns>
+        public bool IsChoiceInputValid(int choiceInput)
+        {
+            int[] possibleChoices = Choices.Select(c => c.Id).ToArray();
+            return possibleChoices.Contains(choiceInput);
+        }
     }
 }

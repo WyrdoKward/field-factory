@@ -6,9 +6,8 @@ namespace FieldFactory.Core.Entities.Map.Event
 {
     public class Outcome
     {
-        public int Id;
-        public string Text;
+        public int Weight; // TODO si null => 1
+        public int NextStepId; // si null => fin de quete
 
-        public int NextStepId;
     }
 }

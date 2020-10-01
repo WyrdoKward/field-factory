@@ -8,13 +8,13 @@ namespace FieldFactory.Framework.Query
     {
         public string IdPlayer { get; set; }
         public string IdLocation { get; set; }
-        public int NextStepId { get; set; }
+        public int IdChoice { get; set; }
 
-        public ProcessChoiceOnLocationQuey(string idPlayer, string idLocation, int nextStepId)
+        public ProcessChoiceOnLocationQuey(string idPlayer, string idLocation, int idChoice)
         {
             IdPlayer = idPlayer;
             IdLocation = idLocation;
-            NextStepId = nextStepId;
+            IdChoice = idChoice;
         }
     }
 }

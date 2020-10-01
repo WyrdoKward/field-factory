@@ -20,6 +20,9 @@ namespace FieldFactory.DataAccess.Providers
         {
             var query = SQLiteExploreQueryBuilder.GetExploreQuery(idPlayer, idLocation);
             var rawExploreDto = ReadColumns(query, NB_COL_IN_TABLE);
+            if (rawExploreDto.Count == 0)
+                throw new Exception("Ce joueur n'a pas d'explo à cet endroit");
+
             return ConvertIntoDto(rawExploreDto)[0]; //On devrait en recevoir qu'un seul
         }
 

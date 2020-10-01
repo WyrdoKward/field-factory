@@ -40,7 +40,7 @@ namespace FieldFactory.Api.Controllers.Verbs
         [HttpPut]
         public string Put([FromBody] ProcessChoiceOnLocation vm)
         {
-            var query = new ProcessChoiceOnLocationQuey(executor.Identity.Player.IdPlayer, vm.IdLocation, vm.NextStepId);
+            var query = new ProcessChoiceOnLocationQuey(executor.Identity.Player.IdPlayer, vm.IdLocation, vm.IdChoice);
             var explore = executor.Execute(query);
 
             return ConvertResponseToJson(explore);

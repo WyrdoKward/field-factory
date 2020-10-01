@@ -32,11 +32,10 @@ namespace FieldFactory.Framework.Executor
             Explore exploration = new Explore()
             {
                 IdPlayer = query.IdPlayer,
-                IdLocation = query.IdLocation,
-                IdStep = query.NextStepId,
+                IdLocation = query.IdLocation
             };
 
-            return exploreInteractor.ProcessChoice(exploration);            
+            return exploreInteractor.ProcessChoice(query.IdChoice, exploration);            
         }
     }
 }

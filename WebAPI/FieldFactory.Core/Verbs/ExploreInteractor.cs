@@ -41,24 +41,25 @@ namespace FieldFactory.Core.Verbs
             return explore;
         }
 
-        public Explore ProcessChoice(Explore exploration)
+        public Explore ProcessChoice(int idCHoice, Explore exploration)
         {
             // On récupère l'explo du joueur sur cette location
             var oldExplore = GetExplorationForLocation(exploration.IdPlayer, exploration.IdLocation);
+            var currentStep = oldExplore.GetCurrentStep();
 
             if(!oldExplore.IsFinished())
                 throw new Exception("Le step n'est pas encore terminé");
-
-
-            // On récupère l'event et on extrait le step choisi par le player
-            var eventDTO = eventProvider.Get(oldExplore.IdEvent);
-            var evt = JsonConvert.DeserializeObject<Event>(eventDTO.Json);
-            var nextStep = evt.Steps.Where(s => s.Id == exploration.IdStep).FirstOrDefault();
-
-            //On vérifie que le nexStep envoyé est bien un step possible
-            if (!evt.IsNextStepInputValid(oldExplore.IdStep, exploration.IdStep))
+            
+            //On vérifie que le choix envoyé existe dans le step courrant
+            if (!currentStep.IsChoiceInputValid(idCHoice))
                 throw new Exception("Step pas valide");
 
+            // On récupère l'event et on extrait le step suivant à partir du choix du player
+            var eventDTO = eventProvider.Get(oldExplore.IdEvent);
+            var evt = JsonConvert.DeserializeObject<Event>(eventDTO.Json);
+            var userChoice = currentStep.Choices.Where(c => c.Id == idCHoice).FirstOrDefault();
+            var nextStep = evt.Steps.Where(s => s.Id == userChoice.ChooseRandomNextStep()).FirstOrDefault();
+            
             //On met à jour l'explo en BDD avec le nouveau Step et timer
             exploration.IdFollower = oldExplore.IdFollower;
             exploration.IdEvent = oldExplore.IdEvent;

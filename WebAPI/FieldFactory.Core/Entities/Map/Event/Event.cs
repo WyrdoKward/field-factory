@@ -12,10 +12,10 @@ namespace FieldFactory.Core.Entities.Map.Event
 
         public List<EventStep> Steps;
 
-        public bool IsNextStepInputValid(int currentStep, int nextStepInput)
+        public Event()
         {
-            List<int> possibleNextSteps = Steps.Where(s => s.Id == currentStep).FirstOrDefault().Choices.Select(c => c.NextStepId).ToList();
-            return possibleNextSteps.Contains(nextStepInput);
+            Steps = new List<EventStep>();
         }
+
     }
 }

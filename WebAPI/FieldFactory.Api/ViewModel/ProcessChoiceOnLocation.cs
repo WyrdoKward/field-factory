@@ -3,6 +3,6 @@
     public class ProcessChoiceOnLocation
     {
         public string IdLocation { get; set; }
-        public int NextStepId { get; set; }
+        public int IdChoice { get; set; }
     }
 }

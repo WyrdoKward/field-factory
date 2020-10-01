@@ -3,6 +3,7 @@ using FieldFactory.DataAccess.DTO;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FieldFactory.Core.Entities.Verbs
 {
@@ -24,6 +25,7 @@ namespace FieldFactory.Core.Entities.Verbs
         public Explore()
         {
             IdStep = 0;
+            Event = new Event();
         }
 
         public Explore(ExploreDTO dto)
@@ -50,6 +52,11 @@ namespace FieldFactory.Core.Entities.Verbs
         public bool IsFinished()
         {
             return DateTime.Compare(DateNextStep, DateTime.Now) < 0;
+        }
+
+        public EventStep GetCurrentStep()
+        {
+            return Event.Steps.Last();
         }
     }
 }
