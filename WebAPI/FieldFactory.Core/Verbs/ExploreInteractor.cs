@@ -22,18 +22,21 @@ namespace FieldFactory.Core.Verbs
             var tuple = eventInteractor.GetRandomEventForLocation(exploration.IdLocation);
 
             exploration.IdEvent = tuple.Item1;
-            exploration.Steps.Add(tuple.Item2.Steps[0]);                
+            exploration.Event.Steps.Add(tuple.Item2.Steps[0]);                
             exploration.DateNextStep = DateTime.Now.AddMinutes(tuple.Item2.Steps[0].DurationInMin);
 
             exploreProvider.Add(exploration.ConvertToDTO());
 
-            return exploration.Steps[0];
+            return exploration.Event.Steps[0];
         }
 
         public Explore GetExplorationForLocation(string idPlayer, string idLocation)
         {
             var exploreDto = exploreProvider.Get(idPlayer, idLocation);
             var explore = new Explore(exploreDto);
+            var eventDto = eventProvider.Get(exploreDto.IdEvent);
+            var evt = JsonConvert.DeserializeObject<Event>(eventDto.Json);
+            explore.Event.Title = evt.Title; //On envoie que le title de l'objet Event car on ne veut pas donner tous les stpes au user, il se content de son history issu du ExploreDto.StepsHistory
 
             return explore;
         }
@@ -60,8 +63,8 @@ namespace FieldFactory.Core.Verbs
             exploration.IdFollower = oldExplore.IdFollower;
             exploration.IdEvent = oldExplore.IdEvent;
             exploration.DateNextStep = DateTime.Now.AddMinutes(nextStep.DurationInMin);
-            exploration.Steps = oldExplore.Steps;
-            exploration.Steps.Add(nextStep);
+            exploration.Event.Steps = oldExplore.Event.Steps;
+            exploration.Event.Steps.Add(nextStep);
 
             exploreProvider.Update(exploration.ConvertToDTO());
 

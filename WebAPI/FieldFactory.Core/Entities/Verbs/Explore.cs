@@ -18,12 +18,11 @@ namespace FieldFactory.Core.Entities.Verbs
         /// </summary>
         public int IdStep { get; set; }
         public DateTime DateNextStep { get; set; }
-
-        public List<EventStep> Steps { get; set; }
+        
+        public Event Event { get; set; }
 
         public Explore()
         {
-            Steps = new List<EventStep>();
             IdStep = 0;
         }
 
@@ -35,12 +34,13 @@ namespace FieldFactory.Core.Entities.Verbs
             IdEvent = dto.IdEvent;
             IdStep = dto.IdStep;
             DateNextStep = dto.DateNextStep;
-            Steps = JsonConvert.DeserializeObject<List<EventStep>>(dto.StepHistory);
+            Event = new Event();
+            Event.Steps = JsonConvert.DeserializeObject<List<EventStep>>(dto.StepHistory);
         }
 
         public ExploreDTO ConvertToDTO()
         {
-            var steps = JsonConvert.SerializeObject(Steps);
+            var steps = JsonConvert.SerializeObject(Event.Steps);
             return new ExploreDTO(IdPlayer, IdFollower, IdLocation, IdEvent, IdStep, DateNextStep, steps);
         }
 
