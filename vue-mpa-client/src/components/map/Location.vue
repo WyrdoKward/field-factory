@@ -27,7 +27,7 @@
     },
     methods: {
       showLocationDialog() {
-        //Vérif coté serveur pour savoir quelles actions en cours
+        //Vérif coté serveur pour savoir quelles actions en cours pour conditionner l'affichage du bouton
         this.actions = this.getLocationActions(this.loc.Id);
         console.log(this.loc.id +' : ' +this.loc.Title+ '\r\n\r\n'+ this.loc.Description + '\r\n\r\nYou can :\r\n' + this.actions);
         this.displayActionsWindow();
@@ -45,6 +45,7 @@
         console.log('displayActionsWindow')
         
         bus.$emit("selectLocation", this.loc);
+        console.log('EVENT : selectLocation : this.loc = '+this.loc)
       }
     }
   }

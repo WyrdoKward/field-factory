@@ -2,6 +2,7 @@
   <div id="app">
     <h1>World Page</h1>
     <div>
+      <DebugLoginButtons/>
       <TilesContainer/>
       <SelectedLocationContainer />
     </div>
@@ -28,7 +29,8 @@ export default {
   name: 'World',
   components: {
     TilesContainer: () => import('@/components/map/TilesContainer.vue'),
-    SelectedLocationContainer: () => import('@/components/map/SelectedLocationContainer.vue')
+    SelectedLocationContainer: () => import('@/components/map/SelectedLocationContainer.vue'),
+    DebugLoginButtons: () => import('@/components/auth/DebugLoginButtons.vue')
   }
 }
 

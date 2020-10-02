@@ -1,7 +1,7 @@
 <template>
   <div v-if="isActive" class="selectedLocationContainer" >
-    <h1>{{loc.Title}}</h1>
-    <p>{{loc.Description}}<p>
+    <h1>{{this.loc.Title}}</h1>
+    <p>{{this.loc.Description}}<p>
     <div v-if="!eventActive" class="actions" >
       <!--<div v-for="action in loc.Actions" >
         <h2>{{action}}</h2>
@@ -21,13 +21,14 @@ const axios = require('axios');
 export default {
   name: "SelectedLocationContainer",
   props: {
-    loc : Object,
+    loc : Object
   },
   components :{
     LocationEvent : () => import('@/components/map/LocationEvent.vue')
   },
   data() {
     return {
+      //loc : null,
       isActive: false,
       eventActive : false,
       event : null
@@ -35,6 +36,7 @@ export default {
   },
   created() {
     bus.$on("selectLocation", data => {
+      console.log('EVENT : Entering selectLocation : data = '+data.Title);
       this.isActive = true;
       this.loc = data;
     });
