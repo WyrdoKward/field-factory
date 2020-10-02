@@ -35,7 +35,7 @@ namespace FieldFactory.Framework.Executor
                 IdLocation = query.IdLocation
             };
 
-            return exploreInteractor.ProcessChoice(query.IdChoice, exploration);            
+            return exploreInteractor.ProcessEventChoice(query.IdChoice, exploration);            
         }
     }
 }

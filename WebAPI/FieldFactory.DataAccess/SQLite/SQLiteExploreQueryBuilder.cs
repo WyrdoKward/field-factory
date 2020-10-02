@@ -20,5 +20,11 @@ namespace FieldFactory.DataAccess.SQLite
         {
             return $"UPDATE Explore SET idStep = {dto.IdStep}, dateNextStep = '{dto.DateNextStep}', stepsHistory = '{dto.StepHistory}' WHERE idPlayer = '{dto.IdPlayer}' and idLocation = '{dto.IdLocation}'";
         }
+
+
+        internal static string DeleteExploreQuery(string idPlayer, string idLocation)
+        {
+            return $"DELETE FROM Explore Where idPlayer = '{idPlayer}' and idLocation = '{idLocation}'";
+        }
     }
 }

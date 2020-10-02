@@ -32,6 +32,12 @@ namespace FieldFactory.DataAccess.Providers
             ExecuteSingleNonQuery(query);
         }
 
+        public void Delete(string idPlayer, string idLocation)
+        {
+            var query = SQLiteExploreQueryBuilder.DeleteExploreQuery(idPlayer, idLocation);
+            ExecuteSingleNonQuery(query);
+        }
+
         private List<ExploreDTO> ConvertIntoDto(Dictionary<int, List<string>> rawLocations)
         {
             var res = new List<ExploreDTO>();

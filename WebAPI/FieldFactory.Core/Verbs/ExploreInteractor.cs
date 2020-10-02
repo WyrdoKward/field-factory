@@ -44,15 +44,14 @@ namespace FieldFactory.Core.Verbs
             return explore;
         }
 
-        public Explore ProcessChoice(int idChoice, Explore exploration)
+        public Explore ProcessEventChoice(int idChoice, Explore exploration)
         {
             // On récupère l'explo du joueur sur cette location
             var oldExplore = GetExplorationForLocation(exploration.IdPlayer, exploration.IdLocation);
             //var currentStep = oldExplore.GetCurrentStep();
 
             if (!oldExplore.IsFinished())
-                throw new Exception("Le step n'est pas encore terminé");
-            
+                throw new Exception("Le step n'est pas encore terminé");            
 
             // On récupère l'event pour pouvoir piocher le step courant complet ainsi que le step suivant
             var eventDTO = eventProvider.Get(oldExplore.IdEvent);
@@ -76,16 +75,14 @@ namespace FieldFactory.Core.Verbs
             exploration.DateNextStep = DateTime.Now.AddMinutes(nextStep.DurationInMin);
             exploration.Event.Steps = oldExplore.Event.Steps;
 
-            // TODO Sanitize aussi le current step pour enlever les choices pas faits ( != idChoice)?
+            // TODO Sanitize aussi le current step pour enlever les choices pas faits ( != idChoice)? ou trouver un moyen de savoir quel choix a été fait par le user ?
             nextStep.Sanitize();
             exploration.Event.Steps.Add(nextStep);
 
-            if(nextStep.Choices == null)
-            {
-                //Fin de quete => Delete Explore au lieu d'update ?
-            }
-
-            exploreProvider.Update(exploration.ConvertToDTO());
+            if(nextStep.Choices == null)                
+                exploreProvider.Delete(exploration.IdPlayer, exploration.IdLocation); //Fin de quete => Delete Explore au lieu d'update // Logguer l'expédition passée qqpart ?
+            else
+                exploreProvider.Update(exploration.ConvertToDTO());
 
             return exploration;
 

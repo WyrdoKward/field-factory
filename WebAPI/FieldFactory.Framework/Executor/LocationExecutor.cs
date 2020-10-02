@@ -54,7 +54,14 @@ namespace FieldFactory.Framework.Executor
                 {
                     case EVerb.Explorer:
                         ExploreInteractor exploreInteractor = new ExploreInteractor();
-                        locationWithActions.Explore = exploreInteractor.GetExplorationForLocation(Identity.Player.IdPlayer, query.LocationId);
+                        try
+                        {
+                            locationWithActions.Explore = exploreInteractor.GetExplorationForLocation(Identity.Player.IdPlayer, query.LocationId);
+                        }
+                        catch (Exception)
+                        {
+                            locationWithActions.Explore = null;
+                        }
                         break;
                     default:
                         break;
