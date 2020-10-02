@@ -1,0 +1,1 @@
+condition d'event/location : système d'interrupteur avec un id en string et vzleur bool, stockés dans un table pour savoir si le joueur l'a débloqué ou pas

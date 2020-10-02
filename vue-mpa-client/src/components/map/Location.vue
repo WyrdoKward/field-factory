@@ -1,8 +1,8 @@
 <template> 
-    <Town v-if="loc.LocationType=='townCenter'" :loc="loc" />   
+    <Town v-if="locId=='townCenter'" :loc="locId" />   
     <canvas v-else class="location"
-      :style="{ backgroundImage: 'url(assets/map/locations/' + loc.LocationType + '.png)' }"
-        @click="showLocationDialog()"
+      :style="{ backgroundImage: 'url(assets/map/locations/' + locId + '.png)' }"
+        @click="displayLocationInfos()"
         @mousehover="hoverEffect()">
     </canvas>
 </template>
@@ -10,6 +10,7 @@
 <script>
 
   import { bus } from "@/pages/World/main";
+  const axios = require('axios');
 
   export default {
     name: 'Location',
@@ -17,36 +18,36 @@
       Town: () => import('@/components/map/Town.vue')
     },
     props: {
-      loc : Object
+      locId : String
     },
     data() {
       return {
-        actions: []
+        actions: [],
+        locationWithActions : ""
       }
       
     },
     methods: {
-      showLocationDialog() {
-        //Vérif coté serveur pour savoir quelles actions en cours pour conditionner l'affichage du bouton
-        this.actions = this.getLocationActions(this.loc.Id);
-        console.log(this.loc.id +' : ' +this.loc.Title+ '\r\n\r\n'+ this.loc.Description + '\r\n\r\nYou can :\r\n' + this.actions);
-        this.displayActionsWindow();
-      },
       hoverEffect(){
 
       },
-      getLocationActions(locId){
-        // GET /location/getAction/{locId}
-        //console.log('Getting actions for location '+locId );
-        return this.loc.Verbs;
-      },
-      displayActionsWindow(){
+      displayLocationInfos(){
         //Nouveau composant
-        console.log('displayActionsWindow')
-        
-        bus.$emit("selectLocation", this.loc);
-        console.log('EVENT : selectLocation : this.loc = '+this.loc)
-      }
+        console.log('displayLocationInfos')
+        axios
+        .get('http://localhost:8080/api/location/'+this.locId+'/withactions')
+        .then(res => {
+          this.locationWithActions = res.data;
+          this.locationWithActions.IdLocation = this.locId;
+          console.log('SUCCES');
+          console.log(res.data);
+          bus.$emit("selectLocation", this.locationWithActions);
+          console.log(this.locationWithActions.Location.Id +' : ' +this.locationWithActions.Location.Title+ '\r\n\r\n'+ this.locationWithActions.Location.Description + '\r\n\r\nYou can :\r\n' + this.locationWithActions.Location.Verbs);
+      
+        }).catch(err => {
+          console.log('FAIL');
+          console.log(err.response);
+        });}
     }
   }
 </script>

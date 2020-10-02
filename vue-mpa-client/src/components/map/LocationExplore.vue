@@ -1,20 +1,23 @@
 <template>
     <div class="locationEvent" >
-        <h2>{{event.Text}}</h2>
-        <ul v-if="event.Choices" class="choices">
-            <li v-for="choice in event.Choices" :key="choice.id">
-                <span @click="processChoice(choice.nextStepId)">{{choice.Text}} (nextStep: {{choice.NextStepId}}</span>
-            </li>
-        </ul>
-        <div v-else-if="event.Outcome" class="outcome">
-            <p >{{event.Outcome.text}}</p>
-            <p v-if="event.Outcome.NextStepId" @click="processOutcome(event.Outcome.NextStepId)">Continuer...</p>
-            <p v-else>QUETE TERMINEE</p>
-            <!--<li v-for="outcome in event.outcomes" :key="outcome.id">
-                <span @click="processOutcome()">{{outcome.text}}</span>
-            </li>-->
+        <h2>{{explore.Event.Title}}</h2>
+        <div v-for="step in explore.Event.Steps" :key="step.Id" class="eventStep" >
+          <h3>{{step.Text}}</h3>
+          <ul v-if="step.Choices" class="choices">
+              <li v-for="choice in explore.Choices" :key="choice.Id">
+                  <span @click="processChoice(choice.NextStepId)">{{choice.Text}} (nextStep: {{choice.NextStepId}}</span>
+              </li>
+          </ul>
+          <div v-else-if="step.Outcome" class="outcome">
+              <p >{{step.Outcome.text}}</p>
+              <p v-if="explore.Outcome.NextStepId" @click="processOutcome(explore.Outcome.NextStepId)">Continuer...</p>
+              <p v-else>QUETE TERMINEE</p>
+              <!--<li v-for="outcome in explore.outcomes" :key="outcome.id">
+                  <span @click="processOutcome()">{{outcome.text}}</span>
+              </li>-->
+          </div>
+          <p v-else>Problème: ni outcome ni choices</p>
         </div>
-        <p v-else>Problème: ni outcome ni choices</p>
          <button type="button" @click="resetQuest()" style="margin-bottom: 80px;">DEBUG : RESET QUEST</button> 
     </div>
 </template>
@@ -37,7 +40,7 @@ steps[4] = step4;
   export default {
     name: 'LocationEvent',
     props: {
-      event : Object
+      explore : Object
     },
     data() {
       return {
@@ -50,9 +53,9 @@ steps[4] = step4;
         //on selectionne un seul outcome random coté serveur
         // Vérification du timer coté server
         this.event = steps[nextStepId];
-        var rnd = this.getRandom(Object.keys(this.event.outcomes).length);
+        var rnd = this.getRandom(Object.keys(this.explore.outcomes).length);
         console.log('Outcome generated : '+rnd);
-        this.event.outcome = this.event.outcomes[rnd];
+        this.explore.outcome = this.explore.outcomes[rnd];
 
         console.log(this.event);
 

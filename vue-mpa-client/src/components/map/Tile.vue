@@ -4,7 +4,7 @@
 
       <div class="tile" v-if="isActive" 
       :style="{ backgroundImage: 'url(assets/map/tiles/' + hex.LandType + '.png)' }">
-        <Location v-if="hex.IdLocation" :loc="hex.IdLocation"/>
+        <Location v-if="hex.IdLocation" :locId="hex.IdLocation"/>
       </div>
       <div class="mask" v-else>
       </div>
