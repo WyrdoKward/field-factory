@@ -1,9 +1,0 @@
-{
-	"IdPlayer":"wyrdokward",
-	"IdFollower":"Gustav",
-	"IdLocation":"dummyLocation",
-	"IdEvent":"dummyLocationEvent",
-}
-
-POST /Auth/login
-{"IdPlayer":"wyrdokward","Mdp":"123456"}

@@ -1,0 +1,13 @@
+{
+    "Id": 1,
+    "Title": "Dummy Location",
+    "Description": "This is a place where things can happen.",
+    "LocationType": "mine",
+    "Verbs": [
+        "Explorer",
+        "Méditer"
+    ],
+    "RandomEvents": [
+        "dummyLocationEvent"
+    ]
+}

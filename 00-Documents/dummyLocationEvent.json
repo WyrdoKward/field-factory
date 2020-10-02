@@ -42,7 +42,7 @@
             "choices": [
                 {
                     "id": 1,
-                    "text": "Step 2 - Choice 1 - Compagnone + ou -",
+                    "text": "Step 2 - Choice 1 - Compagnon + ou -",
                     "outcomes": [
                         {
                             "nextStepId": 3,
