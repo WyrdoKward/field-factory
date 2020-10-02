@@ -5,6 +5,7 @@ using FieldFactory.Core.Map;
 using FieldFactory.Core.Verbs;
 using FieldFactory.Framework.Authorizer;
 using FieldFactory.Framework.Query;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,39 +40,35 @@ namespace FieldFactory.Framework.Executor
             return location;
         }
 
-        public string Execute(GetLocationWithActions query)
+        public LocationWithActions Execute(GetLocationWithActions query)
         {
-            LocationInteractor locationInteractor = new LocationInteractor();
-            var location = locationInteractor.GetLocation(query.LocationId);
+            LocationWithActions locationWithActions = new LocationWithActions();
 
-            Dictionary<EVerb, string> currentActions = new Dictionary<EVerb, string>();
+            LocationInteractor locationInteractor = new LocationInteractor();
+            locationWithActions.Location = locationInteractor.GetLocation(query.LocationId);
                 
 
-            foreach (var v in location.Verbs)
+            foreach (var v in locationWithActions.Location.Verbs)
             {
-                var json = "";
-
-            
                 switch (v)
                 {
                     case EVerb.Explorer:
                         ExploreInteractor exploreInteractor = new ExploreInteractor();
-                        var explore = exploreInteractor.GetExplorationForLocation(Identity.Player.IdPlayer, query.LocationId);
+                        try
+                        {
+                            locationWithActions.Explore = exploreInteractor.GetExplorationForLocation(Identity.Player.IdPlayer, query.LocationId);
+                        }
+                        catch (Exception)
+                        {
+                            locationWithActions.Explore = null;
+                        }
                         break;
                     default:
                         break;
                 }
-
-
-                currentActions.Add(v, json);
             }
-
-            //On concatène la location avec les actions et on sérialize en json
-            string res = "";
-
-
-
-            return res;
+            
+            return locationWithActions;
             
         }
     }

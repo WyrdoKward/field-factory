@@ -2,7 +2,7 @@ using System;
 
 namespace FieldFactory.DataAccess.SQLite
 {
-    internal static class SQLitePlayerStringBuilder
+    internal static class SQLitePlayerQueryBuilder
     {
         internal static string SelectPlayerByIdQuery(string idPlayer)
         {

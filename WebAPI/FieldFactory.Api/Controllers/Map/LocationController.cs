@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FieldFactory.Core.Entities.Map;
 using FieldFactory.Core.Entities.Map.Event;
 using FieldFactory.Framework.Executor;
 using FieldFactory.Framework.Query;
@@ -38,13 +39,14 @@ namespace FieldFactory.Api.Controllers.Map
         /// <param name="idLocation"></param>
         /// <returns></returns>
         // GET: api/Location/dummyLocation/withactions
-        [HttpGet("{idLocation}/withactions")]
+        [HttpGet("{idLocation}/withactions", Name = "GetLocationWithActions")]
         public string GetWithActions(string idLocation)
         {
             var query = new GetLocationWithActions(idLocation);
             var locationWithActions = executor.Execute(query);
+            locationWithActions.Sanitize();
 
-            return locationWithActions;
+            return ConvertResponseToJson(locationWithActions);
         }
 
 

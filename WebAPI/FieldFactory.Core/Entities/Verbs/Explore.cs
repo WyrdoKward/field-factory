@@ -3,6 +3,7 @@ using FieldFactory.DataAccess.DTO;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FieldFactory.Core.Entities.Verbs
 {
@@ -18,13 +19,13 @@ namespace FieldFactory.Core.Entities.Verbs
         /// </summary>
         public int IdStep { get; set; }
         public DateTime DateNextStep { get; set; }
-
-        public List<EventStep> Steps { get; set; }
+        
+        public Event Event { get; set; }
 
         public Explore()
         {
-            Steps = new List<EventStep>();
             IdStep = 0;
+            Event = new Event();
         }
 
         public Explore(ExploreDTO dto)
@@ -35,13 +36,27 @@ namespace FieldFactory.Core.Entities.Verbs
             IdEvent = dto.IdEvent;
             IdStep = dto.IdStep;
             DateNextStep = dto.DateNextStep;
-            Steps = JsonConvert.DeserializeObject<List<EventStep>>(dto.StepHistory);
+            Event = new Event();
+            Event.Steps = JsonConvert.DeserializeObject<List<EventStep>>(dto.StepHistory);
         }
 
         public ExploreDTO ConvertToDTO()
         {
-            var steps = JsonConvert.SerializeObject(Steps);
+            var steps = JsonConvert.SerializeObject(Event.Steps);
             return new ExploreDTO(IdPlayer, IdFollower, IdLocation, IdEvent, IdStep, DateNextStep, steps);
+        }
+
+        /// <summary>
+        /// Returns true if DateNextStep is over, meaning that the step is complete
+        /// </summary>
+        public bool IsFinished()
+        {
+            return DateTime.Compare(DateNextStep, DateTime.Now) < 0;
+        }
+
+        public EventStep GetCurrentStep()
+        {
+            return Event.Steps.Last();
         }
     }
 }

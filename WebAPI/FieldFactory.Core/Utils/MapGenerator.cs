@@ -17,13 +17,13 @@ namespace FieldFactory.Core.Utils
             { ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_small, ELandType.ocean_waves_big  },
         };
 
-        public static Location?[][] TemplateLocations1 = new Location?[][]
+        public static string[][] TemplateLocations1 = new string[][]
         {
-            new Location?[]{null, null, new Location() { Id = 1, LocationType = ELocationType.townCenter, Verbs = new EVerb[] { EVerb.Parler, EVerb.Piller, EVerb.Construire}, Title = "Otrock", Description = "This is my hometown." }, null, null},
-            new Location?[]{null, null, null, null, null},
-            new Location?[]{null, null, null, new Location() { Id = 1, LocationType = ELocationType.mine, Verbs = new EVerb[] { EVerb.Explorer, EVerb.Méditer}, Title = "Peaceful cave", Description = "The entrance is collapsed, but it can provide a decent shelter for a weary traveller." }, null},
-            new Location?[]{null, null, new Location() { Id = 1, LocationType = ELocationType.mine, Verbs = new EVerb[] { EVerb.Explorer, EVerb.Piller}, Title = "Mine", Description = "Maybe there could be some stuff in here." }, null, null},
-            new Location?[]{null, null, null, null, null},
+            new string[]{null, null, "dummyLocation", null, null},
+            new string[]{null, null, null, null, null},
+            new string[]{null, null, null, "dummyLocation", null},
+            new string[]{null, null, "dummyLocation", null, null},
+            new string[]{null, null, null, null, null},
         };
 
         public static List<List<Tile>> GenerateMap(ELandType[,] Template)
@@ -41,7 +41,7 @@ namespace FieldFactory.Core.Utils
                 for (int j = 0; j < mapHeight; j++)
                 {
                     int variation = rnd.Next(10);
-                    Tile tile = new Tile() { Id = currentId, X = i, Y = j, Location = TemplateLocations1[i][j] };
+                    Tile tile = new Tile() { Id = currentId, X = i, Y = j, IdLocation = TemplateLocations1[i][j] };
                     tile.GenerateLandType(Template1[i, j], variation);
                     row.Add(tile);
 

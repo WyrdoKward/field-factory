@@ -1,8 +1,8 @@
 ﻿namespace FieldFactory.Api.ViewModel
 {
-    public class AddExplorationWithFollower
+    public class ProcessChoiceOnLocation
     {
-        public string IdFollower { get; set; }
         public string IdLocation { get; set; }
+        public int IdChoice { get; set; }
     }
 }

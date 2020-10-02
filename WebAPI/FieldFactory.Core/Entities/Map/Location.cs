@@ -1,11 +1,13 @@
 ﻿using FieldFactory.Core.Enum;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace FieldFactory.Core.Entities.Map
 {
     public class Location
     {
+        //Ajouter string IdLocation
         public int Id;
         public string Title;
         public string Description;
@@ -14,6 +16,7 @@ namespace FieldFactory.Core.Entities.Map
 
         public EVerb[] Verbs { get; set; }
 
+        [JsonIgnore]
         public List<string> RandomEvents { get; set; }
 
         public Location() { }

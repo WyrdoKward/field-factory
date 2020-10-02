@@ -32,17 +32,17 @@ namespace FieldFactory.Api.Controllers
         /// <returns></returns>
         // GET: api/Auth/session
         [HttpGet("session", Name = "GetSession")]
-        public Player GetSession()
+        public string GetSession()
         {
             var identity = GetIdentity();
-            identity.Player.SanitizePlayer();
-            return identity.Player;
+            identity.Player.Sanitize();
+            return ConvertResponseToJson(identity.Player);
         }
 
         // POST: api/Auth/login
         //{"IdPlayer":"wyrdokward","Mdp":"123456"}
         [HttpPost("login")]
-        public Player Post([FromBody] LoginQuery query)
+        public string Post([FromBody] LoginQuery query)
         {
             var player = executor.Execute(query);
             if (string.IsNullOrEmpty(player.Token))
@@ -50,9 +50,8 @@ namespace FieldFactory.Api.Controllers
 
             SetIdentityCookie(player.Token);
 
-            player.SanitizePlayer();
-            //return "Hello "+executor.Identity.Player.IdPlayer;
-            return player;
+            player.Sanitize();
+            return ConvertResponseToJson(player);
         }
 
     }

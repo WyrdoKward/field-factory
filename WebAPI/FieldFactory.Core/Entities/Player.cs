@@ -26,7 +26,7 @@ namespace FieldFactory.Core.Entities
         /// <summary>
         /// Remove critical fields to send a safe player to the client
         /// </summary>
-        public void SanitizePlayer()
+        public void Sanitize()
         {
             Token = "";
         }

@@ -1,6 +1,6 @@
 ﻿namespace FieldFactory.DataAccess.SQLite
 {
-    internal static class SQLiteLocationStringBuilder
+    internal static class SQLiteLocationQueryBuilder
     {
         internal static string SelectLocationByIdQuery(string idLocation)
         {

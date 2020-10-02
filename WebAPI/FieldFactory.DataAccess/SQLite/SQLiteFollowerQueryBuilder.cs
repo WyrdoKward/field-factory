@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FieldFactory.DataAccess.SQLite
 {
-    internal static class SQLiteFollowerStringBuilder
+    internal static class SQLiteFollowerQueryBuilder
     {
         internal static string SelectFollowerByIdQuery(string idFollower)
         {

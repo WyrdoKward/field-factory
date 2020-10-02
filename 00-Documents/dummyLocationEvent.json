@@ -1,0 +1,90 @@
+{
+    "id": 0,
+    "title": "Dummy quest",
+    "steps": [
+        {
+            "id": 0,
+            "text": "This is the first text of the quest. What do you do ?",
+            "choices": [
+                {
+                    "id": 1,
+                    "text": "Step 0 - Choice 1 (15 gold & fin OU ca continue)",
+                    "outcomes": [
+                        {
+                            "nextStepId": 1,
+                            "weight": 1
+                        },
+                        {
+                            "nextStepId": 2,
+                            "weight": 1
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "text": "Step 0 - Choice 2 (GOTO step 2)",
+                    "outcomes": [
+                        {
+                            "nextStepId": 2,
+                            "weight": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "text": "S1 - No further choices. You gain 15 golds, quest over."
+        },
+        {
+            "id": 2,
+            "text": "S2 - There is an other choice to make.",
+            "choices": [
+                {
+                    "id": 1,
+                    "text": "Step 2 - Choice 1 - Compagnone + ou -",
+                    "outcomes": [
+                        {
+                            "nextStepId": 3,
+                            "weight": 1
+                        },
+                        {
+                            "nextStepId": 4,
+                            "weight": 1
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "text": "Step 2 - Choice 2 - Secret ou Livre",
+                    "outcomes": [
+                        {
+                            "nextStepId": 5,
+                            "weight": 1
+                        },
+                        {
+                            "nextStepId": 6,
+                            "weight": 1
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "text": "S3 - Companion is wounded ! Quest Over."
+        },
+        {
+            "id": 4,
+            "text": "S4 - New compaignon ! Quest Over."
+        },
+        {
+            "id": 5,
+            "text": "S5 - You hear about some secret place ! Quest Over."
+        },
+        {
+            "id": 6,
+            "text": "S6 - You find an interesting book to study once back home ! Quest Over."
+        }
+    ]
+}

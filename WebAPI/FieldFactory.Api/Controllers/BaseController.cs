@@ -15,6 +15,9 @@ namespace FieldFactory.Api.Controllers
     {
         private const string AUTH_COOKIE = "ffauthtoken";
 
+        /// <summary>
+        /// Sérialize l'objet en paramètre, en gardant la casse des membres
+        /// </summary>
         internal string ConvertResponseToJson<T>(T objectToSerialize)
         {
             var json = JsonConvert.SerializeObject(objectToSerialize, new Newtonsoft.Json.Converters.StringEnumConverter());
@@ -23,6 +26,10 @@ namespace FieldFactory.Api.Controllers
         }
 
         private Identity _identity;
+
+        /// <summary>
+        /// Récupère l'identité du joueur dans le cookie d'authent
+        /// </summary>
         internal Identity GetIdentity()
         {
             if (_identity == null)
