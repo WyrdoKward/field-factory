@@ -8,14 +8,20 @@
       </div>-->
       <button type="button" @click="exploreLocation()" style="margin-bottom: 80px;">Explore</button>
     </div>
-    <LocationExplore v-if="this.isExploreActive" :explore="this.explore" />
+    <LocationExplore v-if="this.isExploreActive" :explore="this.explore"/>
   </div>
   <div v-else class="selectedLocationContainer empty"></div> 
 </template>
 
 <script>
+import POSTExploreMockdummyLocation from '@/utils/POSTExploreMockdummyLocation.json'
+import POSTExploreMockeglingen from '@/utils/POSTExploreMockeglingen.json'
+const mock = {}
+mock['dummyLocation'] = POSTExploreMockdummyLocation;
+mock['eglingen'] = POSTExploreMockeglingen;
+
+
 import { bus } from "@/pages/World/main";
-import json from '@/utils/dummyLocationEventStep0.json'
 const axios = require('axios');
 
 export default {
@@ -48,20 +54,20 @@ export default {
     });
   },
   methods:{
-    exploreLocation(){
-        this.getEventFirstStep(this.idLocation);
-      },
-    getEventFirstStep(locId){ //return que le step 0
-      console.log('getEvent('+locId );
-        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: locId});
+    exploreLocation(){ // TODO endpoint POST DOIT RENVOYER Explore au lieu de Step0
+      console.log('getEvent('+this.idLocation );
+        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.idLocation});
         const options = {headers: {'Content-Type': 'application/json'}};
       axios
       .post('http://localhost:8080/api/Explore', json, options)
       .then(res => {
-        this.explore = res.data;
+        //this.explore = res.data;
+        this.explore = mock[this.idLocation];
         this.isExploreActive = true;
         console.log('SUCCES');
         console.log(res.data);
+        console.log('BOUCHON :');
+        console.log(this.explore);
       }).catch(err => {
         console.log('FAIL');
         console.log(err.response);

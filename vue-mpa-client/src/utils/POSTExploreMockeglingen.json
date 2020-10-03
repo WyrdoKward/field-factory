@@ -1,0 +1,31 @@
+{
+    "IdPlayer": "nono",
+    "IdFollower": "Gustav",
+    "IdLocation": "eglingen",
+    "IdEvent": "eglingenEvent",
+    "IdStep": 2,
+    "DateNextStep": "2020-10-03T21:29:15.752422+02:00",
+    "Event": {
+        "Id": 0,
+        "Title": "Arrivée à Eglingen",
+        "Steps": [
+            {
+                "Id": 0,
+                "Text": "Vous arrivez enfin devant la maison, après un long voyage sous la pluie.<br /> Vous vous apprêtez à rentrer mais un chat blanc menançant vous barre la route en rugissant.",
+                "Choices": [
+                  {
+                    "Id": 1,
+                    "Text": "Vous tentez de l amadouer avec des croquettes",
+                    "Outcomes": null
+                  },
+                  {
+                    "Id": 2,
+                    "Text": "Vous l ignorez pour aller saluer directement vos parents.",
+                    "Outcomes": null
+                  }
+                ],
+                "DurationInMin": 5
+              }
+        ]
+    }
+}
