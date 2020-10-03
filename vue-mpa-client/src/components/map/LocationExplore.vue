@@ -55,6 +55,7 @@ steps[4] = step4;
         }).catch(err => {
           console.log('FAIL');
           console.log(err.response);
+          alert('Etape pas finie ! (5 min)')
         });
       },
     }

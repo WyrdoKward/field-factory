@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>World Page</h1>
     <div>
       <DebugLoginButtons/>
       <TilesContainer/>
@@ -44,7 +43,6 @@ $baseUrl: 'http://localhost:8080/';
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 footer{

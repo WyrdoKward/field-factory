@@ -81,7 +81,7 @@ export default {
 
 .selectedLocationContainer{
  float:right;
- width: 20%;
+ width: 35%;
  height:600px;
 }
 

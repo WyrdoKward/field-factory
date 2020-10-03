@@ -62,7 +62,7 @@ export default {
     width:fit-content;
     margin:auto;
     float:left;
-    width:80%;
+    width:65%;
   }
   
   .mapRow{

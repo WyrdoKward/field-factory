@@ -53,4 +53,7 @@ const axios = require('axios');
 </script>
 
 <style lang="scss">
+.debugLoginButtons > h1{
+  float: left;
+}
 </style>
