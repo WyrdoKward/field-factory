@@ -5,7 +5,7 @@
           <h3>{{step.Text}}</h3>
           <ul v-if="step.Choices" class="choices">
               <li v-for="choice in explore.Choices" :key="choice.Id">
-                  <span @click="processChoice(choice.NextStepId)">{{choice.Text}} (nextStep: {{choice.NextStepId}}</span>
+                  <span @click="processChoice(choice.Id)">{{choice.Text}}</span>
               </li>
           </ul>
           <div v-else-if="step.Outcome" class="outcome">
@@ -41,16 +41,30 @@ steps[4] = step4;
     name: 'LocationEvent',
     props: {
       explore : Object
+      //locationID : string
     },
     data() {
       return {
       }
     },
     methods: {
-      processChoice(nextStepId) {
-        console.log('Next Step is #'+nextStepId);
-        // GET /event/{eventId}/step/{nextStepId}
-        //on selectionne un seul outcome random coté serveur
+      processChoice(choiceId) {
+        console.log('Location: #'+explore.IdLocation);
+        console.log('Choice: #'+choiceId);
+        // PUT: api/Explore/
+        // {"IdLocation": "dummyLocation", "IdChoice": 2}
+        const json = JSON.stringify({IdLocation: explore.IdLocation,  IdChoice: choiceId});
+        const options = {headers: {'Content-Type': 'application/json'}};
+      axios
+      .put('http://localhost:8080/api/Explore', json, options)
+      .then(res => {
+        this.explore = res.data;
+        console.log('SUCCES');
+        console.log(res.data);
+      }).catch(err => {
+        console.log('FAIL');
+        console.log(err.response);
+      });
         // Vérification du timer coté server
         this.event = steps[nextStepId];
         var rnd = this.getRandom(Object.keys(this.explore.outcomes).length);

@@ -1,12 +1,12 @@
 <template>
-  <div v-if="isLocationActive" class="selectedLocationContainer" >
+  <div v-if="this.isLocationActive" class="selectedLocationContainer" >
     <h1>{{this.location.Title}}</h1>
     <p>{{this.location.Description}}<p>
     <div v-if="!isExploreActive" class="actions" >
       <!--<div v-for="action in location.Actions" >
         <h2>{{action}}</h2>
       </div>-->
-      <button type="button" @click="explore(location.IdLocation)" style="margin-bottom: 80px;">Explore</button>
+      <button type="button" @click="exploreLocation()" style="margin-bottom: 80px;">Explore</button>
     </div>
     <LocationExplore v-if="this.isExploreActive" :explore="this.explore" />
   </div>
@@ -27,6 +27,7 @@ export default {
   },
   data() {
     return {
+      idLocation : null,
       isLocationActive: false,
       location : null,
       isExploreActive : false,
@@ -38,6 +39,8 @@ export default {
       console.log('EVENT : Entering selectLocation : data = '+data.Location.Title);
       this.isLocationActive = true;
       this.location = data.Location;
+      this.idLocation = data.IdLocation;
+      console.log('idLocation ='+this.idLocation)
       if(data.Explore){        
         this.isExploreActive = true;
         this.explore = data.Explore;
@@ -45,8 +48,8 @@ export default {
     });
   },
   methods:{
-    explore(locId){
-        this.getEventFirstStep(locId);
+    exploreLocation(){
+        this.getEventFirstStep(this.idLocation);
       },
     getEventFirstStep(locId){ //return que le step 0
       console.log('getEvent('+locId );
