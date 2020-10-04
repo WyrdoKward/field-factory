@@ -1,10 +1,11 @@
 <template> 
+  <div class="locationContainer" :title="locId">
     <Town v-if="locId=='townCenter'" :loc="locId" />   
     <canvas v-else class="location"
       :style="{ backgroundImage: 'url(assets/map/locations/' + locId + '.png)' }"
-        @click="displayLocationInfos()"
-        @mousehover="hoverEffect()">
+        @click="displayLocationInfos()">
     </canvas>
+  </div>
 </template>
 
 <script>
@@ -28,9 +29,6 @@
       
     },
     methods: {
-      hoverEffect(){
-
-      },
       displayLocationInfos(){
         //Nouveau composant
         console.log('displayLocationInfos')

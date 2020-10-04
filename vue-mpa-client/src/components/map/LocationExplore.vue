@@ -15,19 +15,6 @@
 <script>
 const axios = require('axios');
 
-import step0 from '@/utils/dummyLocationEventStep0.json'
-import step1 from '@/utils/dummyLocationEventStep1.json'
-import step2 from '@/utils/dummyLocationEventStep2.json'
-import step3 from '@/utils/dummyLocationEventStep3.json'
-import step4 from '@/utils/dummyLocationEventStep4.json'
-const steps = {}
-steps[0] = step0;
-steps[1] = step1;
-steps[2] = step2;
-steps[3] = step3;
-steps[4] = step4;
-
-
   export default {
     name: 'LocationEvent',
     props: {
