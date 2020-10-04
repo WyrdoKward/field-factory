@@ -43,6 +43,7 @@ export default {
   created() {
     bus.$on("selectLocation", data => {
       console.log('EVENT : Entering selectLocation : data = '+data.Location.Title);
+      this.isExploreActive = false; // Réinitialiser le div actions au changement de location
       this.isLocationActive = true;
       this.location = data.Location;
       this.idLocation = data.IdLocation;

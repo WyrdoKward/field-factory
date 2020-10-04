@@ -53,14 +53,17 @@
 <style lang="scss">
 .location{
     overflow: hidden;
-    height: 198px;
-    width: 174px;
-    margin: auto;
+    height: 100px;
+    width: 150px;
+    padding: 49px 12px;
     float: left;
     background-position-x: -20px;
+    background-position-y: 10px;
+
 }
 
 .location:hover{
   background-position-x: 190px;
+  cursor: pointer;
 }
 </style>

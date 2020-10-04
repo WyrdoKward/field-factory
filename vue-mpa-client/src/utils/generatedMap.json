@@ -130,7 +130,7 @@
        "X": 3,
        "Y": 2,
        "LandType": "tile_grassland_sparse_covered_green_9",
-       "IdLocation": "dummyLocation"
+       "IdLocation": null
      },
      {
        "Id": 18,
