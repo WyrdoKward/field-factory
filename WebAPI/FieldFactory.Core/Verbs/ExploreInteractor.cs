@@ -17,7 +17,7 @@ namespace FieldFactory.Core.Verbs
 
         EventInteractor eventInteractor = new EventInteractor();
 
-        public EventStep AddNewExploration(Explore exploration)
+        public Explore AddNewExploration(Explore exploration)
         {
             var tuple = eventInteractor.GetRandomEventForLocation(exploration.IdLocation);
 
@@ -30,7 +30,7 @@ namespace FieldFactory.Core.Verbs
 
             exploreProvider.Add(exploration.ConvertToDTO());
 
-            return exploration.Event.Steps[0];
+            return exploration;
         }
 
         public Explore GetExplorationForLocation(string idPlayer, string idLocation)

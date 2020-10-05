@@ -16,7 +16,7 @@ namespace FieldFactory.Framework.Executor
             Identity = identity;
         }
 
-        public EventStep Execute(AddExplorationWithFollowerQuery query)
+        public Explore Execute(AddExplorationWithFollowerQuery query)
         {
             Explore exploration = new Explore()
             {
