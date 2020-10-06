@@ -26,7 +26,7 @@ namespace FieldFactory.Core.Verbs
             var nextStep = tuple.Item2.Steps[0];
             nextStep.Sanitize();
             exploration.Event.Steps.Add(nextStep);                
-            exploration.DateNextStep = DateTime.Now.AddMinutes(nextStep.DurationInMin);
+            exploration.SetDateNextStep(DateTime.Now.AddMinutes(nextStep.DurationInMin));
 
             exploreProvider.Add(exploration.ConvertToDTO());
 
@@ -58,6 +58,9 @@ namespace FieldFactory.Core.Verbs
             var evt = JsonConvert.DeserializeObject<Event>(eventDTO.Json);
 
             var currentStep = evt.Steps.Where(s => s.Id == oldExplore.IdStep).FirstOrDefault();
+            
+            //On marque le choix effectué
+            oldExplore.Event.Steps.Last().Choices.Where(c => c.Id == idChoice).FirstOrDefault().IsSelected = true;
 
             //On vérifie que le choix envoyé existe dans le step courrant
             if (!currentStep.IsChoiceInputValid(idChoice))
@@ -68,13 +71,12 @@ namespace FieldFactory.Core.Verbs
             int randomNextStepId = userChoice.ChooseRandomNextStep();
             var nextStep = evt.Steps.Where(s => s.Id == randomNextStepId).FirstOrDefault();
 
-            oldExplore.Event.Steps.Last().Choices.Where(c => c.Id == idChoice).FirstOrDefault().IsSelected = true;
 
             //On met à jour l'explo en BDD avec le nouveau Step et timer
             exploration.IdFollower = oldExplore.IdFollower;
             exploration.IdEvent = oldExplore.IdEvent;
             exploration.IdStep = nextStep.Id;
-            exploration.DateNextStep = DateTime.Now.AddMinutes(nextStep.DurationInMin);
+            exploration.SetDateNextStep(DateTime.Now.AddMinutes(nextStep.DurationInMin));
             exploration.Event.Steps = oldExplore.Event.Steps;
 
             // TODO Sanitize aussi le current step pour enlever les choices pas faits ( != idChoice)? ou trouver un moyen de savoir quel choix a été fait par le user ? => bool "selected" a coté de "Id", "Text" et "Outcomes"
