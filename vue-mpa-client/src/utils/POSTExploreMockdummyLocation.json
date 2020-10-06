@@ -24,7 +24,8 @@
                         "Outcomes": null
                     }
                 ],
-                "DurationInMin": 5
+                "DurationInMin": 5,
+                "End":"12/12/2020 08:25:00"
             }
         ]
     }

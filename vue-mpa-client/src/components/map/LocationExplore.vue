@@ -7,7 +7,8 @@
           <li class="choice" v-for="choice in step.Choices" :key="choice.Id">
               <span @click="processChoice(choice.Id)">{{choice.Text}}</span>
           </li>
-      </ul>
+      </ul>END = {{step.End}}
+      <Timer :deadline="step.End" />
     </div>
   </div>
 </template>
@@ -22,9 +23,11 @@ const axios = require('axios');
     },
     data() {
       return {
-        //explore : null,
       }
     },
+  components :{
+    Timer : () => import('@/components/core/Timer.vue')
+  },
     methods: {
       processChoice(choiceId) {
         console.log('Location: #'+this.explore.IdLocation);
