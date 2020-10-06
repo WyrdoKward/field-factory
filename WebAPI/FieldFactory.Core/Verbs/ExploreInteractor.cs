@@ -65,9 +65,11 @@ namespace FieldFactory.Core.Verbs
 
             // On extrait le step suivant à partir du choix du player
             var userChoice = currentStep.Choices.Where(c => c.Id == idChoice).FirstOrDefault();
-            int randomeOutcome = userChoice.ChooseRandomNextStep();
-            var nextStep = evt.Steps.Where(s => s.Id == randomeOutcome).FirstOrDefault(); 
-            
+            int randomNextStepId = userChoice.ChooseRandomNextStep();
+            var nextStep = evt.Steps.Where(s => s.Id == randomNextStepId).FirstOrDefault();
+
+            oldExplore.Event.Steps.Last().Choices.Where(c => c.Id == idChoice).FirstOrDefault().IsSelected = true;
+
             //On met à jour l'explo en BDD avec le nouveau Step et timer
             exploration.IdFollower = oldExplore.IdFollower;
             exploration.IdEvent = oldExplore.IdEvent;
@@ -75,7 +77,7 @@ namespace FieldFactory.Core.Verbs
             exploration.DateNextStep = DateTime.Now.AddMinutes(nextStep.DurationInMin);
             exploration.Event.Steps = oldExplore.Event.Steps;
 
-            // TODO Sanitize aussi le current step pour enlever les choices pas faits ( != idChoice)? ou trouver un moyen de savoir quel choix a été fait par le user ?
+            // TODO Sanitize aussi le current step pour enlever les choices pas faits ( != idChoice)? ou trouver un moyen de savoir quel choix a été fait par le user ? => bool "selected" a coté de "Id", "Text" et "Outcomes"
             nextStep.Sanitize();
             exploration.Event.Steps.Add(nextStep);
 
