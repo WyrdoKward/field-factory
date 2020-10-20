@@ -36,11 +36,11 @@ namespace FieldFactory.Api.Controllers.Verbs
         }
 
         // PUT: api/Explore/
-        // {"IdLocation": "dummyLocation", "NextStepId": 2}
+        // {"IdLocation": "dummyLocation", "IdChoice": 2}
         [HttpPut]
-        public string Put([FromBody] ProcessChoiceOnLocation vm)
+        public string Put([FromBody] RegisterEventChoice vm)
         {
-            var query = new ProcessChoiceOnLocationQuey(executor.Identity.Player.IdPlayer, vm.IdLocation, vm.IdChoice);
+            var query = new RegisterEventChoiceQuery(executor.Identity.Player.IdPlayer, vm.IdLocation, vm.IdChoice);
             var explore = executor.Execute(query);
 
             return ConvertResponseToJson(explore);

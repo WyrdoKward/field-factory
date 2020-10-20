@@ -15,12 +15,12 @@ namespace FieldFactory.Core.Entities.Verbs
         public string IdLocation { get; set; }
         public string IdEvent { get; set; }
 
+        public Event Event { get; set; }
         /// <summary>
         /// Le Step courrant
         /// </summary>
         public int IdStep { get; set; }
-
-        private DateTime m_dateNextStep;
+        public int? IdChoice{ get; set; }
 
         /// <summary>
         /// Returns friendly string date format for serialization
@@ -33,6 +33,11 @@ namespace FieldFactory.Core.Entities.Verbs
             }
         }
 
+        #endregion
+
+        #region Getters&Setters
+
+        private DateTime m_dateNextStep;
         //Getter et Setter with DateTime
         public void SetDateNextStep(DateTime d)
         {
@@ -44,7 +49,6 @@ namespace FieldFactory.Core.Entities.Verbs
             return m_dateNextStep;
         }
 
-        public Event Event { get; set; }
 
         #endregion
 
@@ -61,6 +65,7 @@ namespace FieldFactory.Core.Entities.Verbs
             IdLocation = dto.IdLocation;
             IdEvent = dto.IdEvent;
             IdStep = dto.IdStep;
+            IdChoice = dto.IdChoice;
             SetDateNextStep(dto.DateNextStep);
             Event = new Event();
             Event.Steps = JsonConvert.DeserializeObject<List<EventStep>>(dto.StepHistory);
@@ -69,7 +74,7 @@ namespace FieldFactory.Core.Entities.Verbs
         public ExploreDTO ConvertToDTO()
         {
             var steps = JsonConvert.SerializeObject(Event.Steps);
-            return new ExploreDTO(IdPlayer, IdFollower, IdLocation, IdEvent, IdStep, GetDateNextStep(), steps);
+            return new ExploreDTO(IdPlayer, IdFollower, IdLocation, IdEvent, IdStep, IdChoice, GetDateNextStep(), steps);
         }
 
         /// <summary>
@@ -83,6 +88,21 @@ namespace FieldFactory.Core.Entities.Verbs
         public EventStep GetCurrentStep()
         {
             return Event.Steps.Last();
+        }
+
+        /// <summary>
+        /// Quand l'utilisateur fait un choix, on l'enregistre et on maj la dateNextStep
+        /// </summary>
+        /// <param name="idChoice"></param>
+        public void UpdateDateWithChoice(int? idChoice)
+        {
+            var currentStep = GetCurrentStep();
+            DateTime nextDate = DateTime.Now.AddMinutes(currentStep.DurationInMin);
+
+            IdChoice = idChoice;
+            Event.Steps.Last().Choices.Where(c => c.Id == IdChoice).FirstOrDefault().IsSelected = true;
+
+            SetDateNextStep(nextDate);
         }
     }
 }

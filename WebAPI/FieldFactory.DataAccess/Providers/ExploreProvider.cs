@@ -8,7 +8,7 @@ namespace FieldFactory.DataAccess.Providers
 {
     public class ExploreProvider : SQLiteBaseProvider
     {
-        private const int NB_COL_IN_TABLE = 7; //Voir pour gérer nb de col directement dans la requete
+        private const int NB_COL_IN_TABLE = 8; //Voir pour gérer nb de col directement dans la requete
         public void Add(ExploreDTO exploration)
         {
             //Ajouter unicité sur IdPlayer/idlocation
@@ -44,7 +44,13 @@ namespace FieldFactory.DataAccess.Providers
 
             foreach (var rawLocation in rawLocations)
             {
-                res.Add(new ExploreDTO(rawLocation.Value[0], rawLocation.Value[1],rawLocation.Value[2], rawLocation.Value[3], int.Parse(rawLocation.Value[4]), DateTime.Parse(rawLocation.Value[5]), rawLocation.Value[6]));
+                int? idChoice;
+                if (string.IsNullOrEmpty(rawLocation.Value[7]))
+                    idChoice = null;
+                else
+                    idChoice = int.Parse(rawLocation.Value[7]);
+
+                res.Add(new ExploreDTO(rawLocation.Value[0], rawLocation.Value[1],rawLocation.Value[2], rawLocation.Value[3], int.Parse(rawLocation.Value[4]), idChoice, DateTime.Parse(rawLocation.Value[5]), rawLocation.Value[6]));
             }
 
             return res;

@@ -27,15 +27,16 @@ namespace FieldFactory.Framework.Executor
             return exploreInteractor.AddNewExploration(exploration);
         }
 
-        public Explore Execute(ProcessChoiceOnLocationQuey query)
+        public Explore Execute(RegisterEventChoiceQuery query)
         {
             Explore exploration = new Explore()
             {
                 IdPlayer = query.IdPlayer,
-                IdLocation = query.IdLocation
+                IdLocation = query.IdLocation,
+                IdChoice = query.IdChoice
             };
 
-            return exploreInteractor.ProcessEventChoice(query.IdChoice, exploration);            
+            return exploreInteractor.RegisterEventChoiceOnLocation(exploration);            
         }
     }
 }

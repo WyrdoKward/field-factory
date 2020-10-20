@@ -14,7 +14,6 @@ namespace FieldFactory.DataAccess.Providers
             return location[0]; 
         }
 
-
         private List<LocationDTO> ConvertIntoDto(Dictionary<int, List<string>> rawLocations)
         {
             var res = new List<LocationDTO>();

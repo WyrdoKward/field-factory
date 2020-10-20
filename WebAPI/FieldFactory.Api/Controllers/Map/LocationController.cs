@@ -61,22 +61,6 @@ namespace FieldFactory.Api.Controllers.Map
             return verbs;
         }
 
-        [Obsolete("Passer par ExploreController")]
-        // POST: api/Location/5/explore
-        [HttpPost("{idLocation}/explore", Name = "ExploreLocation")]
-        public string ExploreLocation(int idLocation)
-        {
-            // Get location from db
-            // Select a random event for this location
-            //Return the step 0 of event
-
-            var query = new GetRandomEventForLocationQuery(idLocation.ToString());
-            var eventStep = executor.Execute(query);
-
-            return ConvertResponseToJson(eventStep);
-        }
-
-
         // POST: api/Location
         [HttpPost]
         public void Post([FromBody] string value)

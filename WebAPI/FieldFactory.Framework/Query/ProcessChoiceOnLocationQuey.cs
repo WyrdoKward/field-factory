@@ -4,13 +4,13 @@ using System.Text;
 
 namespace FieldFactory.Framework.Query
 {
-    public class ProcessChoiceOnLocationQuey
+    public class RegisterEventChoiceQuery
     {
         public string IdPlayer { get; set; }
         public string IdLocation { get; set; }
         public int IdChoice { get; set; }
 
-        public ProcessChoiceOnLocationQuey(string idPlayer, string idLocation, int idChoice)
+        public RegisterEventChoiceQuery(string idPlayer, string idLocation, int idChoice)
         {
             IdPlayer = idPlayer;
             IdLocation = idLocation;
