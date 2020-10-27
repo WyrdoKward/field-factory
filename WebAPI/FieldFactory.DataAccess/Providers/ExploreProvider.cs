@@ -38,19 +38,19 @@ namespace FieldFactory.DataAccess.Providers
             ExecuteSingleNonQuery(query);
         }
 
-        private List<ExploreDTO> ConvertIntoDto(Dictionary<int, List<string>> rawLocations)
+        private List<ExploreDTO> ConvertIntoDto(Dictionary<int, Dictionary<string, string>> rawLocations)
         {
             var res = new List<ExploreDTO>();
 
             foreach (var rawLocation in rawLocations)
             {
                 int? idChoice;
-                if (string.IsNullOrEmpty(rawLocation.Value[7]))
+                if (string.IsNullOrEmpty(rawLocation.Value["idChoice"]))
                     idChoice = null;
                 else
-                    idChoice = int.Parse(rawLocation.Value[7]);
+                    idChoice = int.Parse(rawLocation.Value["idChoice"]);
 
-                res.Add(new ExploreDTO(rawLocation.Value[0], rawLocation.Value[1],rawLocation.Value[2], rawLocation.Value[3], int.Parse(rawLocation.Value[4]), idChoice, DateTime.Parse(rawLocation.Value[5]), rawLocation.Value[6]));
+                res.Add(new ExploreDTO(rawLocation.Value["idPlayer"], rawLocation.Value["idFollower"],rawLocation.Value["idLocation"], rawLocation.Value["idEvent"], int.Parse(rawLocation.Value["idStep"]), idChoice, DateTime.Parse(rawLocation.Value["dateNextStep"]), rawLocation.Value["stepsHistory"]));
             }
 
             return res;

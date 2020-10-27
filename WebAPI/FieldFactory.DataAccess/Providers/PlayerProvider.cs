@@ -36,13 +36,13 @@ namespace FieldFactory.DataAccess.Providers
         }
 
 
-        private List<PlayerDTO> ConvertIntoDto(Dictionary<int, List<string>> rawPlayers)
+        private List<PlayerDTO> ConvertIntoDto(Dictionary<int, Dictionary<string, string>> rawPlayers)
         {
             var res = new List<PlayerDTO>();
 
             foreach (var rawPlayer in rawPlayers)
             {
-                res.Add(new PlayerDTO() { IdPlayer = rawPlayer.Value[0], Email = rawPlayer.Value[1], Hashpwd = rawPlayer.Value[2], Token = rawPlayer.Value[3] });
+                res.Add(new PlayerDTO() { IdPlayer = rawPlayer.Value["idPlayer"], Email = rawPlayer.Value["email"], Hashpwd = rawPlayer.Value["hashpwd"], Token = rawPlayer.Value["token"] });
             }
                 
             return res;
