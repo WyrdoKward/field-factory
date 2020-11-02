@@ -4,12 +4,12 @@
     <div v-for="step in this.explore.Event.Steps" :key="step.Id" class="eventStep" >
       <h3>{{step.Text}}</h3>
       <ul v-if="step.Choices" class="choices">
-          <li class="choice" v-for="choice in step.Choices" :key="choice.Id">
+          <li class="choice" v-for="choice in step.Choices" :key="choice.Id" :class="{isSelected: choice.IsSelected}">
               <span @click="processChoice(choice.Id)">{{choice.Text}}</span>
           </li>
-      </ul>END = {{step.End}}
-      <Timer :deadline="step.End" />
+      </ul>
     </div>
+      <Timer :deadline="explore.DateNextStep" @onFinish="log()" />
   </div>
 </template>
 
@@ -29,6 +29,9 @@ const axios = require('axios');
     Timer : () => import('@/components/core/Timer.vue')
   },
     methods: {
+      log(){
+        console.log('booooo');
+      },
       processChoice(choiceId) {
         console.log('Location: #'+this.explore.IdLocation);
         console.log('Choice: #'+choiceId);
@@ -40,7 +43,7 @@ const axios = require('axios');
         .put('http://localhost:8080/api/Explore', json, options)
         .then(res => {
           this.explore = res.data;
-          console.log('SUCCES');
+          console.log('PutExplore');
           console.log(res.data);
         }).catch(err => {
           console.log('FAIL');
@@ -53,6 +56,10 @@ const axios = require('axios');
 </script>
 
 <style lang="scss">
+.choice:hover, .choices > .isSelected{
+  color: forestgreen;
+}
+
 .choice:hover{
   color: forestgreen;
   cursor: pointer;

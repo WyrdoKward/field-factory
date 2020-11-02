@@ -12,6 +12,10 @@
 
   import { bus } from "@/pages/World/main";
   const axios = require('axios');
+  import { store, mapState, mapActions } from 'vuex'
+  //import { getLocationWithActions } from "@/shared/axiosCalls";
+  import locationModule from "@/api/stores/location.module";
+
 
   export default {
     name: 'Location',
@@ -24,28 +28,28 @@
     data() {
       return {
         actions: [],
-        locationWithActions : ""
+        //locationWithActions : ""
       }
       
     },
+    created() { 
+      //this.getLocationWithActions = axiosCalls.getLocationWithActions;
+      console.log('0')
+    },
+    computed:{
+      ...mapState(['locationWithActions']),
+    },
     methods: {
-      displayLocationInfos(){
-        //Nouveau composant
-        console.log('displayLocationInfos')
-        axios
-        .get('http://localhost:8080/api/location/'+this.locId+'/withactions')
-        .then(res => {
-          this.locationWithActions = res.data;
-          this.locationWithActions.IdLocation = this.locId;
-          console.log('SUCCES');
-          console.log(res.data);
-          bus.$emit("selectLocation", this.locationWithActions);
-          console.log(this.locationWithActions.Location.Id +' : ' +this.locationWithActions.Location.Title+ '\r\n\r\n'+ this.locationWithActions.Location.Description + '\r\n\r\nYou can :\r\n' + this.locationWithActions.Location.Verbs);
-      
-        }).catch(err => {
-          console.log('FAIL');
-          console.log(err.response);
-        });}
+      ...mapActions(['fetchLocationWithActions', 'foo']),
+      displayLocationInfos(){ //https://haxzie.com/architecting-http-clients-vue-js-network-layer !!!!!
+        console.log('1') //https://stackoverflow.com/questions/52092873/how-do-i-make-axios-api-call-in-a-separate-component-file
+        //this.fetchLocationWithActions(this.locId);
+        this.foo();
+
+        console.log('5 - axios called :');
+        console.log(this.locationWithActions);
+        bus.$emit("selectLocation", this.locationWithActions);
+      }
     }
   }
 </script>

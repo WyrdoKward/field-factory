@@ -1,29 +1,17 @@
 <template>
   <div>
-      current = {{currentTime}}<br />
-      deadline = {{deadline}}<br />
-    <div class="text-center" v-if="currentTime">
-      <span v-if="days">
-        Days: {{ days }}<br/>
-      </span>
-      <span v-if="hours">
-        Hours: {{ hours | formatTime }} <br/>
-      </span>
-      Minutes: {{ minutes | formatTime }} <br/>
-      Seconds: {{ seconds | formatTime }} <br/>
-
-        <br/>
-        <span v-if="days">{{ days }}</span
-        >:<span v-if="hours">{{ hours | formatTime }}:</span><span>{{ minutes | formatTime }}:{{ seconds | formatTime }}</span><br />
+    <div class="text-center" v-if="remainingTime">
+        <span v-if="days">{{ days }}:</span ><span v-if="hours">{{ hours | formatTime }}:</span><span>{{ minutes | formatTime }}:{{ seconds | formatTime }}</span><br />
      </div>
-    <div class="text-center" v-if="!currentTime">
-      Time's Up!
+    <div class="text-center" v-if="!remainingTime">
+      Terminé
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  /*https://dev.to/rachel_cheuk/timer-component-for-vue-js-3aad*/
   name : "Timer",
   props: {
     deadline: {
@@ -37,7 +25,7 @@ export default {
   },
   data() {
     return {
-      currentTime: Date.parse(this.deadline) - Date.parse(new Date())
+      remainingTime: Date.parse(this.deadline) - Date.parse(new Date()) //in ms
     };
   },
   mounted() {
@@ -45,16 +33,16 @@ export default {
   },
   computed: {
     seconds() {
-      return Math.floor((this.currentTime / 1000) % 60);
+      return Math.floor((this.remainingTime / 1000) % 60);
     },
     minutes() {
-      return Math.floor((this.currentTime / 1000 / 60) % 60);
+      return Math.floor((this.remainingTime / 1000 / 60) % 60);
     },
     hours() {
-      return Math.floor((this.currentTime / (1000 * 60 * 60)) % 24);
+      return Math.floor((this.remainingTime / (1000 * 60 * 60)) % 24);
     },
     days() {
-      return Math.floor(this.currentTime / (1000 * 60 * 60 * 24));
+      return Math.floor(this.remainingTime / (1000 * 60 * 60 * 24));
     }
   },
   filters: {
@@ -67,11 +55,13 @@ export default {
   },
   methods: {
     countdown() {
-      this.currentTime = Date.parse(this.deadline) - Date.parse(new Date());
-      if (this.currentTime > 0) {
+      this.remainingTime = Date.parse(this.deadline) - Date.parse(new Date());
+      if (this.remainingTime > 0) {
         setTimeout(this.countdown, this.speed);
       } else {
-        this.currentTime = null;
+        console.log('Finish');
+        this.remainingTime = null;
+        this.$emit('onFinish')
       }
     }
   }

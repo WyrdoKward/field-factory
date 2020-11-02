@@ -42,8 +42,8 @@ export default {
   },
   created() {
     bus.$on("selectLocation", data => {
-      console.log('EVENT : Entering selectLocation : data = '+data.Location.Title);
-      this.isExploreActive = false; // Réinitialiser le div actions au changement de location
+      console.log('Entering selectLocationContainer : '+data.Location.Title);
+      this.isExploreActive = false; // Réinitialise le div actions au changement de location
       this.isLocationActive = true;
       this.location = data.Location;
       this.idLocation = data.IdLocation;
@@ -55,19 +55,17 @@ export default {
     });
   },
   methods:{
-    exploreLocation(){ // TODO endpoint POST DOIT RENVOYER Explore au lieu de Step0
+    exploreLocation(){ 
       console.log('getEvent('+this.idLocation );
         const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.idLocation});
         const options = {headers: {'Content-Type': 'application/json'}};
       axios
       .post('http://localhost:8080/api/Explore', json, options)
       .then(res => {
-        //this.explore = res.data;
-        this.explore = mock[this.idLocation];
+        this.explore = res.data;
+        //this.explore = mock[this.idLocation];
         this.isExploreActive = true;
-        console.log('SUCCES');
-        console.log(res.data);
-        console.log('BOUCHON :');
+        console.log('PostExplore');
         console.log(this.explore);
       }).catch(err => {
         console.log('FAIL');
