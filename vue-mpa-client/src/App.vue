@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <h1>Hello Test</h1>
+    <button @click="callFoo" >Foo</button>
+    <button @click="callFooParam" >FooParam</button>
+    <h2>{{text}}</h2>
   </div>
 </template>
 
@@ -8,8 +11,26 @@
 
 //STORE
 
+import { mapActions } from "vuex";
+
 export default {
-  name: 'Test'
+  name: 'Test',
+  data(){
+    return{
+      text : "change me"
+    }
+  },
+  methods:{
+    ...mapActions(["fooParam", "foo"]),
+    callFooParam() {
+        this.fooParam({
+          param: 'paramètre'
+        })
+    },
+    callFoo(){
+      this.foo();
+    }
+  }
 }
 
 </script>
