@@ -5,7 +5,6 @@
       :style="{ backgroundImage: 'url(assets/map/locations/' + locId + '.png)' }"
         @click="displayLocationInfos()">
     </canvas>
-    <!--<p v-if="getLocationWithActions.Location"> getLocationWithActions = {{this.getLocationWithActions.Location.Description}}</p>-->
   </div>
 </template>
 
@@ -14,8 +13,6 @@
   import { bus } from "@/pages/World/main";
   const axios = require('axios');
   import { store, mapState, mapActions, mapGetters } from 'vuex'
-  //import { getLocationWithActions } from "@/shared/axiosCalls";
-  //import locationModule from "@/api/stores/location.module";
 
 
   export default {
@@ -29,13 +26,7 @@
     data() {
       return {
         actions: [],
-        //locationWithActions : ""
       }
-      
-    },
-    created() { 
-      //this.getLocationWithActions = axiosCalls.getLocationWithActions;
-      console.log('0')
     },
     computed:{
       ...mapState(['locationWithActions']),
@@ -43,12 +34,8 @@
     },
     methods: {
       ...mapActions(['fetchLocationWithActions', 'fooLocation', 'foo']),
-      displayLocationInfos(){ //https://haxzie.com/architecting-http-clients-vue-js-network-layer !!!!!
-        console.log('1') //https://stackoverflow.com/questions/52092873/how-do-i-make-axios-api-call-in-a-separate-component-file
+      displayLocationInfos(){
         this.fetchLocationWithActions(this.locId);
-        //ca doit juste fetch. On doit utiliser le getter pour accéder de manière asynchrone
-        console.log('5 - axios called :');
-        console.log(this.locationWithActions);
         //bus.$emit("selectLocation", this.locationWithActions);
       }
     }

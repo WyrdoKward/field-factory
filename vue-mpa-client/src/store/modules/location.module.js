@@ -16,11 +16,8 @@ const getters = {
 const actions = {
     async fetchLocationWithActions({ commit }, locId) {
         try {
-            console.log('2 - locId :'+locId);
             const response = await getLocationWithActions(locId)
             .then(res => {
-                console.log('3 - res :')
-                console.log(res);
                 commit('SET_LOCATIONWITHACTIONS', res.data);
             }); 
         } catch (error) {
@@ -34,9 +31,6 @@ const actions = {
 
 const mutations = {
     SET_LOCATIONWITHACTIONS(state, data) {
-
-        console.log('4 - rmutateur : ');
-        console.log(data);
         state.locationWithActions = data;
     }
 }

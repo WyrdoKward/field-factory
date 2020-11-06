@@ -3,8 +3,7 @@
   <div v-if="isLocationLoaded" class="selectedLocationContainer" >
   debug = {{this.getLastSelectedLocation}}
     <h1>{{Location.Title}}</h1>
-    <p>{{Location.Description}}<p>
-      
+    <p>{{Location.Description}}<p>     
  
     <div v-if="!isExploreActive" class="actions" >
       <!--<div v-for="action in location.Actions" >
@@ -71,8 +70,8 @@ export default {
     },
   methods:{
     exploreLocation(){ 
-      console.log('getEvent('+this.idLocation );
-        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.idLocation});
+      console.log('getEvent('+this.Location.Id );
+        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.Location.Id});
         const options = {headers: {'Content-Type': 'application/json'}};
       axios
       .post('http://localhost:8080/api/Explore', json, options)
