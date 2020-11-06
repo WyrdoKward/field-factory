@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import store from '../../api/stores/location.module' // ca sert à qqch ?
+import store from '../../store'
 
 Vue.config.productionTip = false
 export const bus = new Vue();

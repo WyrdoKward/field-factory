@@ -22,7 +22,7 @@ const actions = {
       commit("removeUser", id)
     },
     async foo({commit}){
-        console.log('foo');
+        console.log('foo test');
     },
     async fooParam({commit}, payload){
         console.log('payload :');

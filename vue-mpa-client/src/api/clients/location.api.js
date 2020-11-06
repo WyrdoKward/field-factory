@@ -1,6 +1,6 @@
 import httpClient from './httpClient';
 
-const END_POINT = '/location/';
+const END_POINT = 'api/location/';
 
 // Routes
 const getLocationWithActions = (locId) => httpClient.get(END_POINT+locId+'/withactions');

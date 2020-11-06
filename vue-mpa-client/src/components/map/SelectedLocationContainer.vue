@@ -1,26 +1,27 @@
 <template>
-  <div v-if="this.isLocationActive" class="selectedLocationContainer" >
-    <h1>{{this.location.Title}}</h1>
-    <p>{{this.location.Description}}<p>
+<div>
+  <div v-if="isLocationLoaded" class="selectedLocationContainer" >
+  debug = {{this.getLastSelectedLocation}}
+    <h1>{{Location.Title}}</h1>
+    <p>{{Location.Description}}<p>
+      
+ 
     <div v-if="!isExploreActive" class="actions" >
       <!--<div v-for="action in location.Actions" >
         <h2>{{action}}</h2>
       </div>-->
       <button type="button" @click="exploreLocation()" style="margin-bottom: 80px;">Explore</button>
     </div>
-    <LocationExplore v-if="this.isExploreActive" :explore="this.explore"/>
+    <LocationExplore v-if="this.isExploreActive" :explore="Explore"/>
   </div>
   <div v-else class="selectedLocationContainer empty"></div> 
+</div>
 </template>
 
 <script>
-import POSTExploreMockdummyLocation from '@/utils/POSTExploreMockdummyLocation.json'
-import POSTExploreMockeglingen from '@/utils/POSTExploreMockeglingen.json'
-const mock = {}
-mock['dummyLocation'] = POSTExploreMockdummyLocation;
-mock['eglingen'] = POSTExploreMockeglingen;
 
 
+  import { store, mapState, mapActions, mapGetters } from 'vuex'
 import { bus } from "@/pages/World/main";
 const axios = require('axios');
 
@@ -36,7 +37,6 @@ export default {
       idLocation : null,
       isLocationActive: false,
       location : null,
-      isExploreActive : false,
       explore : null
     }
   },
@@ -54,6 +54,21 @@ export default {
       }
     });
   },
+    computed:{
+      ...mapGetters(['getLastSelectedLocation']),
+      isLocationLoaded : function(){
+        return (typeof(this.getLastSelectedLocation) !== 'undefined' && this.getLastSelectedLocation !== null)
+      },
+      isExploreActive : function(){
+        return this.getLastSelectedLocation.Explore !== null
+      },
+      Location : function(){
+        return this.getLastSelectedLocation.Location;
+      },
+      Explore : function(){
+        return this.getLastSelectedLocation.Explore;
+      }    
+    },
   methods:{
     exploreLocation(){ 
       console.log('getEvent('+this.idLocation );
