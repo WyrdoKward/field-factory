@@ -69,9 +69,9 @@ export default {
       }    
     },
   methods:{
-    exploreLocation(){ 
-      console.log('getEvent('+this.Location.Id );
-        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.Location.Id});
+    exploreLocation(){  //TODO passer par un store ou direct explore.api ?
+      console.log('getEvent('+this.getLastSelectedLocation.Id );
+        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.getLastSelectedLocation.Id});
         const options = {headers: {'Content-Type': 'application/json'}};
       axios
       .post('http://localhost:8080/api/Explore', json, options)
