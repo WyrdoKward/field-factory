@@ -35,6 +35,19 @@ namespace FieldFactory.Core.Verbs
         }
 
         /// <summary>
+        /// Récupère une Exploration à une location donnée
+        /// </summary>
+        /// <param name="exploration"></param>
+        /// <returns></returns>
+        public Explore GetExploreForLocation(Explore queryExploration)
+        {
+            var exploreDto = exploreProvider.Get(queryExploration.IdPlayer, queryExploration.IdLocation);
+            var explore = new Explore(exploreDto);
+
+            return explore;
+        }
+
+        /// <summary>
         /// Récupère l'exploration correspondante et enregistre le choix du user et la date du nextStep
         /// </summary>
         /// <param name="queryExploration">Explore from query with IdPlayer, IdLocation, IdChoice</param>

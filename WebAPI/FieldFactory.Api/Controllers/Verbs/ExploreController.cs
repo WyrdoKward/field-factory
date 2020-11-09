@@ -23,6 +23,17 @@ namespace FieldFactory.Api.Controllers.Verbs
             }
         }
 
+        //GET api/Explore/{idLocation}
+        [HttpGet("{idLocation}", Name = "GetExploreForLocation")]
+        public string GetExploreForLocation(string idLocation)
+        {
+            var query = new GetExploreForLocationQuery(executor.Identity.Player.IdPlayer, idLocation);
+            var explore = executor.Execute(query);
+
+            return ConvertResponseToJson(explore);
+
+        }
+
         // POST: api/Explore
         [HttpPost]
         public string Post([FromBody] AddExplorationWithFollower vm)

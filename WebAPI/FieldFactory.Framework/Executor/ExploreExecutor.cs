@@ -38,5 +38,15 @@ namespace FieldFactory.Framework.Executor
 
             return exploreInteractor.RegisterEventChoiceOnLocation(exploration);            
         }
+
+        public Explore Execute(GetExploreForLocationQuery query)
+        {
+            Explore exploration = new Explore()
+            {
+                IdPlayer = query.IdPlayer,
+                IdLocation = query.IdLocation
+            };
+            return exploreInteractor.GetExploreForLocation(exploration);
+        }
     }
 }
