@@ -33,9 +33,10 @@
       ...mapGetters(['getLocationWithActions'])    
     },
     methods: {
-      ...mapActions(['fetchLocationWithActions', 'fooLocation', 'foo']),
+      ...mapActions(['fetchLocationWithActions', 'fetchSelectedExploration', 'foo']),
       displayLocationInfos(){
         this.fetchLocationWithActions(this.locId);
+        this.fetchSelectedExploration(this.locId); // récup l'explore juste après avoir fait le get location?
         //bus.$emit("selectLocation", this.locationWithActions);
       }
     }

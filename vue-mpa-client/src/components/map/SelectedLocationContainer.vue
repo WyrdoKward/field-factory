@@ -11,7 +11,7 @@
       </div>-->
       <button type="button" @click="exploreLocation()" style="margin-bottom: 80px;">Explore</button>
     </div>
-    <LocationExplore v-if="this.isExploreActive" :explore="Explore"/>
+    <LocationExplore v-if="this.isExploreActive" />
   </div>
   <div v-else class="selectedLocationContainer empty"></div> 
 </div>
@@ -21,7 +21,8 @@
 
 
   import { store, mapState, mapActions, mapGetters } from 'vuex'
-import { bus } from "@/pages/World/main";
+import { bus } from "@/pages/World/main";// import the api endpoints
+//import { AddNewExploration } from "@/api/clients/explore.api"
 const axios = require('axios');
 
 export default {
@@ -54,7 +55,7 @@ export default {
     });
   },
     computed:{
-      ...mapGetters(['getLastSelectedLocation']),
+      ...mapGetters(['getLastSelectedLocation','getLastSelectedExploration']),
       isLocationLoaded : function(){
         return (typeof(this.getLastSelectedLocation) !== 'undefined' && this.getLastSelectedLocation !== null)
       },

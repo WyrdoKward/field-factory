@@ -1,7 +1,7 @@
 <template>
-  <div v-if="explore" class="locationEvent" >
-    <h2>{{this.explore.Event.Title}}</h2>
-    <div v-for="step in this.explore.Event.Steps" :key="step.Id" class="eventStep" >
+  <div v-if="this.Explore" class="locationEvent" >
+    <h2>{{this.Explore.Event.Title}}</h2>
+    <div v-for="step in this.Explore.Event.Steps" :key="step.Id" class="eventStep" >
       <h3>{{step.Text}}</h3>
       <ul v-if="step.Choices" class="choices">
           <li class="choice" v-for="choice in step.Choices" :key="choice.Id" :class="{isSelected: choice.IsSelected}">
@@ -9,18 +9,16 @@
           </li>
       </ul>
     </div>
-      <Timer :deadline="explore.DateNextStep" @onFinish="log()" />
+      <Timer :deadline="explore.DateNextStep" @onFinish="timerOut()" />
   </div>
 </template>
 
 <script>
 const axios = require('axios');
+import { AddNewExploration } from "@/api/clients/explore.api"
 
   export default {
-    name: 'LocationEvent',
-    props: {
-      explore : Object
-    },
+    name: 'LocationExplore',
     data() {
       return {
       }
@@ -28,16 +26,22 @@ const axios = require('axios');
   components :{
     Timer : () => import('@/components/core/Timer.vue')
   },
-    methods: {
-      log(){
-        console.log('booooo');
-      },
+  computed:{
+      ...mapGetters(['getLastSelectedExploration']),
+      Explore : function(){
+        return this.getLastSelectedExploration;
+      }  
+  },
+  methods: {
+      ...mapActions(['fetchLocationWithActions', 'fooLocation', 'foo']),
       processChoice(choiceId) {
         console.log('Location: #'+this.explore.IdLocation);
         console.log('Choice: #'+choiceId);
+        //this.fetchSelectedExploration(this.explore.IdLocation, choiceId);
+        
         // PUT: api/Explore/
         // {"IdLocation": "dummyLocation", "IdChoice": 2}
-        const json = JSON.stringify({IdLocation: this.explore.IdLocation,  IdChoice: choiceId});
+        /*const json = JSON.stringify({IdLocation: this.explore.IdLocation,  IdChoice: choiceId});
         const options = {headers: {'Content-Type': 'application/json'}};
         axios
         .put('http://localhost:8080/api/Explore', json, options)
@@ -49,8 +53,11 @@ const axios = require('axios');
           console.log('FAIL');
           console.log(err.response);
           alert('Etape pas finie ! (5 min)')
-        });
+        });*/
       },
+      timerOut(){
+        consol.log('Finished '+this.explore.IdLocation);
+      }
     }
   }
 </script>

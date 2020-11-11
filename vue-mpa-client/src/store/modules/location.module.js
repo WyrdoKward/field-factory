@@ -14,7 +14,7 @@ const getters = {
 }
 
 const actions = {
-    async fetchLocationWithActions({ commit }, locId) {
+    async fetchLocationWithActions({ commit }, locId) { //récup l'explore via un autre endpoint pour qu'il soit dans le bon store ? Là on a Explore dans le store de location...
         try {
             const response = await getLocationWithActions(locId)
             .then(res => {
