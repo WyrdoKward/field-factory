@@ -41,12 +41,7 @@ namespace FieldFactory.Framework.Executor
 
         public Explore Execute(GetExploreForLocationQuery query)
         {
-            Explore exploration = new Explore()
-            {
-                IdPlayer = query.IdPlayer,
-                IdLocation = query.IdLocation
-            };
-            return exploreInteractor.GetExploreForLocation(exploration);
+            return exploreInteractor.GetExplorationForLocation(query.IdPlayer, query.IdLocation);
         }
     }
 }
