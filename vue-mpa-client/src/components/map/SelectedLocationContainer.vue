@@ -37,7 +37,8 @@ export default {
       idLocation : null,
       isLocationActive: false,
       location : null,
-      explore : null
+      explore : null,
+      //isExploreActive : false
     }
   },
   created() {
@@ -65,15 +66,27 @@ export default {
       Location : function(){
         return this.getLastSelectedLocation.Location;
       },
+      IdLocation : function(){
+        return this.getLastSelectedLocation.Id;
+      },
       Explore : function(){
         return this.getLastSelectedLocation.Explore;
       }    
     },
   methods:{
+      ...mapActions(['fetchSelectedExploration','addNewExploration','fetchLocationWithActions']),
     exploreLocation(){  //TODO passer par un store ou direct explore.api ?
-      console.log('getEvent('+this.getLastSelectedLocation.Id );
-        const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.getLastSelectedLocation.Id});
-        const options = {headers: {'Content-Type': 'application/json'}};
+        console.log('exploreLocation :'+this.getLastSelectedLocation.Id );
+        var payload = {};
+        payload.IdFollower = 'Gustav';
+        payload.IdLocation = this.IdLocation;
+        this.addNewExploration(payload);
+        this.fetchLocationWithActions(this.locId);
+        //this.isExploreActive = true;
+      /*
+      const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.getLastSelectedLocation.Id});
+      const options = {headers: {'Content-Type': 'application/json'}};
+      
       axios
       .post('http://localhost:8080/api/Explore', json, options)
       .then(res => {
@@ -85,7 +98,7 @@ export default {
       }).catch(err => {
         console.log('FAIL');
         console.log(err.response);
-      });
+      });*/
     }
   },
 };

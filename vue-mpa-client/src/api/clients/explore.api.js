@@ -4,12 +4,15 @@ const END_POINT = 'api/explore/';
 
 //const json = JSON.stringify({IdLocation: this.explore.IdLocation,  IdChoice: choiceId});
 // Routes
-const ProcessChoiceOnLocation = (IdLocation, IdChoice) => httpClient.put(END_POINT, {IdLocation, IdChoice});
+const PutChoiceOnLocation = (IdLocation, IdChoice) => httpClient.put(END_POINT, {IdLocation, IdChoice});
 const GetExploreOnLocation = (IdLocation) => httpClient.get(END_POINT+IdLocation);
-
+//const PostExploreOnLocation = (IdLocation, IdFollower) => httpClient.post(END_POINT, JSON.stringify({IdFollower: IdFollower,  IdLocation: IdLocation}));
+const PostExploreOnLocation = (IdLocation, IdFollower) => httpClient.post(END_POINT, {IdFollower, IdLocation});
+//seul IdLocation est envoyé à la requete ??
 export {
-    ProcessChoiceOnLocation,
-    GetExploreOnLocation
+    PutChoiceOnLocation,
+    GetExploreOnLocation,
+    PostExploreOnLocation
 }
 
 

@@ -19,7 +19,7 @@ const actions = {
             const response = await getLocationWithActions(locId)
             .then(res => {
                 const payload = res;
-                payload.data.IdLoc = locId;
+                payload.IdLoc = locId;
                 commit('SET_LOCATIONWITHACTIONS', payload);
             }); 
         } catch (error) {
@@ -34,7 +34,7 @@ const actions = {
 const mutations = {
     SET_LOCATIONWITHACTIONS(state, payload) {
         state.locationWithActions = payload.data;
-        state.locationWithActions.Id = payload.data.IdLoc
+        state.locationWithActions.Id = payload.IdLoc
     }
 }
 

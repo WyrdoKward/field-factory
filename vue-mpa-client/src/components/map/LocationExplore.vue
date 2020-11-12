@@ -9,13 +9,15 @@
           </li>
       </ul>
     </div>
-      <Timer :deadline="explore.DateNextStep" @onFinish="timerOut()" />
+      <Timer :deadline="Explore.DateNextStep" @onFinish="timerOut()" />
   </div>
 </template>
 
 <script>
-const axios = require('axios');
-import { AddNewExploration } from "@/api/clients/explore.api"
+  const axios = require('axios');
+  import { AddNewExploration } from "@/api/clients/explore.api"
+  import { store, mapState, mapActions, mapGetters } from 'vuex'
+
 
   export default {
     name: 'LocationExplore',
@@ -33,12 +35,16 @@ import { AddNewExploration } from "@/api/clients/explore.api"
       }  
   },
   methods: {
-      ...mapActions(['fetchLocationWithActions', 'fooLocation', 'foo']),
+      ...mapActions(['fetchLocationWithActions', 'processChoiceOnLocation', 'fetchSelectedExploration']),
       processChoice(choiceId) {
-        console.log('Location: #'+this.explore.IdLocation);
+        console.log('Location: #'+this.Explore.IdLocation);
         console.log('Choice: #'+choiceId);
-        //this.fetchSelectedExploration(this.explore.IdLocation, choiceId);
-        
+        var payload = {};
+        payload.IdLocation = this.Explore.IdLocation;
+        payload.IdChoice = choiceId;
+        this.processChoiceOnLocation(payload);
+        //Renvoyer l'info au Timer
+
         // PUT: api/Explore/
         // {"IdLocation": "dummyLocation", "IdChoice": 2}
         /*const json = JSON.stringify({IdLocation: this.explore.IdLocation,  IdChoice: choiceId});
@@ -56,7 +62,8 @@ import { AddNewExploration } from "@/api/clients/explore.api"
         });*/
       },
       timerOut(){
-        consol.log('Finished '+this.explore.IdLocation);
+        console.log('Finished '+this.Explore.IdLocation);
+        this.fetchSelectedExploration(this.Explore.IdLocation); //Le get doit prpcess le next step
       }
     }
   }

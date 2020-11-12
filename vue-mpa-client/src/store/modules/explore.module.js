@@ -1,5 +1,5 @@
 // import the api endpoints
-import { ProcessChoiceOnLocation, GetExploreOnLocation } from "@/api/clients/explore.api"
+import { PostExploreOnLocation, GetExploreOnLocation, PutChoiceOnLocation } from "@/api/clients/explore.api"
 
 const state = {
     selectedExploration: null
@@ -27,6 +27,34 @@ const actions = {
             commit('SET_SELECTEDEXPLORATION', null);
             console.log(error);
         }    
+    },
+    async addNewExploration({commit}, payload){
+        try {
+            const response = await PostExploreOnLocation(payload.IdLocation, payload.IdFollower)
+            .then(res => {
+                const payload = res;
+                console.log('addNewExploration')
+                console.log(res)
+                commit('SET_SELECTEDEXPLORATION', payload.data);
+            }); 
+        } catch (error) {
+            console.log(error);
+        } 
+    },
+    async processChoiceOnLocation({commit}, payload){
+        console.log(payload.IdLocation+' - '+payload.IdChoice)
+        try {
+            const response = await PutChoiceOnLocation(payload.IdLocation, payload.IdChoice)
+            .then(res => {
+                const payload = res;
+                console.log('processChoiceOnLocation')
+                console.log(res)
+                commit('SET_SELECTEDEXPLORATION', payload.data);
+            }); 
+        } catch (error) {
+            console.log(error);
+        } 
+
     }
 }
 
