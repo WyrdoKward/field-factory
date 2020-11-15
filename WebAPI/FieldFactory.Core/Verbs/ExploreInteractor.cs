@@ -123,8 +123,10 @@ namespace FieldFactory.Core.Verbs
 
             //On met à jour l'explo en BDD avec le nouveau Step et timer
             exploration.IdStep = nextStep.Id;
-            exploration.SetDateNextStep(DateTime.Now.AddMinutes(nextStep.DurationInMin));
+            //exploration.SetDateNextStep(DateTime.Now.AddMinutes(nextStep.DurationInMin));
             exploration.Event.Steps = exploration.Event.Steps; // ???
+            exploration.IdChoice = null; // On supprime le choix une fois qu'il a été traité
+
 
             // TODO Sanitize aussi le current step pour enlever les choices pas faits ( != idChoice)? ou trouver un moyen de savoir quel choix a été fait par le user ? => bool "selected" a coté de "Id", "Text" et "Outcomes"
             nextStep.Sanitize();
