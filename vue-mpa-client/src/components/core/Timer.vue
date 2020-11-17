@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!--deadLine: {{deadline}} - {{remainingTime}}<br />
+    lastDeadline = {{this.lastDeadline}}<br />-->
     <div class="text-center" v-if="remainingTime">
         <span v-if="days">{{ days }}:</span ><span v-if="hours">{{ hours | formatTime }}:</span><span>{{ minutes | formatTime }}:{{ seconds | formatTime }}</span><br />
      </div>
@@ -25,6 +27,7 @@ export default {
   },
   data() {
     return {
+      lastDeadline : this.deadline,
       remainingTime: Date.parse(this.deadline) - Date.parse(new Date()) //in ms
     };
   },
@@ -56,12 +59,25 @@ export default {
   methods: {
     countdown() {
       this.remainingTime = Date.parse(this.deadline) - Date.parse(new Date());
+      
       if (this.remainingTime > 0) {
         setTimeout(this.countdown, this.speed);
       } else {
         console.log('Finish');
         this.remainingTime = null;
+        setTimeout(this.hasDeadlineChanged, 1000);
         this.$emit('onFinish')
+      }
+    },
+    hasDeadlineChanged(){ //Remplacer ca par un event au lieu d'apeller ca ttes les secondes?
+      console.log('HasChanged ?') 
+      setTimeout(this.hasDeadlineChanged, 1000);
+      if(this.lastDeadline != this.deadline){
+        console.log('DeadLine Changed !')
+        this.lastDeadline = this.deadline
+        this.remainingTime = Date.parse(this.deadline) - Date.parse(new Date());
+        console.log('reemaining time = '+this.remainingTime)
+        setTimeout(this.countdown, this.speed);
       }
     }
   }

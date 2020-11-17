@@ -1,14 +1,13 @@
 <template>
   <div id="app">
-    <div>
       <DebugLoginButtons/>
       <TilesContainer/>
       <SelectedLocationContainer />
-    </div>
+  </div>
     <!--<footer>
       <a href="home.html">Home</a>
       <a href="test.html">Test</a>
-    </footer>-->
+    </footer>
     <svg>
       <defs>
         <clipPath id="clip_mine">
@@ -18,8 +17,7 @@
                     21,91 32,57 2,35 39,35"/>
         </clipPath>
       </defs>
-    </svg>
-  </div>
+    </svg>-->
 </template>
 
 <script>

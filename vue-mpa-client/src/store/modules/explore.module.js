@@ -18,7 +18,7 @@ const actions = {
             const response = await GetExploreOnLocation(IdLocation)
             .then(res => {
                 const payload = res;
-                console.log('fetchSelectedExploration')
+                console.log('[explore.module] fetchSelectedExploration')
                 console.log(res)
                 commit('SET_SELECTEDEXPLORATION', payload.data);
             }); 
@@ -33,7 +33,7 @@ const actions = {
             const response = await PostExploreOnLocation(payload.IdLocation, payload.IdFollower)
             .then(res => {
                 const payload = res;
-                console.log('addNewExploration')
+                console.log('[explore.module] addNewExploration')
                 console.log(res)
                 commit('SET_SELECTEDEXPLORATION', payload.data);
             }); 
@@ -47,7 +47,7 @@ const actions = {
             const response = await PutChoiceOnLocation(payload.IdLocation, payload.IdChoice)
             .then(res => {
                 const payload = res;
-                console.log('processChoiceOnLocation')
+                console.log('[explore.module] processChoiceOnLocation')
                 console.log(res)
                 commit('SET_SELECTEDEXPLORATION', payload.data);
             }); 

@@ -1,7 +1,7 @@
 <template>
 <div>
   <div v-if="isLocationLoaded" class="selectedLocationContainer" >
-  debug = {{this.getLastSelectedLocation}}
+  getLastSelectedExploration = {{this.getLastSelectedExploration}}
     <h1>{{Location.Title}}</h1>
     <p>{{Location.Description}}<p>     
  
@@ -21,9 +21,7 @@
 
 
   import { store, mapState, mapActions, mapGetters } from 'vuex'
-import { bus } from "@/pages/World/main";// import the api endpoints
-//import { AddNewExploration } from "@/api/clients/explore.api"
-const axios = require('axios');
+//import { bus } from "@/pages/World/main";// import the api endpoints
 
 export default {
   name: "SelectedLocationContainer",
@@ -42,7 +40,7 @@ export default {
     }
   },
   created() {
-    bus.$on("selectLocation", data => {
+    /*bus.$on("selectLocation", data => {
       console.log('Entering selectLocationContainer : '+data.Location.Title);
       this.isExploreActive = false; // Réinitialise le div actions au changement de location
       this.isLocationActive = true;
@@ -53,7 +51,7 @@ export default {
         this.isExploreActive = true;
         this.explore = data.Explore;
       }
-    });
+    });*/
   },
     computed:{
       ...mapGetters(['getLastSelectedLocation','getLastSelectedExploration']),
@@ -61,7 +59,7 @@ export default {
         return (typeof(this.getLastSelectedLocation) !== 'undefined' && this.getLastSelectedLocation !== null)
       },
       isExploreActive : function(){
-        return this.getLastSelectedLocation.Explore !== null
+        return this.getLastSelectedExploration !== null
       },
       Location : function(){
         return this.getLastSelectedLocation.Location;
@@ -70,7 +68,7 @@ export default {
         return this.getLastSelectedLocation.Id;
       },
       Explore : function(){
-        return this.getLastSelectedLocation.Explore;
+        return this.getLastSelectedExploration;
       }    
     },
   methods:{
@@ -82,23 +80,6 @@ export default {
         payload.IdLocation = this.IdLocation;
         this.addNewExploration(payload);
         this.fetchLocationWithActions(this.locId);
-        //this.isExploreActive = true;
-      /*
-      const json = JSON.stringify({IdFollower: 'Gustav',  IdLocation: this.getLastSelectedLocation.Id});
-      const options = {headers: {'Content-Type': 'application/json'}};
-      
-      axios
-      .post('http://localhost:8080/api/Explore', json, options)
-      .then(res => {
-        this.explore = res.data;
-        //this.explore = mock[this.idLocation];
-        this.isExploreActive = true;
-        console.log('PostExplore');
-        console.log(this.explore);
-      }).catch(err => {
-        console.log('FAIL');
-        console.log(err.response);
-      });*/
     }
   },
 };

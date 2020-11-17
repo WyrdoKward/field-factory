@@ -29,10 +29,10 @@
     Timer : () => import('@/components/core/Timer.vue')
   },
   computed:{
-      ...mapGetters(['getLastSelectedExploration']),
-      Explore : function(){
-        return this.getLastSelectedExploration;
-      }  
+    ...mapGetters(['getLastSelectedExploration']),
+    Explore : function(){
+      return this.getLastSelectedExploration;
+    }
   },
   methods: {
       ...mapActions(['fetchLocationWithActions', 'processChoiceOnLocation', 'fetchSelectedExploration']),
@@ -42,28 +42,14 @@
         var payload = {};
         payload.IdLocation = this.Explore.IdLocation;
         payload.IdChoice = choiceId;
-        this.processChoiceOnLocation(payload);
-        //Renvoyer l'info au Timer
-
         // PUT: api/Explore/
-        // {"IdLocation": "dummyLocation", "IdChoice": 2}
-        /*const json = JSON.stringify({IdLocation: this.explore.IdLocation,  IdChoice: choiceId});
-        const options = {headers: {'Content-Type': 'application/json'}};
-        axios
-        .put('http://localhost:8080/api/Explore', json, options)
-        .then(res => {
-          this.explore = res.data;
-          console.log('PutExplore');
-          console.log(res.data);
-        }).catch(err => {
-          console.log('FAIL');
-          console.log(err.response);
-          alert('Etape pas finie ! (5 min)')
-        });*/
+        this.processChoiceOnLocation(payload);
+        this.fetchLocationWithActions(this.Explore.IdLocation);
+        
       },
       timerOut(){
         console.log('Finished '+this.Explore.IdLocation);
-        this.fetchSelectedExploration(this.Explore.IdLocation); //Le get doit prpcess le next step
+        this.fetchSelectedExploration(this.Explore.IdLocation);
       }
     }
   }
