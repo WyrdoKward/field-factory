@@ -1,7 +1,7 @@
 <template>
   <div id="app">
       <DebugLoginButtons/>
-      <Building :buildingType="oldBookStore"/>
+      <Building :buildingType="'oldBookStore'"/>
       <ConstructibleList />
   </div>
 </template>
