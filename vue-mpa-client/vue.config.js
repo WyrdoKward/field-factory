@@ -17,6 +17,12 @@ module.exports = {
       template: 'public/index.html',
       title: 'World Map',
       chunks: [ 'chunk-vendors', 'chunk-common', 'world' ]
+    },
+    'headquarters': {
+      entry: './src/pages/Headquarters/main.js',
+      template: 'public/index.html',
+      title: 'Headquarters',
+      chunks: [ 'chunk-vendors', 'chunk-common', 'headquarters' ]
     }
   },
   devServer: {

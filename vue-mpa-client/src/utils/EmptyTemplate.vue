@@ -5,6 +5,8 @@
 </template>
 
 <script>
+  import { store, mapState, mapActions, mapGetters } from 'vuex'
+
   export default {
     name: 'EmptyTemplate',
     components: {
@@ -12,6 +14,15 @@
     },
     props: {
       message: String,
+    },
+    created() {
+        //fetch GET /furniture/possessed
+    },
+    computed:{
+      ...mapGetters(['getterDuModule']),
+      Field : function(){
+        return this.getterDuModule;
+      }
     },
     data() {
       return {
