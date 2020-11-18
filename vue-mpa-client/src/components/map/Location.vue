@@ -1,16 +1,19 @@
 <template> 
+  <div class="locationContainer" :title="locId">
     <Town v-if="locId=='townCenter'" :loc="locId" />   
     <canvas v-else class="location"
       :style="{ backgroundImage: 'url(assets/map/locations/' + locId + '.png)' }"
-        @click="displayLocationInfos()"
-        @mousehover="hoverEffect()">
+        @click="displayLocationInfos()">
     </canvas>
+  </div>
 </template>
 
 <script>
 
   import { bus } from "@/pages/World/main";
   const axios = require('axios');
+  import { store, mapState, mapActions, mapGetters } from 'vuex'
+
 
   export default {
     name: 'Location',
@@ -23,31 +26,19 @@
     data() {
       return {
         actions: [],
-        locationWithActions : ""
       }
-      
+    },
+    computed:{
+      ...mapState(['locationWithActions']),
+      ...mapGetters(['getLocationWithActions'])    
     },
     methods: {
-      hoverEffect(){
-
-      },
+      ...mapActions(['fetchLocationWithActions', 'fetchSelectedExploration', 'foo']),
       displayLocationInfos(){
-        //Nouveau composant
-        console.log('displayLocationInfos')
-        axios
-        .get('http://localhost:8080/api/location/'+this.locId+'/withactions')
-        .then(res => {
-          this.locationWithActions = res.data;
-          this.locationWithActions.IdLocation = this.locId;
-          console.log('SUCCES');
-          console.log(res.data);
-          bus.$emit("selectLocation", this.locationWithActions);
-          console.log(this.locationWithActions.Location.Id +' : ' +this.locationWithActions.Location.Title+ '\r\n\r\n'+ this.locationWithActions.Location.Description + '\r\n\r\nYou can :\r\n' + this.locationWithActions.Location.Verbs);
-      
-        }).catch(err => {
-          console.log('FAIL');
-          console.log(err.response);
-        });}
+        this.fetchLocationWithActions(this.locId);
+        this.fetchSelectedExploration(this.locId); // récup l'explore juste après avoir fait le get location?
+        //bus.$emit("selectLocation", this.locationWithActions);
+      }
     }
   }
 </script>
@@ -55,14 +46,17 @@
 <style lang="scss">
 .location{
     overflow: hidden;
-    height: 198px;
-    width: 174px;
-    margin: auto;
+    height: 100px;
+    width: 150px;
+    padding: 49px 12px;
     float: left;
     background-position-x: -20px;
+    background-position-y: 10px;
+
 }
 
 .location:hover{
   background-position-x: 190px;
+  cursor: pointer;
 }
 </style>
