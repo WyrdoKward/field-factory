@@ -31,6 +31,16 @@ export default {
       remainingTime: Date.parse(this.deadline) - Date.parse(new Date()) //in ms
     };
   },
+  watch: {
+    deadline: function(newValue, oldValue) {
+      console.log("WATCH !");
+      console.log(newValue, oldValue);
+      this.lastDeadline = newValue;
+      this.remainingTime = Date.parse(this.deadline) - Date.parse(new Date());
+      console.log('remaining time = '+this.remainingTime);
+      setTimeout(this.countdown, this.speed);
+    }
+  },
   mounted() {
     setTimeout(this.countdown, 1000);
   },
@@ -65,11 +75,11 @@ export default {
       } else {
         console.log('Finish');
         this.remainingTime = null;
-        setTimeout(this.hasDeadlineChanged, 1000);
+        //setTimeout(this.hasDeadlineChanged, 1000);
         this.$emit('onFinish')
       }
     },
-    hasDeadlineChanged(){ //Remplacer ca par un event au lieu d'apeller ca ttes les secondes?
+    /*hasDeadlineChanged(){ //Remplacer ca par un event au lieu d'apeller ca ttes les secondes?
       console.log('HasChanged ?') 
       setTimeout(this.hasDeadlineChanged, 1000);
       if(this.lastDeadline != this.deadline){
@@ -79,7 +89,7 @@ export default {
         console.log('reemaining time = '+this.remainingTime)
         setTimeout(this.countdown, this.speed);
       }
-    }
+    }*/
   }
 }
 </script>

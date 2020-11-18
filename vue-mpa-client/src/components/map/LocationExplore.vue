@@ -14,8 +14,6 @@
 </template>
 
 <script>
-  const axios = require('axios');
-  import { AddNewExploration } from "@/api/clients/explore.api"
   import { store, mapState, mapActions, mapGetters } from 'vuex'
 
 

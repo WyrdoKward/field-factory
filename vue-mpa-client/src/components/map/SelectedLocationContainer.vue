@@ -1,7 +1,6 @@
 <template>
 <div>
   <div v-if="isLocationLoaded" class="selectedLocationContainer" >
-  getLastSelectedExploration = {{this.getLastSelectedExploration}}
     <h1>{{Location.Title}}</h1>
     <p>{{Location.Description}}<p>     
  
