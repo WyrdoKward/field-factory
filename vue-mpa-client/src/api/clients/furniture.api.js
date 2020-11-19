@@ -3,8 +3,8 @@ import httpClient from './httpClient';
 const END_POINT = 'api/furniture/';
 
 // Routes
-const getFurniturePossessed = () => httpClient.get(END_POINT+'/possessed');
-const getFurnitureAvailable = () => httpClient.get(END_POINT+'/available');
+const getFurniturePossessed = () => httpClient.get(END_POINT+'possessed');
+const getFurnitureAvailable = () => httpClient.get(END_POINT+'available');
 
 export {
     getFurniturePossessed,

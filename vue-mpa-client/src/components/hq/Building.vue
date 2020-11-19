@@ -21,6 +21,7 @@
     },
     created() {
         //fetch GET /furniture/possessed
+        this.fetchPossessedFurnitures();
     },
     computed:{
       ...mapGetters(['getPossessedFurnitures']),
@@ -29,6 +30,7 @@
       }
     },
     methods: {
+      ...mapActions(['fetchPossessedFurnitures']),
       addNewFurniture(idFurniture) {
         //POST /provide/{idFurniture}
       },

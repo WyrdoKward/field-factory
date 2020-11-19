@@ -20,8 +20,16 @@
     },
     created() {
         //fetch GET /furniture/available
+        this.fetchAvailableFurnitures();
+    },
+    computed:{
+      ...mapGetters(['getAvailableFurnitures']),
+      FurnitureList : function(){
+        return this.getAvailableFurnitures;
+      }
     },
     methods: {
+      ...mapActions(['fetchAvailableFurnitures']),
       addNewFurniture(idFurniture) {
         //POST /provide/{idFurniture}
       },

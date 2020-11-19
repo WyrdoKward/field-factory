@@ -30,6 +30,13 @@
       }
     },
     methods: {
+      ...mapActions(['actionDuModule','addNewExploration','fetchLocationWithActions']),
+      callStore(param1){
+        var payload = {};
+        payload.p1 = param1;
+        payload.p2 = this.message;
+        this.actionDuModule(payload);
+      },
       myMethod() {
         return 'pouet'
       }
