@@ -8,7 +8,7 @@ namespace FieldFactory.DataAccess.Providers
 {
     public class ExploreProvider : SQLiteBaseProvider
     {
-        private const int NB_COL_IN_TABLE = 7; //Voir pour gérer nb de col directement dans la requete
+        private const int NB_COL_IN_TABLE = 8; //Voir pour gérer nb de col directement dans la requete
         public void Add(ExploreDTO exploration)
         {
             //Ajouter unicité sur IdPlayer/idlocation
@@ -38,13 +38,19 @@ namespace FieldFactory.DataAccess.Providers
             ExecuteSingleNonQuery(query);
         }
 
-        private List<ExploreDTO> ConvertIntoDto(Dictionary<int, List<string>> rawLocations)
+        private List<ExploreDTO> ConvertIntoDto(Dictionary<int, Dictionary<string, string>> rawLocations)
         {
             var res = new List<ExploreDTO>();
 
             foreach (var rawLocation in rawLocations)
             {
-                res.Add(new ExploreDTO(rawLocation.Value[0], rawLocation.Value[1],rawLocation.Value[2], rawLocation.Value[3], int.Parse(rawLocation.Value[4]), DateTime.Parse(rawLocation.Value[5]), rawLocation.Value[6]));
+                int? idChoice;
+                if (string.IsNullOrEmpty(rawLocation.Value["idChoice"]))
+                    idChoice = null;
+                else
+                    idChoice = int.Parse(rawLocation.Value["idChoice"]);
+
+                res.Add(new ExploreDTO(rawLocation.Value["idPlayer"], rawLocation.Value["idFollower"],rawLocation.Value["idLocation"], rawLocation.Value["idEvent"], int.Parse(rawLocation.Value["idStep"]), idChoice, DateTime.Parse(rawLocation.Value["dateNextStep"]), rawLocation.Value["stepsHistory"]));
             }
 
             return res;

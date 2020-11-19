@@ -17,5 +17,13 @@ namespace FieldFactory.Core.Entities.Map.Event
             Steps = new List<EventStep>();
         }
 
+        public EventStep GetStepByIdOrDefault(int idStep)
+        {
+            if(idStep < 0)
+                idStep = 0;
+
+            return Steps.Where(s => s.Id == idStep).FirstOrDefault();
+        }
+
     }
 }

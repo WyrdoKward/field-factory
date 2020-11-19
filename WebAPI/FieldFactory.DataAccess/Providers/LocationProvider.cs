@@ -14,14 +14,13 @@ namespace FieldFactory.DataAccess.Providers
             return location[0]; 
         }
 
-
-        private List<LocationDTO> ConvertIntoDto(Dictionary<int, List<string>> rawLocations)
+        private List<LocationDTO> ConvertIntoDto(Dictionary<int, Dictionary<string, string>> rawLocations)
         {
             var res = new List<LocationDTO>();
 
             foreach (var rawLocation in rawLocations)
             {
-                res.Add(new LocationDTO() { Id = rawLocation.Value[0], Json = rawLocation.Value[1] });
+                res.Add(new LocationDTO() { Id = rawLocation.Value["idLocation"], Json = rawLocation.Value["json"] });
             }
                 
             return res;

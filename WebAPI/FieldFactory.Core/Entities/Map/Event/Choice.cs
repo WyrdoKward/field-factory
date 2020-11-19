@@ -9,7 +9,7 @@ namespace FieldFactory.Core.Entities.Map.Event
     {
         public int Id;
         public string Text;
-
+        public bool IsSelected;
         public Outcome[] Outcomes;
 
 

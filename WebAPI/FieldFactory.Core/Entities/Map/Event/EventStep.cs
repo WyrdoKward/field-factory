@@ -20,14 +20,18 @@ namespace FieldFactory.Core.Entities.Map.Event
         /// </summary>
         /// <param name="choiceInput"></param>
         /// <returns></returns>
-        public bool IsChoiceInputValid(int choiceInput)
+        public bool IsChoiceInputValid(int? choiceInput)
         {
+            if (choiceInput == null)
+                return false;
+
+            int input = (int)choiceInput;
             int[] possibleChoices = Choices.Select(c => c.Id).ToArray();
-            return possibleChoices.Contains(choiceInput);
+            return possibleChoices.Contains(input);
         }
 
         /// <summary>
-        /// Ne garde que le choice fait pour l'historique, et vide les éléments qu'on ne veut pas montrer à l'utilisateur (outcomes..)
+        /// Vide les éléments qu'on ne veut pas montrer à l'utilisateur (outcomes..)
         /// </summary>
         public void Sanitize()
         {
