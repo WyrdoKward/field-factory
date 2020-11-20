@@ -15,5 +15,14 @@ namespace FieldFactory.Core.Map
 
             return location;
         }
+
+        /// <summary>
+        /// Calcule le temps de trajet entre 2 points sur la map
+        /// </summary>
+        /// <returns>TravelTime, in seconds</returns>
+        public int ProcessTravelTime()
+        {
+            return 60;
+        }
     }
 }

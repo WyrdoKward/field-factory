@@ -1,0 +1,38 @@
+{
+    "Id": 1,
+    "Title": "Dummy Furniture",
+    "Description": "This is a furniture. It''s built in the headquarters and provide bonuses or new actions.",
+    "LevelMax": "3",
+    "Levels": [
+        {
+		"level":"1",
+		"description" : "The level 1 offers a bonus",
+		"cost":
+			{
+			"gold":"200",
+			"otherRessource":"10"
+			}
+		},
+		{
+		"level":"2",
+		"description" : "Overrides previous desc if present",
+		"cost":
+			{
+			"gold":"500",
+			"otherRessource":"15",
+			"thirdRessource":"2"
+			}
+		},	
+		{
+		"level":"3",
+		"description" : "The third level enables dummySwitch",
+		"cost":
+			{
+			"gold":"600",
+			"otherRessource":"20",
+			"thirdRessource":"5"
+			},
+		"switch":"dummySwitch"
+		}
+    ]
+}

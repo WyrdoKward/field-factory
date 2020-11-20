@@ -17,8 +17,8 @@ namespace FieldFactory.DataAccess.SQLite
         }
 
         internal static string UpdateExploreQuery(ExploreDTO dto)
-        {
-            return $"UPDATE Explore SET idStep = {dto.IdStep}, dateNextStep = '{dto.DateNextStep}', stepsHistory = '{dto.StepHistory}' WHERE idPlayer = '{dto.IdPlayer}' and idLocation = '{dto.IdLocation}'";
+        {                
+            return $"UPDATE Explore SET idStep = {dto.IdStep}, idChoice = '{dto.IdChoice.ToString()}',  dateNextStep = '{dto.DateNextStep}', stepsHistory = '{dto.StepHistory}' WHERE idPlayer = '{dto.IdPlayer}' and idLocation = '{dto.IdLocation}'";
         }
 
 
