@@ -1,6 +1,7 @@
 <template>
     <div id="tilesContainer">
-      <button type="button" v-on:click="getMap()" style="margin-bottom: 80px;">Generate Map</button>
+      <button type="button" v-on:click="getMapFromApi()" style="margin-bottom: 80px;">Generate Map</button>
+      <button type="button" v-on:click="getMapMock()" style="margin-bottom: 80px;">Use Debug Map</button>
       <div v-if="hexes">
         <div class="mapRow" v-for="line in hexes">
           <Tile v-for="h in line" :key="h.id" :hex="h" />
@@ -37,7 +38,7 @@ export default {
       e.initEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
       a.dispatchEvent(e);
     },
-    getMap(){
+    getMapFromApi(){
       axios
       .get('http://localhost:8080/api/map/')
       .then(res => {
@@ -48,6 +49,9 @@ export default {
         console.log('FAIL');
         console.log(err.response);
       });
+    },
+    getMapMock(){
+      this.hexes = jsonMap;
     }
   }
 }
@@ -58,7 +62,7 @@ export default {
     width:fit-content;
     margin:auto;
     float:left;
-    width:80%;
+    width:65%;
   }
   
   .mapRow{

@@ -10,6 +10,12 @@ https://blog.logrocket.com/using-event-bus-in-vue-js-to-pass-data-between-compon
 ### Lifecycle
 https://blog.logrocket.com/introduction-to-vue-lifecycle-hooks/
 
+
+## Architecture
+### Store
+https://haxzie.com/architecting-http-clients-vue-js-network-layer 
+https://www.positronx.io/vue-js-vuex-state-management-tutorial-by-example/ => tuto ok
+
 # Building a MPA application
 
 Look at the code, it's pretty easier.

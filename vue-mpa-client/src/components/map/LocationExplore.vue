@@ -1,83 +1,65 @@
 <template>
-    <div class="locationEvent" >
-        <h2>{{explore.Event.Title}}</h2>
-        <div v-for="step in explore.Event.Steps" :key="step.Id" class="eventStep" >
-          <h3>{{step.Text}}</h3>
-          <ul v-if="step.Choices" class="choices">
-              <li v-for="choice in explore.Choices" :key="choice.Id">
-                  <span @click="processChoice(choice.NextStepId)">{{choice.Text}} (nextStep: {{choice.NextStepId}}</span>
-              </li>
-          </ul>
-          <div v-else-if="step.Outcome" class="outcome">
-              <p >{{step.Outcome.text}}</p>
-              <p v-if="explore.Outcome.NextStepId" @click="processOutcome(explore.Outcome.NextStepId)">Continuer...</p>
-              <p v-else>QUETE TERMINEE</p>
-              <!--<li v-for="outcome in explore.outcomes" :key="outcome.id">
-                  <span @click="processOutcome()">{{outcome.text}}</span>
-              </li>-->
-          </div>
-          <p v-else>Problème: ni outcome ni choices</p>
-        </div>
-         <button type="button" @click="resetQuest()" style="margin-bottom: 80px;">DEBUG : RESET QUEST</button> 
+  <div v-if="this.Explore" class="locationEvent" >
+    <h2>{{this.Explore.Event.Title}}</h2>
+    <div v-for="step in this.Explore.Event.Steps" :key="step.Id" class="eventStep" >
+      <h3>{{step.Text}}</h3>
+      <ul v-if="step.Choices" class="choices">
+          <li class="choice" v-for="choice in step.Choices" :key="choice.Id" :class="{isSelected: choice.IsSelected}">
+              <span @click="processChoice(choice.Id)">{{choice.Text}}</span>
+          </li>
+      </ul>
     </div>
+      <Timer :deadline="Explore.DateNextStep" @onFinish="timerOut()" />
+  </div>
 </template>
 
 <script>
-
-import step0 from '@/utils/dummyLocationEventStep0.json'
-import step1 from '@/utils/dummyLocationEventStep1.json'
-import step2 from '@/utils/dummyLocationEventStep2.json'
-import step3 from '@/utils/dummyLocationEventStep3.json'
-import step4 from '@/utils/dummyLocationEventStep4.json'
-const steps = {}
-steps[0] = step0;
-steps[1] = step1;
-steps[2] = step2;
-steps[3] = step3;
-steps[4] = step4;
+  import { store, mapState, mapActions, mapGetters } from 'vuex'
 
 
   export default {
-    name: 'LocationEvent',
-    props: {
-      explore : Object
-    },
+    name: 'LocationExplore',
     data() {
       return {
       }
     },
-    methods: {
-      processChoice(nextStepId) {
-        console.log('Next Step is #'+nextStepId);
-        // GET /event/{eventId}/step/{nextStepId}
-        //on selectionne un seul outcome random coté serveur
-        // Vérification du timer coté server
-        this.event = steps[nextStepId];
-        var rnd = this.getRandom(Object.keys(this.explore.outcomes).length);
-        console.log('Outcome generated : '+rnd);
-        this.explore.outcome = this.explore.outcomes[rnd];
-
-        console.log(this.event);
-
-      },
-
-      processOutcome(nextStepId) {
-        //On get juste le step suivant
-        // Soit c'est fini
-        // Soit y'a un choix immédiat à faire
-        this.event = steps[nextStepId];
+  components :{
+    Timer : () => import('@/components/core/Timer.vue')
+  },
+  computed:{
+    ...mapGetters(['getLastSelectedExploration']),
+    Explore : function(){
+      return this.getLastSelectedExploration;
+    }
+  },
+  methods: {
+      ...mapActions(['fetchLocationWithActions', 'processChoiceOnLocation', 'fetchSelectedExploration']),
+      processChoice(choiceId) {
+        console.log('Location: #'+this.Explore.IdLocation);
+        console.log('Choice: #'+choiceId);
+        var payload = {};
+        payload.IdLocation = this.Explore.IdLocation;
+        payload.IdChoice = choiceId;
+        // PUT: api/Explore/
+        this.processChoiceOnLocation(payload);
+        this.fetchLocationWithActions(this.Explore.IdLocation);
         
       },
-      getRandom(max){
-          return Math.floor(Math.random() * (max));
-      },
-      resetQuest(){
-          this.event = "{}";
+      timerOut(){
+        console.log('Finished '+this.Explore.IdLocation);
+        this.fetchSelectedExploration(this.Explore.IdLocation);
       }
-
     }
   }
 </script>
 
 <style lang="scss">
+.choice:hover, .choices > .isSelected{
+  color: forestgreen;
+}
+
+.choice:hover{
+  color: forestgreen;
+  cursor: pointer;
+}
 </style>

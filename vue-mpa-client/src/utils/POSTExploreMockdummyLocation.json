@@ -1,0 +1,32 @@
+{
+    "IdPlayer": "nono",
+    "IdFollower": "Gustav",
+    "IdLocation": "dummyLocation",
+    "IdEvent": "dummyLocationEvent",
+    "IdStep": 2,
+    "DateNextStep": "2020-10-03T21:29:15.752422+02:00",
+    "Event": {
+        "Id": 0,
+        "Title": null,
+        "Steps": [
+            {
+                "Id": 0,
+                "Text": "This is the first text of the quest. What do you do ?",
+                "Choices": [
+                    {
+                        "Id": 1,
+                        "Text": "Step 0 - Choice 1 (15 gold & fin OU ca continue)",
+                        "Outcomes": null
+                    },
+                    {
+                        "Id": 2,
+                        "Text": "Step 0 - Choice 2 (GOTO step 2)",
+                        "Outcomes": null
+                    }
+                ],
+                "DurationInMin": 5,
+                "End":"12/12/2020 08:25:00"
+            }
+        ]
+    }
+}

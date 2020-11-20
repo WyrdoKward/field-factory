@@ -2,7 +2,7 @@
     <div class="debugLoginButtons" >
         <h1 v-if="this.player">Welcome back {{this.player.IdPlayer}} ! </h1>
         <h1 v-else>Not logged</h1>
-        <button type="button" @click="Login('wyrdokward', '123456')" style="margin-bottom: 80px;">Login as "wyrdokward"</button>
+        <button type="button" @click="Login('wyrdokward', '123456Az')" style="margin-bottom: 80px;">Login as "wyrdokward"</button>
         <button type="button" @click="Login('nono', 'pwd')" style="margin-bottom: 80px;">Login as "nono"</button>
     </div>
 </template>
@@ -53,4 +53,7 @@ const axios = require('axios');
 </script>
 
 <style lang="scss">
+.debugLoginButtons > h1{
+  float: left;
+}
 </style>
