@@ -16,9 +16,5 @@
     <ProjectReference Include="..\FieldFactory.Framework\FieldFactory.Framework.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Headquarters\" />
-  </ItemGroup>
-
 
 </Project>
