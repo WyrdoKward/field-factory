@@ -16,8 +16,8 @@ namespace test_dotnet
             Name = name;
             NamePattern = namePattern;
             ProjectDir = $"{_rootSlnFolder}\\{project}\\";
-            ProjectFile = $"{ProjectDir}\\{project}.csproj";
-            FolderPath = $"{ProjectDir}\\{folderPath}\\";
+            ProjectFile = $"{ProjectDir}{project}.csproj";
+            FolderPath = $"{ProjectDir}{folderPath}\\";
         }
 
         public string GetFilePath(){

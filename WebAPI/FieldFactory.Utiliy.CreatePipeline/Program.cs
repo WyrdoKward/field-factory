@@ -118,17 +118,6 @@ namespace test_dotnet
 
             Console.WriteLine($"    File {info.GetFilePath()} created");
 
-            //add file to project
-            /* var p = ProjectCollection.GlobalProjectCollection.LoadedProjects.FirstOrDefault(pr => pr.FullPath == info.Project);
-             var project = new ProjectCollection().LoadProject(info.Project);
-
-             if (p == null)
-                 p = new Project(info.Project);
-
-             p.AddItem("Folder", info.FolderPath);
-             p.AddItem("Compile", info.GetFilePath());
-             p.Save();*/
-
         }
 
         private static string AddOtherInteractorsForExecutor()
