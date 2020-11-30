@@ -1,0 +1,6 @@
+executor file 
+$safeName$plop
+
+$otherInteractors$
+
+fin

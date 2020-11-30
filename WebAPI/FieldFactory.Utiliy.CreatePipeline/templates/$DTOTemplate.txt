@@ -1,0 +1,9 @@
+DTO file 
+$safeName$plop
+$jsonField$
+
+ererer
+
+$jsonAssignation$
+
+fin
