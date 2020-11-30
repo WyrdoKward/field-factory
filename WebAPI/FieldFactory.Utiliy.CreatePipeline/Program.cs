@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.Build.Evaluation;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace test_dotnet
@@ -115,14 +117,14 @@ namespace test_dotnet
             Console.WriteLine($"    File {info.GetFilePath()} created");
 
             //add file to project
-            /*var p = Microsoft.Build.Evaluation.ProjectCollection.GlobalProjectCollection.LoadedProjects.FirstOrDefault(pr => pr.FullPath == info.Project);
+            var p = ProjectCollection.GlobalProjectCollection.LoadedProjects.FirstOrDefault(pr => pr.FullPath == info.Project);
 
             if (p == null)
-                p = new Microsoft.Build.Evaluation.Project(info.Project);
+                p = new Project(info.Project);
 
             p.AddItem("Folder", info.FolderPath);
             p.AddItem("Compile", info.GetFilePath());
-            p.Save();*/
+            p.Save();
 
         }
 
