@@ -1,5 +1,5 @@
 // import the api endpoints
-import { getFurniturePossessed, getFurnitureAvailable } from "@/api/clients/furniture.api"
+import { getFurniturePossessed, getFurnitureAvailable, postNewFurniture, putLvlUpFurniture } from "@/api/clients/furniture.api"
 
 const state = {
     possessedFurnitures: null,
@@ -38,7 +38,7 @@ const actions = {
         } catch (error) {
             console.log(error);
         }    
-    }, 
+    }
 }
 
 const mutations = {
