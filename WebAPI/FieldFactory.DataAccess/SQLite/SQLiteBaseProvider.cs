@@ -56,11 +56,11 @@ namespace FieldFactory.DataAccess.SQLite
         /// <param name="selectQuery">Ne marche que pour les SELECT *</param>
         /// <param name="nbCols">Le nombre de colunes de la table en BDD</param>
         /// <returns></returns>
-        internal Dictionary<int, List<string>> ReadColumns(string selectQuery, int nbCols = 1)
+        public Dictionary<int, Dictionary<string, string>> ReadColumns(string selectQuery, int nbCols = 1)
         {
             // int = num Row
             // List<string> = les val des cols
-            Dictionary<int, List<string>> res = new Dictionary<int, List<string>>();
+            Dictionary<int, Dictionary<string, string>> res = new Dictionary<int, Dictionary<string, string>>();
             int row = 0;
 
             using (var connection = new SqliteConnection(ConnectionStringBuilder.ConnectionString))
@@ -73,11 +73,11 @@ namespace FieldFactory.DataAccess.SQLite
                 {
                     while (reader.Read())
                     {
-                        res.Add(row, new List<string>());
+                        res.Add(row, new Dictionary<string, string>());
                         for (int i = 0; i < nbCols; i++)
                         {
                             var rawRes = reader.IsDBNull(i) ? "" : reader.GetString(i);
-                            res[row].Add(rawRes);
+                            res[row][reader.GetName(i)] = rawRes;
                         }
                         row++;
                     }

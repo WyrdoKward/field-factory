@@ -19,7 +19,7 @@ namespace FieldFactory.Core.Utils
 
         public static string[][] TemplateLocations1 = new string[][]
         {
-            new string[]{null, null, "dummyLocation", null, null},
+            new string[]{null, null, "eglingen", null, null},
             new string[]{null, null, null, null, null},
             new string[]{null, null, null, "dummyLocation", null},
             new string[]{null, null, "dummyLocation", null, null},

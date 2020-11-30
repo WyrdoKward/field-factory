@@ -9,18 +9,48 @@ namespace FieldFactory.Core.Entities.Verbs
 {
     public class Explore
     {
+        #region Members
         public string IdPlayer { get; set; }
         public string IdFollower { get; set; }
         public string IdLocation { get; set; }
         public string IdEvent { get; set; }
 
+        public Event Event { get; set; }
         /// <summary>
         /// Le Step courrant
         /// </summary>
         public int IdStep { get; set; }
-        public DateTime DateNextStep { get; set; }
-        
-        public Event Event { get; set; }
+        public int? IdChoice{ get; set; }
+
+        /// <summary>
+        /// Returns friendly string date format for serialization
+        /// </summary>
+        public string DateNextStep
+        {
+            get
+            {
+               return m_dateNextStep.ToString("yyyy/MM/dd HH:mm:ss");
+            }
+        }
+
+        #endregion
+
+        #region Getters&Setters
+
+        private DateTime m_dateNextStep;
+        //Getter et Setter with DateTime
+        public void SetDateNextStep(DateTime d)
+        {
+            m_dateNextStep = d;
+        }
+
+        public DateTime GetDateNextStep()
+        {
+            return m_dateNextStep;
+        }
+
+
+        #endregion
 
         public Explore()
         {
@@ -35,7 +65,8 @@ namespace FieldFactory.Core.Entities.Verbs
             IdLocation = dto.IdLocation;
             IdEvent = dto.IdEvent;
             IdStep = dto.IdStep;
-            DateNextStep = dto.DateNextStep;
+            IdChoice = dto.IdChoice;
+            SetDateNextStep(dto.DateNextStep);
             Event = new Event();
             Event.Steps = JsonConvert.DeserializeObject<List<EventStep>>(dto.StepHistory);
         }
@@ -43,7 +74,7 @@ namespace FieldFactory.Core.Entities.Verbs
         public ExploreDTO ConvertToDTO()
         {
             var steps = JsonConvert.SerializeObject(Event.Steps);
-            return new ExploreDTO(IdPlayer, IdFollower, IdLocation, IdEvent, IdStep, DateNextStep, steps);
+            return new ExploreDTO(IdPlayer, IdFollower, IdLocation, IdEvent, IdStep, IdChoice, GetDateNextStep(), steps);
         }
 
         /// <summary>
@@ -51,12 +82,27 @@ namespace FieldFactory.Core.Entities.Verbs
         /// </summary>
         public bool IsFinished()
         {
-            return DateTime.Compare(DateNextStep, DateTime.Now) < 0;
+            return DateTime.Compare(GetDateNextStep(), DateTime.Now) < 0;
         }
 
         public EventStep GetCurrentStep()
         {
             return Event.Steps.Last();
+        }
+
+        /// <summary>
+        /// Quand l'utilisateur fait un choix, on l'enregistre et on maj la dateNextStep
+        /// </summary>
+        /// <param name="idChoice"></param>
+        public void UpdateDateWithChoice(int? idChoice)
+        {
+            var currentStep = GetCurrentStep();
+            DateTime nextDate = DateTime.Now.AddMinutes(currentStep.DurationInMin);
+
+            IdChoice = idChoice;
+            Event.Steps.Last().Choices.Where(c => c.Id == IdChoice).FirstOrDefault().IsSelected = true;
+
+            SetDateNextStep(nextDate);
         }
     }
 }

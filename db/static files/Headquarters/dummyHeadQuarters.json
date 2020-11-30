@@ -1,0 +1,10 @@
+{
+    "Id": 1,
+    "Title": "Dummy Headquarters",
+    "Description": "This is a basic HQ. Furnitures[] correspond aux colonnes actives dans PlayerHeadquarters",
+	"Furnitures":[
+		"dummyFurniture",
+		"watchtower"
+	]
+    
+}

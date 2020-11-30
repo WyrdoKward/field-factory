@@ -16,7 +16,7 @@ namespace FieldFactory.Framework.Executor
             Identity = identity;
         }
 
-        public EventStep Execute(AddExplorationWithFollowerQuery query)
+        public Explore Execute(AddExplorationWithFollowerQuery query)
         {
             Explore exploration = new Explore()
             {
@@ -27,15 +27,21 @@ namespace FieldFactory.Framework.Executor
             return exploreInteractor.AddNewExploration(exploration);
         }
 
-        public Explore Execute(ProcessChoiceOnLocationQuey query)
+        public Explore Execute(RegisterEventChoiceQuery query)
         {
             Explore exploration = new Explore()
             {
                 IdPlayer = query.IdPlayer,
-                IdLocation = query.IdLocation
+                IdLocation = query.IdLocation,
+                IdChoice = query.IdChoice
             };
 
-            return exploreInteractor.ProcessEventChoice(query.IdChoice, exploration);            
+            return exploreInteractor.RegisterEventChoiceOnLocation(exploration);            
+        }
+
+        public Explore Execute(GetExploreForLocationQuery query)
+        {
+            return exploreInteractor.GetExplorationForLocation(query.IdPlayer, query.IdLocation);
         }
     }
 }
