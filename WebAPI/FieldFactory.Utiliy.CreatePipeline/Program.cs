@@ -74,6 +74,11 @@ namespace test_dotnet
 
         private static void CreateFileFromTemplate(EntityInfo info)
         {
+            if (File.Exists(info.GetFilePath()))
+            {
+                Console.WriteLine($"File {info.GetFilePath()} already exists.", ConsoleColor.Red);
+                Console.WriteLine($"Skipping to next file to create...");
+            }
             Console.WriteLine($"    Creating {info.GetFileName()}...");
             string line = "";
 
