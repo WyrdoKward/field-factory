@@ -10,4 +10,8 @@
     <PackageReference Include="Microsoft.Build" Version="16.8.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FieldFactory.Core\FieldFactory.Core.csproj" />
+  </ItemGroup>
+
 </Project>

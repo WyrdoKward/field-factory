@@ -1,6 +1,6 @@
 using System;
 
-namespace test_dotnet
+namespace FieldFactory.Utility.CreatePipeline
 {
     public class EntityInfo
     {

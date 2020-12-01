@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace test_dotnet
+namespace FieldFactory.Utility.CreatePipeline
 {
     public class Program
     {
@@ -11,18 +11,31 @@ namespace test_dotnet
             { "$entityName$", "$entityName$" },
             { "$entityNameLowerCase$", "$entityNameLowerCase$" },
             { "$entityPath$", "$otherInteractors$" },
-            { "$otherInteractors$", "$otherInteractors$" },
             { "$nbColTable$", "$nbColTable$" },
             { "$dtoToEntityLine$", "$dtoToEntityLine$" },
             { "$jsonDefaultFields$", "$jsonDefaultFields$" },
             { "$dtoMethods$", "$dtoMethods$" },
             { "$StaticRessourcesNamespace$", "" },
         };
+        static Dictionary<string, string> BlocksOnTheFly = new Dictionary<string, string>()
+        {
+            {"$BLOCK_otherInteractors$", "$BLOCK_otherInteractors$"},
+        };
 
-        static string _isJsonDto;
+        static Dictionary<string, string> BlocksToReplace = new Dictionary<string, string>()
+        {
+            {"$BLOCK_publicFields$", ""},
+            {"$BLOCK_ConstructorParams$", ""},
+            {"$BLOCK_fieldsAssignation$", ""}
+        };
+
+        static Dictionary<string, string> EntityFields = new Dictionary<string, string>();
+
+        static bool _isJsonDto;
         static string _entityPath;
         static void Main(string[] args)
         {
+            //Configuration
             Console.WriteLine("Please enter the name of the new Entity to Create : ");
             string entityToCreate = Console.ReadLine();
             PlaceHolders["$entityName$"] = entityToCreate;
@@ -34,12 +47,17 @@ namespace test_dotnet
             PlaceHolders["$entityPath$"] = _entityPath;
 
             Console.WriteLine($"==> Is Dto in Json ? (y/n)");
-            _isJsonDto = Console.ReadLine();
+            _isJsonDto = Console.ReadLine() == "y" ? true : false; ;
+
             string staticFolder = "";
-            if (_isJsonDto == "y")
+            if (_isJsonDto)
             {
                 staticFolder = "StaticRessource";
                 PlaceHolders["$StaticRessourcesNamespace$"] = ".StaticRessource";
+            }
+            else
+            {
+                ConfigureEntityFieldsAndPopulateBlocks();
             }
 
 
@@ -49,7 +67,7 @@ namespace test_dotnet
             Console.WriteLine("***EXECUTOR***");
             CreateFileFromTemplate(new EntityInfo(entityToCreate, "$Executor", "FieldFactory.Framework", "Executor"));
 
-
+            //Query
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***QUERY***");
@@ -73,7 +91,7 @@ namespace test_dotnet
             Console.WriteLine("***PROVIDER***");
             string providerTemplate = $"{staticFolder}\\$Provider";
             string providerFolder = $"Providers\\{staticFolder}";
-            if (_isJsonDto == "y")
+            if (_isJsonDto)
             {
                 Console.WriteLine("==> Enter number of columns in db for this entity :");
                 PlaceHolders["$nbColTable$"] = Console.ReadLine();
@@ -103,6 +121,22 @@ namespace test_dotnet
 
         }
 
+        internal static void ConfigureEntityFieldsAndPopulateBlocks()
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Please paste here SQLite CREATE param section)");
+            Console.WriteLine("It should look like this :");
+            Console.WriteLine("\"idPlayer\" text,\"intColumn\" integer, \"dateColumn\" datetime");
+            string cols = Console.ReadLine();
+
+            EntityFields = UtilityLogic.ParseSQLiteParams(cols);
+
+            //populate blocks
+            BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock(EntityFields);
+            BlocksToReplace["$BLOCK_ConstructorParams$"] = UtilityLogic.BuildConstructorDtoParams(EntityFields);
+            BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(EntityFields);
+        }
+
         private static void CreateFileFromTemplate(EntityInfo info)
         {
             if (File.Exists(info.GetFilePath()))
@@ -129,10 +163,17 @@ namespace test_dotnet
 
                     while ((line = sr.ReadLine()) != null)
                     {
-                        if (line.Contains(PlaceHolders["$otherInteractors$"]))
+                        //Replace Blocks
+                        foreach (var bloc in BlocksToReplace)
+                        {
+                            line = line.Replace(bloc.Key, bloc.Value);
+                        }
+                        if (line.Contains(BlocksOnTheFly["$BLOCK_otherInteractors$"]))
                         {
                             line = AddOtherInteractorsForExecutorOnTheFly();
                         }
+
+
                         //Configure variable lines
                         if (line.Contains(PlaceHolders["$dtoToEntityLine$"]))
                         {
@@ -159,7 +200,9 @@ namespace test_dotnet
                 }
             }
 
-            Console.WriteLine($"    File {info.GetFilePath()} created");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"File {info.GetFilePath()} created");
+            Console.ResetColor();
 
         }
 
@@ -181,7 +224,7 @@ namespace test_dotnet
         private static string BuildDtoToEntityConvertion()
         {
             StringBuilder sb = new StringBuilder();
-            if (_isJsonDto == "y")
+            if (_isJsonDto)
             {
                 sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = JsonConvert.DeserializeObject<$entityName$>($entityNameLowerCase$Dto.Json);");
             }
@@ -196,7 +239,7 @@ namespace test_dotnet
         private static string BuildJsonDefaultFields()
         {
             StringBuilder sb = new StringBuilder();
-            if (_isJsonDto == "y")
+            if (_isJsonDto)
             {
                 sb.AppendLine("\t\tpublic int Id;");
                 sb.AppendLine("\t\tpublic string Title;");
@@ -212,7 +255,7 @@ namespace test_dotnet
         private static string BuildEntityDtoMethods()
         {
             StringBuilder sb = new StringBuilder();
-            if (_isJsonDto != "y")
+            if (!_isJsonDto)
             {
                 sb.AppendLine("\t\tpublic $entityName$($entityName$DTO dto)");
                 sb.AppendLine("\t\t{");
