@@ -44,7 +44,7 @@ namespace FieldFactory.Utility.CreatePipeline
                 sb.Append(BuildPublicFieldLine(item.Key, item.Value));
             }
 
-            return sb.ToString();
+            return sb.ToString().Substring(2);
         }
 
         public static string BuildPublicFieldLine(string name, string @type)
@@ -61,7 +61,7 @@ namespace FieldFactory.Utility.CreatePipeline
                 sb.Append(BuildFieldAssignationLine(item.Key));
             }
 
-            return sb.ToString();
+            return sb.ToString().Substring(3);
         }
 
         public static string BuildFieldAssignationLine(string name)
