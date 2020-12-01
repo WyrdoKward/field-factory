@@ -73,8 +73,11 @@ namespace test_dotnet
             Console.WriteLine("***PROVIDER***");
             string providerTemplate = $"{staticFolder}\\$Provider";
             string providerFolder = $"Providers\\{staticFolder}";
-            Console.WriteLine("==> Enter number of columns in db for this entity :");
-            PlaceHolders["$nbColTable$"] = Console.ReadLine();
+            if (_isJsonDto == "y")
+            {
+                Console.WriteLine("==> Enter number of columns in db for this entity :");
+                PlaceHolders["$nbColTable$"] = Console.ReadLine();
+            }
             CreateFileFromTemplate(new EntityInfo(entityToCreate, providerTemplate, "FieldFactory.DataAccess", providerFolder));
 
             //SqLiteQueryBuilder
