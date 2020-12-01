@@ -38,7 +38,7 @@ namespace test_dotnet
             string staticFolder = "";
             if (_isJsonDto == "y")
             {
-                staticFolder = "StaticRessource\\";
+                staticFolder = "StaticRessource";
                 PlaceHolders["$StaticRessourcesNamespace$"] = ".StaticRessource";
             }
 
@@ -71,8 +71,8 @@ namespace test_dotnet
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***PROVIDER***");
-            string providerTemplate = $"{staticFolder}$Provider";
-            string providerFolder = $"{staticFolder}Providers";
+            string providerTemplate = $"{staticFolder}\\$Provider";
+            string providerFolder = $"Providers\\{staticFolder}";
             Console.WriteLine("==> Enter number of columns in db for this entity :");
             PlaceHolders["$nbColTable$"] = Console.ReadLine();
             CreateFileFromTemplate(new EntityInfo(entityToCreate, providerTemplate, "FieldFactory.DataAccess", providerFolder));
@@ -81,14 +81,16 @@ namespace test_dotnet
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***SQLITEQUERYBUILDER***");
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, "SQLite$QueryBuilder", "FieldFactory.DataAccess", "SQLite"));
+            string builderTemplate = $"{staticFolder}\\$SQLite";
+            string builderFolder = $"SQLite\\{staticFolder}";
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, builderTemplate, "FieldFactory.DataAccess", builderFolder));
 
             //DTO
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***DTO***");
-            string dtoTemplate = $"{staticFolder}$DTO";
-            string dtoFolder = $"{staticFolder}DTO";
+            string dtoTemplate = $"{staticFolder}\\$DTO";
+            string dtoFolder = $"DTO\\{staticFolder}";
             CreateFileFromTemplate(new EntityInfo(entityToCreate, dtoTemplate, "FieldFactory.DataAccess", dtoFolder));
 
             Console.WriteLine("");
