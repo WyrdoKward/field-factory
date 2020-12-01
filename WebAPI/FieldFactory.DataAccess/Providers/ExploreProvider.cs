@@ -2,7 +2,6 @@
 using FieldFactory.DataAccess.SQLite;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace FieldFactory.DataAccess.Providers
 {
@@ -50,7 +49,7 @@ namespace FieldFactory.DataAccess.Providers
                 else
                     idChoice = int.Parse(rawLocation.Value["idChoice"]);
 
-                res.Add(new ExploreDTO(rawLocation.Value["idPlayer"], rawLocation.Value["idFollower"],rawLocation.Value["idLocation"], rawLocation.Value["idEvent"], int.Parse(rawLocation.Value["idStep"]), idChoice, DateTime.Parse(rawLocation.Value["dateNextStep"]), rawLocation.Value["stepsHistory"]));
+                res.Add(new ExploreDTO(rawLocation.Value["idPlayer"], rawLocation.Value["idFollower"], rawLocation.Value["idLocation"], rawLocation.Value["idEvent"], int.Parse(rawLocation.Value["idStep"]), idChoice, DateTime.Parse(rawLocation.Value["dateNextStep"]), rawLocation.Value["stepsHistory"]));
             }
 
             return res;

@@ -9,4 +9,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTO\StaticRessource\" />
+    <Folder Include="Providers\StaticRessource\" />
+    <Folder Include="SQLite\StaticRessource\" />
+  </ItemGroup>
+
 </Project>
