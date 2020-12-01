@@ -14,6 +14,8 @@ namespace test_dotnet
             { "$otherInteractors$", "$otherInteractors$" },
             { "$nbColTable$", "$nbColTable$" },
             { "$dtoToEntityLine$", "$dtoToEntityLine$" },
+            { "$jsonDefaultFields$", "$jsonDefaultFields$" },
+            { "$dtoMethods$", "$dtoMethods$" },
             { "$StaticRessourcesNamespace$", "" },
         };
 
@@ -124,7 +126,7 @@ namespace test_dotnet
                     {
                         if (line.Contains(PlaceHolders["$otherInteractors$"]))
                         {
-                            line = AddOtherInteractorsForExecutor();
+                            line = AddOtherInteractorsForExecutorOnTheFly();
                         }
                         //Configure variable lines
                         if (line.Contains(PlaceHolders["$dtoToEntityLine$"]))
@@ -146,15 +148,6 @@ namespace test_dotnet
                             line = line.Replace(placeHolder.Key, placeHolder.Value);
                         }
 
-
-
-
-                        if (_isJsonDto == "y")
-                        {
-                            line = line.Replace(PlaceHolders["jsonField"], "public string Json;");
-                            line = line.Replace(PlaceHolders["jsonAssignation"], "Json = json;");
-                        }
-
                         sw.WriteLine(line);
                         //Console.WriteLine(line);
                     }
@@ -166,7 +159,7 @@ namespace test_dotnet
         }
 
 
-        private static string AddOtherInteractorsForExecutor()
+        private static string AddOtherInteractorsForExecutorOnTheFly()
         {
             StringBuilder sb = new StringBuilder();
             string otherInteractor = "123";
@@ -185,11 +178,11 @@ namespace test_dotnet
             StringBuilder sb = new StringBuilder();
             if (_isJsonDto == "y")
             {
-                sb.AppendLine("var $entityNameLowerCase$ = JsonConvert.DeserializeObject<$entityName$>($entityNameLowerCase$Dto.Json);");
+                sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = JsonConvert.DeserializeObject<$entityName$>($entityNameLowerCase$Dto.Json);");
             }
             else
             {
-                sb.AppendLine("var $entityNameLowerCase$ = new $entityName$($entityNameLowerCase$Dto);");
+                sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = new $entityName$($entityNameLowerCase$Dto);");
             }
             return sb.ToString();
 
@@ -228,29 +221,5 @@ namespace test_dotnet
             }
             return sb.ToString();
         }
-
-        private static string ConfigureDTO()
-        {
-
-            StringBuilder sb = new StringBuilder();
-            Console.WriteLine("Is it a json DTO ? (= static entity all stored in json in db)");
-            Console.WriteLine("(y/n)");
-            string isJson = Console.ReadLine();
-            if (isJson == "y")
-            {
-                //on créé juste le champ id et Json
-                sb.AppendLine("ConfigureDTO = y");
-
-            }
-            else
-            {
-                sb.AppendLine("ConfigureDTO = n");
-
-            }
-            //sinon je sais pas encore, on laisse un DTO vide ?
-
-            return sb.ToString();
-        }
-
     }
 }
