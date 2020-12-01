@@ -50,7 +50,7 @@ namespace FieldFactory.Utility.CreatePipeline
         public static string BuildPublicFieldLine(string name, string @type)
         {
             name = name.FirstCharToUpper();
-            return $"public {type} {name} {{ get; set; }}";
+            return $"\t\tpublic {type} {name} {{ get; set; }}\r\n";
         }
 
         public static string BuildFieldAssignationBlock(Dictionary<string, string> entityFields)
@@ -58,7 +58,7 @@ namespace FieldFactory.Utility.CreatePipeline
             StringBuilder sb = new StringBuilder();
             foreach (var item in entityFields)
             {
-                sb.Append(BuildPublicFieldLine(item.Key, item.Value));
+                sb.Append(BuildFieldAssignationLine(item.Key));
             }
 
             return sb.ToString();
@@ -66,7 +66,7 @@ namespace FieldFactory.Utility.CreatePipeline
 
         public static string BuildFieldAssignationLine(string name)
         {
-            return $"{name.FirstCharToUpper()} = {name};";
+            return $"\t\t\t{name.FirstCharToUpper()} = {name};\r\n";
         }
     }
 }

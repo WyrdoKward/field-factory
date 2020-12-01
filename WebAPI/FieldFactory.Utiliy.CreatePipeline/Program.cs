@@ -102,7 +102,7 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***SQLITEQUERYBUILDER***");
-            string builderTemplate = $"{staticFolder}\\$SQLite";
+            string builderTemplate = $"{staticFolder}\\SQLite$QueryBuilder";
             string builderFolder = $"SQLite\\{staticFolder}";
             CreateFileFromTemplate(new EntityInfo(entityToCreate, builderTemplate, "FieldFactory.DataAccess", builderFolder));
 
