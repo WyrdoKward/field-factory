@@ -41,7 +41,9 @@ namespace FieldFactory.Utility.CreatePipeline
             StringBuilder sb = new StringBuilder();
             foreach (var item in entityFields)
             {
+                sb.Append("\t\t");
                 sb.Append(BuildPublicFieldLine(item.Key, item.Value));
+                sb.Append("\r\n");
             }
 
             return sb.ToString().Substring(2);
@@ -50,23 +52,73 @@ namespace FieldFactory.Utility.CreatePipeline
         public static string BuildPublicFieldLine(string name, string @type)
         {
             name = name.FirstCharToUpper();
-            return $"\t\tpublic {type} {name} {{ get; set; }}\r\n";
+            return $"public {type} {name} {{ get; set; }}";
         }
 
-        public static string BuildFieldAssignationBlock(Dictionary<string, string> entityFields)
+        public static string BuildFieldAssignationBlock(Dictionary<string, string> entityFields, bool fromDto)
         {
             StringBuilder sb = new StringBuilder();
             foreach (var item in entityFields)
             {
-                sb.Append(BuildFieldAssignationLine(item.Key));
+                sb.Append("\t\t\t");
+                sb.Append(BuildFieldAssignationLine(item.Key, fromDto));
+                sb.Append("\r\n");
+
             }
 
             return sb.ToString().Substring(3);
         }
 
-        public static string BuildFieldAssignationLine(string name)
+        public static string BuildFieldAssignationLine(string name, bool fromDto)
         {
-            return $"\t\t\t{name.FirstCharToUpper()} = {name};\r\n";
+            string dtoParam = fromDto ? $"dto.{name.FirstCharToUpper()}" : name;
+            return $"{name.FirstCharToUpper()} = {dtoParam};";
+        }
+
+        public static string BuildEntityConvertToDTOMethods(Dictionary<string, string> entityFields)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"\t\tpublic $entityName$DTO ConvertToDTO()");
+            sb.AppendLine("\t\t{");
+            sb.AppendLine($"\t\t\treturn new $entityName$DTO({BuildFlatParams(entityFields)});");
+            sb.AppendLine("\t\t}");
+            return sb.ToString();
+        }
+
+        public static string BuildFlatParams(Dictionary<string, string> entityFields)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in entityFields)
+            {
+                sb.Append($"{item.Key.FirstCharToUpper()}, ");
+            }
+            return sb.ToString().Substring(0, sb.ToString().Length - 2);
+        }
+        public static string BuildDtoToEntityConvertion(bool isJsonDto)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (isJsonDto)
+            {
+                sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = JsonConvert.DeserializeObject<$entityName$>($entityNameLowerCase$Dto.Json);");
+            }
+            else
+            {
+                sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = new $entityName$($entityNameLowerCase$Dto);");
+            }
+            return sb.ToString();
+
+        }
+
+        public static string BuildJsonDefaultFields(bool isJsonDto)
+        {
+            StringBuilder sb = new StringBuilder();
+            if (isJsonDto)
+            {
+                sb.AppendLine("\t\tpublic int Id;");
+                sb.AppendLine("\t\tpublic string Title;");
+                sb.AppendLine("\t\tpublic string Description;");
+            }
+            return sb.ToString();
         }
     }
 }

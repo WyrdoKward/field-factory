@@ -65,12 +65,31 @@ namespace FieldFactory.Tests.Utility
             Assert.AreEqual(expected, actual);
         }
         [Test]
-        [TestCase("idPlayer", "IdPlayer = idPlayer;")]
-        [TestCase("intColumn", "IntColumn = intColumn;")]
-        [TestCase("dateColumn", "DateColumn = dateColumn;")]
-        public void Test_BuildFieldAssignationLine(string name, string expected)
+        [TestCase("idPlayer", false, "IdPlayer = idPlayer;")]
+        [TestCase("intColumn", false,  "IntColumn = intColumn;")]
+        [TestCase("dateColumn", false, "DateColumn = dateColumn;")]
+        [TestCase("idPlayer", true, "IdPlayer = dto.IdPlayer;")]
+        [TestCase("intColumn", true, "IntColumn = dto.IntColumn;")]
+        [TestCase("dateColumn", true, "DateColumn = dto.DateColumn;")]
+        public void Test_BuildFieldAssignationLine(string name, bool fromDto, string expected)
         {
-            var actual = UtilityLogic.BuildFieldAssignationLine(name);
+            var actual = UtilityLogic.BuildFieldAssignationLine(name, fromDto);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("IdPlayer, IntColumn, DateColumn")]
+        public void Test_BuildFlatParams(string expected)
+        {
+            Dictionary<string, string> input = new Dictionary<string, string>()
+            {
+                {"idPlayer", "string" },
+                {"intColumn", "int" },
+                {"dateColumn", "DateTime" },
+            };
+
+            var actual = UtilityLogic.BuildFlatParams(input);
 
             Assert.AreEqual(expected, actual);
         }

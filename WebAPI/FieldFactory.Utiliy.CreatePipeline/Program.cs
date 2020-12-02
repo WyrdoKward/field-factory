@@ -14,7 +14,6 @@ namespace FieldFactory.Utility.CreatePipeline
             { "$nbColTable$", "$nbColTable$" },
             { "$dtoToEntityLine$", "$dtoToEntityLine$" },
             { "$jsonDefaultFields$", "$jsonDefaultFields$" },
-            { "$dtoMethods$", "$dtoMethods$" },
             { "$StaticRessourcesNamespace$", "" },
         };
         static Dictionary<string, string> BlocksOnTheFly = new Dictionary<string, string>()
@@ -26,7 +25,9 @@ namespace FieldFactory.Utility.CreatePipeline
         {
             {"$BLOCK_publicFields$", ""},
             {"$BLOCK_ConstructorParams$", ""},
-            {"$BLOCK_fieldsAssignation$", ""}
+            {"$BLOCK_fieldsAssignation$", ""},
+            {"$BLOCK_constructorWithDtoFieldsAssignation$", ""},
+            {"$BLOCK_dtoMethods$", ""}
         };
 
         static Dictionary<string, string> EntityFields = new Dictionary<string, string>();
@@ -44,7 +45,7 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("==> Enter Interactor and Entity path ");
             Console.WriteLine("    (In /Core/{path} and /Core/Entities/{path})");
             _entityPath = Console.ReadLine();
-            PlaceHolders["$entityPath$"] = _entityPath;
+            PlaceHolders["$entityPath$"] = $".{_entityPath}";
 
             Console.WriteLine($"==> Is Dto in Json ? (y/n)");
             _isJsonDto = Console.ReadLine() == "y" ? true : false; ;
@@ -83,7 +84,8 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***ENTITY***");
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, "$", "FieldFactory.Core", $"Entities\\{_entityPath}"));
+            string entityTemplate = $"{staticFolder}\\$";
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, entityTemplate, "FieldFactory.Core", $"Entities\\{_entityPath}"));
 
             //Provider
             Console.WriteLine("");
@@ -134,7 +136,9 @@ namespace FieldFactory.Utility.CreatePipeline
             //populate blocks
             BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock(EntityFields);
             BlocksToReplace["$BLOCK_ConstructorParams$"] = UtilityLogic.BuildConstructorDtoParams(EntityFields);
-            BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(EntityFields);
+            BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(EntityFields, false);
+            BlocksToReplace["$BLOCK_constructorWithDtoFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(EntityFields, true);
+            BlocksToReplace["$BLOCK_dtoMethods$"] = UtilityLogic.BuildEntityConvertToDTOMethods(EntityFields);
         }
 
         private static void CreateFileFromTemplate(EntityInfo info)
@@ -177,15 +181,11 @@ namespace FieldFactory.Utility.CreatePipeline
                         //Configure variable lines
                         if (line.Contains(PlaceHolders["$dtoToEntityLine$"]))
                         {
-                            line = BuildDtoToEntityConvertion();
+                            line = UtilityLogic.BuildDtoToEntityConvertion(_isJsonDto);
                         }
                         if (line.Contains(PlaceHolders["$jsonDefaultFields$"]))
                         {
-                            line = BuildJsonDefaultFields();
-                        }
-                        if (line.Contains(PlaceHolders["$dtoMethods$"]))
-                        {
-                            line = BuildEntityDtoMethods();
+                            line = UtilityLogic.BuildJsonDefaultFields(_isJsonDto);
                         }
 
                         //Replace placeHolders
@@ -219,55 +219,6 @@ namespace FieldFactory.Utility.CreatePipeline
                     sb.AppendLine($"\t\t{otherInteractor}Interactor {otherInteractor.ToLower()}Interactor = new {otherInteractor}Interactor();");
             }
             return sb.ToString();
-        }
-
-        private static string BuildDtoToEntityConvertion()
-        {
-            StringBuilder sb = new StringBuilder();
-            if (_isJsonDto)
-            {
-                sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = JsonConvert.DeserializeObject<$entityName$>($entityNameLowerCase$Dto.Json);");
-            }
-            else
-            {
-                sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = new $entityName$($entityNameLowerCase$Dto);");
-            }
-            return sb.ToString();
-
-        }
-
-        private static string BuildJsonDefaultFields()
-        {
-            StringBuilder sb = new StringBuilder();
-            if (_isJsonDto)
-            {
-                sb.AppendLine("\t\tpublic int Id;");
-                sb.AppendLine("\t\tpublic string Title;");
-                sb.AppendLine("\t\tpublic string Description;");
-            }
-            else
-            {
-                sb.AppendLine("\t\tpublic string IdPlayer { get; set; }");
-            }
-            return sb.ToString();
-        }
-
-        private static string BuildEntityDtoMethods()
-        {
-            StringBuilder sb = new StringBuilder();
-            if (!_isJsonDto)
-            {
-                sb.AppendLine("\t\tpublic $entityName$($entityName$DTO dto)");
-                sb.AppendLine("\t\t{");
-                sb.AppendLine("\t\t\tIdPlayer = dto.IdPlayer;");
-                sb.AppendLine("\t\t}");
-                sb.AppendLine("");
-                sb.AppendLine("\t\tpublic $entityName$DTO ConvertToDTO()");
-                sb.AppendLine("\t\t{");
-                sb.AppendLine("\t\t\treturn new $entityName$DTO(IdPlayer);");
-                sb.AppendLine("\t\t}");
-            }
-            return sb.ToString();
-        }
+        }        
     }
 }
