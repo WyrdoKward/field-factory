@@ -1,5 +1,7 @@
 ﻿using FieldFactory.Core.Utils.Extension;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace FieldFactory.Utility.CreatePipeline
@@ -24,6 +26,18 @@ namespace FieldFactory.Utility.CreatePipeline
             }
 
             return res;
+        }
+
+        public static string BuildMethodParamFirstOnly(Dictionary<string, string> cols)
+        {
+            var firstParam = cols.FirstOrDefault();
+            var firstParamDict = new Dictionary<string, string>() { { firstParam.Key, firstParam.Value } };
+            return BuildConstructorDtoParams(firstParamDict);
+        }
+
+        internal static string GetFirstParamName(Dictionary<string, string> entityFields)
+        {
+            return entityFields.FirstOrDefault().Key;
         }
 
         public static string BuildConstructorDtoParams(Dictionary<string, string> cols)
@@ -94,18 +108,45 @@ namespace FieldFactory.Utility.CreatePipeline
             }
             return sb.ToString().Substring(0, sb.ToString().Length - 2);
         }
+
+        /// <summary>
+        /// Pour méthode ConvertIntoDto du $Provider
+        /// </summary>
+        public static string BuildFlatParamsFromRaw(Dictionary<string, string> entityFields)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in entityFields)
+            {
+                sb.Append($"raw$entityName$.Value[\"{item.Key}\"], ");
+            }
+            return sb.ToString().Substring(0, sb.ToString().Length - 2);
+        }
+
         public static string BuildDtoToEntityConvertion(bool isJsonDto)
         {
             StringBuilder sb = new StringBuilder();
             if (isJsonDto)
             {
-                sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = JsonConvert.DeserializeObject<$entityName$>($entityNameLowerCase$Dto.Json);");
+                sb.AppendLine("$entityNameLowerCase$Id");
             }
             else
             {
                 sb.AppendLine("\t\t\tvar $entityNameLowerCase$ = new $entityName$($entityNameLowerCase$Dto);");
             }
             return sb.ToString();
+
+        }
+
+        public static string BuildInteractorParam(bool isJsonDto)
+        {
+            if (isJsonDto)
+            {
+                return "$entityNameLowerCase$Id";
+            }
+            else
+            {
+                return "$firstParamName$";
+            }
 
         }
 
@@ -120,5 +161,6 @@ namespace FieldFactory.Utility.CreatePipeline
             }
             return sb.ToString();
         }
+
     }
 }

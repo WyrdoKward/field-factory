@@ -93,5 +93,20 @@ namespace FieldFactory.Tests.Utility
 
             Assert.AreEqual(expected, actual);
         }
+        [Test]
+        [TestCase("raw$entityName$.Value[\"idPlayer\"], raw$entityName$.Value[\"intColumn\"], raw$entityName$.Value[\"dateColumn\"]")]
+        public void Test_BuildFlatParamsFromRaw(string expected)
+        {
+            Dictionary<string, string> input = new Dictionary<string, string>()
+            {
+                {"idPlayer", "string" },
+                {"intColumn", "int" },
+                {"dateColumn", "DateTime" },
+            };
+
+            var actual = UtilityLogic.BuildFlatParamsFromRaw(input);
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

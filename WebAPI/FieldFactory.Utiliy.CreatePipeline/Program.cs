@@ -12,6 +12,10 @@ namespace FieldFactory.Utility.CreatePipeline
             { "$entityNameLowerCase$", "$entityNameLowerCase$" },
             { "$entityPath$", "$otherInteractors$" },
             { "$nbColTable$", "$nbColTable$" },
+            { "$providerRawDtoParams$", "$providerRawDtoParams$" },
+            { "$firstParamWithType$", "$firstParamWithType$" },
+            { "$firstParamName$", "$firstParamName$" },
+            { "$interactorParam$", "$interactorParam$" },
             { "$dtoToEntityLine$", "$dtoToEntityLine$" },
             { "$jsonDefaultFields$", "$jsonDefaultFields$" },
             { "$StaticRessourcesNamespace$", "" },
@@ -58,8 +62,11 @@ namespace FieldFactory.Utility.CreatePipeline
             }
             else
             {
-                ConfigureEntityFieldsAndPopulateBlocks();
+                Console.WriteLine("==> Enter number of columns in db for this entity :");
+                PlaceHolders["$nbColTable$"] = Console.ReadLine();
+                ConfigureNonJsonEntityFieldsAndPopulateBlocks();
             }
+            PlaceHolders["$interactorParam$"] = UtilityLogic.BuildInteractorParam(_isJsonDto);
 
 
             //Executor
@@ -93,11 +100,6 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("***PROVIDER***");
             string providerTemplate = $"{staticFolder}\\$Provider";
             string providerFolder = $"Providers\\{staticFolder}";
-            if (_isJsonDto)
-            {
-                Console.WriteLine("==> Enter number of columns in db for this entity :");
-                PlaceHolders["$nbColTable$"] = Console.ReadLine();
-            }
             CreateFileFromTemplate(new EntityInfo(entityToCreate, providerTemplate, "FieldFactory.DataAccess", providerFolder));
 
             //SqLiteQueryBuilder
@@ -123,7 +125,7 @@ namespace FieldFactory.Utility.CreatePipeline
 
         }
 
-        internal static void ConfigureEntityFieldsAndPopulateBlocks()
+        internal static void ConfigureNonJsonEntityFieldsAndPopulateBlocks()
         {
             Console.WriteLine("");
             Console.WriteLine("Please paste here SQLite CREATE param section)");
@@ -139,6 +141,10 @@ namespace FieldFactory.Utility.CreatePipeline
             BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(EntityFields, false);
             BlocksToReplace["$BLOCK_constructorWithDtoFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(EntityFields, true);
             BlocksToReplace["$BLOCK_dtoMethods$"] = UtilityLogic.BuildEntityConvertToDTOMethods(EntityFields);
+
+            PlaceHolders["$providerRawDtoParams$"] = UtilityLogic.BuildFlatParamsFromRaw(EntityFields);
+            PlaceHolders["$firstParamWithType$"] = UtilityLogic.BuildMethodParamFirstOnly(EntityFields);
+            PlaceHolders["$firstParamName$"] = UtilityLogic.GetFirstParamName(EntityFields);
         }
 
         private static void CreateFileFromTemplate(EntityInfo info)
@@ -172,6 +178,8 @@ namespace FieldFactory.Utility.CreatePipeline
                         {
                             line = line.Replace(bloc.Key, bloc.Value);
                         }
+
+                        //Demandes à la volée
                         if (line.Contains(BlocksOnTheFly["$BLOCK_otherInteractors$"]))
                         {
                             line = AddOtherInteractorsForExecutorOnTheFly();
