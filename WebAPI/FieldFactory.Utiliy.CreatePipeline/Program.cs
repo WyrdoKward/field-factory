@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using FieldFactory.Core.Utils.Extension;
 
 namespace FieldFactory.Utility.CreatePipeline
 {
@@ -20,8 +21,10 @@ namespace FieldFactory.Utility.CreatePipeline
             { "$dtoToEntityLine$", "$dtoToEntityLine$" },
             { "$updateSetValues$", "$updateSetValues$" },
             { "$flatParamsMin$", "$flatParamsMin$" },
+            { "$queryFlatParams$", "$queryFlatParams$" },
             { "$insertValues$", "$insertValues$" },
             { "$discriminatingFieldsComparison$", "$discriminatingFieldsComparison$" },
+            { "$discriminatingFieldsComparisonFromDto$", "$discriminatingFieldsComparisonFromDto$" },
             { "$discriminatingFields$", "$discriminatingFields$" },
             { "$jsonDefaultFields$", "$jsonDefaultFields$" },
             { "$StaticRessourcesNamespace$", "" },
@@ -37,11 +40,10 @@ namespace FieldFactory.Utility.CreatePipeline
             {"$BLOCK_ConstructorParams$", ""},
             {"$BLOCK_fieldsAssignation$", ""},
             {"$BLOCK_constructorWithDtoFieldsAssignation$", ""},
-            {"$BLOCK_dtoMethods$", ""}
+            {"$BLOCK_dtoMethods$", ""},
+            {"$BLOCK_discriminatingPublicFields$", ""},
+            {"$BLOCK_discriminatingFieldsAssignation$", ""}
         };
-
-        static Dictionary<string, string> EntityFields = new Dictionary<string, string>();
-        static Dictionary<string, string> DiscriminatingFields = new Dictionary<string, string>();
 
         static bool _isJsonDto;
         static string _entityPath;
@@ -50,7 +52,7 @@ namespace FieldFactory.Utility.CreatePipeline
             //Configuration
             Console.WriteLine("Please enter the name of the new Entity to Create : ");
             string entityToCreate = Console.ReadLine();
-            PlaceHolders["$entityName$"] = entityToCreate;
+            PlaceHolders["$entityName$"] = entityToCreate.FirstCharToUpper();
             PlaceHolders["$entityNameLowerCase$"] = entityToCreate.ToLower();
 
             Console.WriteLine("==> Enter Interactor and Entity path ");
@@ -58,6 +60,7 @@ namespace FieldFactory.Utility.CreatePipeline
             _entityPath = Console.ReadLine();
             PlaceHolders["$entityPath$"] = !string.IsNullOrEmpty(_entityPath) ? $".{_entityPath}" : "";
 
+            //TODO sera détecté automatiquement
             Console.WriteLine($"==> Is Dto in Json ? (y/n)");
             _isJsonDto = Console.ReadLine() == "y" ? true : false; ;
 
@@ -89,7 +92,8 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***QUERY***");
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, "Get$Query", "FieldFactory.Framework", "Query"));
+            string queryTemplate = $"{staticFolder}\\Get$Query";
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, queryTemplate, "FieldFactory.Framework", "Query"));
 
             //Interactor
             Console.WriteLine("");
@@ -148,27 +152,31 @@ namespace FieldFactory.Utility.CreatePipeline
             PlaceHolders["$nbColTable$"] = UtilityLogic.EntityFields.Count.ToString();
 
             Console.WriteLine("");
-            Console.WriteLine($"What are the sql discriminating fields ? (leave empty to use {EntityFields.FirstOrDefault().Key})");
+            Console.WriteLine($"What are the sql discriminating fields ? (leave empty to use {UtilityLogic.EntityFields.FirstOrDefault().Key})");
             Console.WriteLine("Separated by comma like this :");
             Console.WriteLine("idPlayer, otherId");
             string discriminating = Console.ReadLine();
             UtilityLogic.ParseSQLiteDiscriminatingParams(discriminating);
 
             //populate blocks
-            BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock();
+            BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock(UtilityLogic.EntityFields);
             BlocksToReplace["$BLOCK_ConstructorParams$"] = UtilityLogic.BuildConstructorDtoParams(UtilityLogic.EntityFields);
-            BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(false);
-            BlocksToReplace["$BLOCK_constructorWithDtoFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(true);
+            BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(UtilityLogic.EntityFields, false, false);
+            BlocksToReplace["$BLOCK_constructorWithDtoFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(UtilityLogic.EntityFields, false, true);
             BlocksToReplace["$BLOCK_dtoMethods$"] = UtilityLogic.BuildEntityConvertToDTOMethods();
+            BlocksToReplace["$BLOCK_discriminatingPublicFields$"] = UtilityLogic.BuildPublicFieldBlock(UtilityLogic.DiscriminatingFields);
+            BlocksToReplace["$BLOCK_discriminatingFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(UtilityLogic.DiscriminatingFields, true, false);
 
             PlaceHolders["$providerRawDtoParams$"] = UtilityLogic.BuildFlatParamsFromRaw();
             PlaceHolders["$firstParamWithType$"] = UtilityLogic.BuildMethodParamFirstOnly();
             PlaceHolders["$firstParamName$"] = UtilityLogic.GetFirstParamName();
             PlaceHolders["$flatParamsMin$"] = UtilityLogic.BuildFlatParams(UtilityLogic.EntityFields, false);
             PlaceHolders["$insertValues$"] = UtilityLogic.BuildInsertValues();
-            PlaceHolders["$updateSetValues$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.EntityFields);
-            PlaceHolders["$discriminatingFields$"] = UtilityLogic.BuildFlatParams(UtilityLogic.DiscriminatingFields, false);
-            PlaceHolders["$discriminatingFieldsComparison$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.DiscriminatingFields);
+            PlaceHolders["$updateSetValues$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.EntityFields, true);
+            PlaceHolders["$discriminatingFields$"] = UtilityLogic.BuildConstructorDtoParams(UtilityLogic.DiscriminatingFields);
+            PlaceHolders["$discriminatingFieldsComparison$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.DiscriminatingFields, false);
+            PlaceHolders["$discriminatingFieldsComparisonFromDto$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.DiscriminatingFields, true);
+            PlaceHolders["$queryFlatParams$"] = UtilityLogic.BuildFlatParams(UtilityLogic.EntityFields, true, "query.");
 
 
         }

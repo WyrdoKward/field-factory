@@ -61,15 +61,21 @@ namespace FieldFactory.Tests.Utility
             Assert.AreEqual(expected, actual);
         }
         [Test]
-        [TestCase("idPlayer", false, "IdPlayer = idPlayer;")]
-        [TestCase("intColumn", false,  "IntColumn = intColumn;")]
-        [TestCase("dateColumn", false, "DateColumn = dateColumn;")]
-        [TestCase("idPlayer", true, "IdPlayer = dto.IdPlayer;")]
-        [TestCase("intColumn", true, "IntColumn = dto.IntColumn;")]
-        [TestCase("dateColumn", true, "DateColumn = dto.DateColumn;")]
-        public void Test_BuildFieldAssignationLine(string name, bool fromDto, string expected)
+        [TestCase("idPlayer", false, false, "IdPlayer = idPlayer;")]
+        [TestCase("intColumn", false, false,  "IntColumn = intColumn;")]
+        [TestCase("dateColumn", false, false, "DateColumn = dateColumn;")]
+        [TestCase("idPlayer", false, true, "IdPlayer = dto.IdPlayer;")]
+        [TestCase("intColumn", false, true, "IntColumn = dto.IntColumn;")]
+        [TestCase("dateColumn", false, true, "DateColumn = dto.DateColumn;")]
+        [TestCase("idPlayer", true, false, "IdPlayer = idPlayer ?? throw new ArgumentNullException(nameof(idPlayer));")]
+        [TestCase("intColumn", true, false, "IntColumn = intColumn ?? throw new ArgumentNullException(nameof(intColumn));")]
+        [TestCase("dateColumn", true, false, "DateColumn = dateColumn ?? throw new ArgumentNullException(nameof(dateColumn));")]
+        [TestCase("idPlayer", true, true, "IdPlayer = dto.IdPlayer ?? throw new ArgumentNullException(nameof(dto.IdPlayer));")]
+        [TestCase("intColumn", true, true, "IntColumn = dto.IntColumn ?? throw new ArgumentNullException(nameof(dto.IntColumn));")]
+        [TestCase("dateColumn", true, true, "DateColumn = dto.DateColumn ?? throw new ArgumentNullException(nameof(dto.DateColumn));")]
+        public void Test_BuildFieldAssignationLine(string name, bool validateParams, bool fromDto, string expected)
         {
-            var actual = UtilityLogic.BuildFieldAssignationLine(name, fromDto);
+            var actual = UtilityLogic.BuildFieldAssignationLine(name, validateParams, fromDto);
 
             Assert.AreEqual(expected, actual);
         }
@@ -100,8 +106,9 @@ namespace FieldFactory.Tests.Utility
         }
 
         [Test]
-        [TestCase("aaa = '{dto.Aaa}', bbb = {dto.Bbb}")]
-        public void Test_BuildUpdateSetValues(string expected)
+        [TestCase(true, "aaa = '{dto.Aaa}', bbb = {dto.Bbb}")]
+        [TestCase(false, "aaa = '{aaa}', bbb = {bbb}")]
+        public void Test_BuildUpdateSetValues(bool fromdto, string expected)
         {
             Dictionary<string, string> input = new Dictionary<string, string>()
             {
@@ -109,7 +116,7 @@ namespace FieldFactory.Tests.Utility
                 {"bbb", "int" },
             };
 
-            var actual = UtilityLogic.BuildUpdateSetOrEqualValues(input);
+            var actual = UtilityLogic.BuildUpdateSetOrEqualValues(input, fromdto);
 
             Assert.AreEqual(expected, actual);
         }
