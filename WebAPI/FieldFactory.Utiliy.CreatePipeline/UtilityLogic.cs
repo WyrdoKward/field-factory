@@ -27,11 +27,14 @@ namespace FieldFactory.Utility.CreatePipeline
                 EntityFields.Add(colName, cSharpType);
             }
         }
-        public static void ParseSQLiteDiscriminatingParams(string input)
+        public static string ParseSQLiteDiscriminatingParams(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
                 var firstParam = EntityFields.FirstOrDefault();
+                if (!EntityFields.Keys.Contains(firstParam.Key))
+                    return firstParam.Key;
+
                 DiscriminatingFields.Add(firstParam.Key, firstParam.Value);
             }
             else
@@ -39,10 +42,14 @@ namespace FieldFactory.Utility.CreatePipeline
                 foreach (var col in input.Split(','))
                 {
                     var colName = col.Trim();
+                    if (!EntityFields.Keys.Contains(colName))
+                        return colName;
+
                     var cSharpType = EntityFields[colName];
                     DiscriminatingFields.Add(colName, cSharpType);
                 }
             }
+            return "";
         }
 
         public static string BuildMethodParamFirstOnly()
@@ -95,7 +102,6 @@ namespace FieldFactory.Utility.CreatePipeline
                 sb.Append("\t\t\t");
                 sb.Append(BuildFieldAssignationLine(item.Key, validateParams, fromDto));
                 sb.Append("\r\n");
-                sb.AppendLine();
             }
 
             return sb.ToString().Substring(3);
@@ -104,7 +110,7 @@ namespace FieldFactory.Utility.CreatePipeline
         public static string BuildFieldAssignationLine(string name, bool validateParams, bool fromDto)
         {
             string dtoParam = fromDto ? $"dto.{name.FirstCharToUpper()}" : name;
-            string validation = validateParams ? $" ?? throw new ArgumentOutOfRangeException(nameof(\"{dtoParam}\"))" : "";
+            string validation = validateParams ? $" ?? throw new ArgumentOutOfRangeException(nameof({dtoParam}))" : "";
             return $"{name.FirstCharToUpper()} = {dtoParam}{validation};";
         }
 
@@ -225,6 +231,18 @@ namespace FieldFactory.Utility.CreatePipeline
             else
             {
                 return "$discriminatingFields$";
+            }
+
+        }
+        public static string BuildInteractorFlatParam(bool isJsonDto)
+        {
+            if (isJsonDto)
+            {
+                return "$entityNameLowerCase$Id";
+            }
+            else
+            {
+                return "$discriminatingFlatParams$";
             }
 
         }

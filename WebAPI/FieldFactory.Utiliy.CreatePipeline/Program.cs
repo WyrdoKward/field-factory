@@ -1,9 +1,9 @@
-﻿using System;
+﻿using FieldFactory.Core.Utils.Extension;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using FieldFactory.Core.Utils.Extension;
 
 namespace FieldFactory.Utility.CreatePipeline
 {
@@ -11,6 +11,7 @@ namespace FieldFactory.Utility.CreatePipeline
     {
         static Dictionary<string, string> PlaceHolders = new Dictionary<string, string>() {
             { "$interactorParam$", "$interactorParam$" },
+            { "$interactorFlatParam$", "$interactorFlatParam$" },
             { "$providerRawDtoParams$", "$providerRawDtoParams$" },
             { "$entityName$", "$entityName$" },
             { "$entityNameLowerCase$", "$entityNameLowerCase$" },
@@ -26,6 +27,7 @@ namespace FieldFactory.Utility.CreatePipeline
             { "$discriminatingFieldsComparison$", "$discriminatingFieldsComparison$" },
             { "$discriminatingFieldsComparisonFromDto$", "$discriminatingFieldsComparisonFromDto$" },
             { "$discriminatingFields$", "$discriminatingFields$" },
+            { "$discriminatingFlatParams$", "$discriminatingFlatParams$" },
             { "$jsonDefaultFields$", "$jsonDefaultFields$" },
             { "$StaticRessourcesNamespace$", "" },
         };
@@ -51,8 +53,8 @@ namespace FieldFactory.Utility.CreatePipeline
         {
             //Configuration
             Console.WriteLine("Please enter the name of the new Entity to Create : ");
-            string entityToCreate = Console.ReadLine();
-            PlaceHolders["$entityName$"] = entityToCreate.FirstCharToUpper();
+            string entityToCreate = Console.ReadLine().FirstCharToUpper();
+            PlaceHolders["$entityName$"] = entityToCreate;
             PlaceHolders["$entityNameLowerCase$"] = entityToCreate.ToLower();
 
             Console.WriteLine("==> Enter Interactor and Entity path ");
@@ -62,19 +64,36 @@ namespace FieldFactory.Utility.CreatePipeline
 
             //TODO sera détecté automatiquement
             Console.WriteLine($"==> Is Dto in Json ? (y/n)");
-            _isJsonDto = Console.ReadLine() == "y" ? true : false; ;
-
+            _isJsonDto = Console.ReadLine() == "y" ? true : false;
             string staticFolder = "";
-            if (_isJsonDto)
+            try
             {
-                staticFolder = "StaticRessource";
-                PlaceHolders["$StaticRessourcesNamespace$"] = ".StaticRessource";
+                if (_isJsonDto)
+                {
+                    staticFolder = "StaticRessource";
+                    PlaceHolders["$StaticRessourcesNamespace$"] = ".StaticRessource";
+                }
+                else
+                {
+
+                    ConfigureNonJsonEntityFieldsAndPopulateBlocks();
+
+                }
+                PlaceHolders["$interactorParam$"] = UtilityLogic.BuildInteractorParam(_isJsonDto);
+                PlaceHolders["$interactorFlatParam$"] = UtilityLogic.BuildInteractorFlatParam(_isJsonDto);
             }
-            else
+            catch (Exception e)
             {
-                ConfigureNonJsonEntityFieldsAndPopulateBlocks();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("");
+                Console.WriteLine("*****CONFIGURATION ERROR*****");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                Console.ReadLine();
+                return;
             }
-            PlaceHolders["$interactorParam$"] = UtilityLogic.BuildInteractorParam(_isJsonDto);
 
 
             foreach (var placeHolder in PlaceHolders)
@@ -156,7 +175,16 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("Separated by comma like this :");
             Console.WriteLine("idPlayer, otherId");
             string discriminating = Console.ReadLine();
-            UtilityLogic.ParseSQLiteDiscriminatingParams(discriminating);
+            string wrongParam = UtilityLogic.ParseSQLiteDiscriminatingParams(discriminating);
+            while (!string.IsNullOrEmpty(wrongParam))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"Parameter {wrongParam} doesn't exist ! Please Re-enter discriminating params.");
+                Console.ResetColor();
+                discriminating = Console.ReadLine();
+                wrongParam = UtilityLogic.ParseSQLiteDiscriminatingParams(discriminating);
+            }
+
 
             //populate blocks
             BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock(UtilityLogic.EntityFields);
@@ -176,7 +204,8 @@ namespace FieldFactory.Utility.CreatePipeline
             PlaceHolders["$discriminatingFields$"] = UtilityLogic.BuildConstructorDtoParams(UtilityLogic.DiscriminatingFields);
             PlaceHolders["$discriminatingFieldsComparison$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.DiscriminatingFields, false);
             PlaceHolders["$discriminatingFieldsComparisonFromDto$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.DiscriminatingFields, true);
-            PlaceHolders["$queryFlatParams$"] = UtilityLogic.BuildFlatParams(UtilityLogic.EntityFields, true, "query.");
+            PlaceHolders["$queryFlatParams$"] = UtilityLogic.BuildFlatParams(UtilityLogic.DiscriminatingFields, true, "query.");
+            PlaceHolders["$discriminatingFlatParams$"] = UtilityLogic.BuildFlatParams(UtilityLogic.DiscriminatingFields, false, "");
 
 
         }
@@ -261,6 +290,6 @@ namespace FieldFactory.Utility.CreatePipeline
                     sb.AppendLine($"\t\t{otherInteractor}Interactor {otherInteractor.ToLower()}Interactor = new {otherInteractor}Interactor();");
             }
             return sb.ToString();
-        }        
+        }
     }
 }
