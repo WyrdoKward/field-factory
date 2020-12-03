@@ -15,29 +15,38 @@ namespace FieldFactory.Utility.CreatePipeline
             {"datetime", "DateTime" },
         };
 
-        public static Dictionary<string, string> ParseSQLiteParams(string sql)
+        public static Dictionary<string, string> EntityFields = new Dictionary<string, string>();
+        public static Dictionary<string, string> DiscriminatingFields = new Dictionary<string, string>();
+
+        public static void ParseSQLiteParams(string sql)
         {
-            var res = new Dictionary<string, string>();
             foreach (var col in sql.Split(','))
             {
                 var colName = col.Split('"')[1].Trim();
                 var cSharpType = SQLiteTypeMapping[col.Split('"')[2].Trim()];
-                res.Add(colName, cSharpType);
+                EntityFields.Add(colName, cSharpType);
             }
-
-            return res;
+        }
+        public static void ParseSQLiteDiscriminatingParams(string input)
+        {
+            foreach (var col in input.Split(','))
+            {
+                var colName = col.Trim();
+                var cSharpType = EntityFields[colName];
+                DiscriminatingFields.Add(colName, cSharpType);
+            }
         }
 
-        public static string BuildMethodParamFirstOnly(Dictionary<string, string> cols)
+        public static string BuildMethodParamFirstOnly()
         {
-            var firstParam = cols.FirstOrDefault();
+            var firstParam = EntityFields.FirstOrDefault();
             var firstParamDict = new Dictionary<string, string>() { { firstParam.Key, firstParam.Value } };
             return BuildConstructorDtoParams(firstParamDict);
         }
 
-        internal static string GetFirstParamName(Dictionary<string, string> entityFields)
+        internal static string GetFirstParamName()
         {
-            return entityFields.FirstOrDefault().Key;
+            return EntityFields.FirstOrDefault().Key;
         }
 
         public static string BuildConstructorDtoParams(Dictionary<string, string> cols)
@@ -50,10 +59,10 @@ namespace FieldFactory.Utility.CreatePipeline
 
             return sb.ToString().Substring(0, sb.ToString().Length - 2);
         }
-        public static string BuildPublicFieldBlock(Dictionary<string, string> entityFields)
+        public static string BuildPublicFieldBlock()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in entityFields)
+            foreach (var item in EntityFields)
             {
                 sb.Append("\t\t");
                 sb.Append(BuildPublicFieldLine(item.Key, item.Value));
@@ -69,10 +78,10 @@ namespace FieldFactory.Utility.CreatePipeline
             return $"public {type} {name} {{ get; set; }}";
         }
 
-        public static string BuildFieldAssignationBlock(Dictionary<string, string> entityFields, bool fromDto)
+        public static string BuildFieldAssignationBlock(bool fromDto)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in entityFields)
+            foreach (var item in EntityFields)
             {
                 sb.Append("\t\t\t");
                 sb.Append(BuildFieldAssignationLine(item.Key, fromDto));
@@ -89,22 +98,23 @@ namespace FieldFactory.Utility.CreatePipeline
             return $"{name.FirstCharToUpper()} = {dtoParam};";
         }
 
-        public static string BuildEntityConvertToDTOMethods(Dictionary<string, string> entityFields)
+        public static string BuildEntityConvertToDTOMethods()
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\t\tpublic $entityName$DTO ConvertToDTO()");
             sb.AppendLine("\t\t{");
-            sb.AppendLine($"\t\t\treturn new $entityName$DTO({BuildFlatParams(entityFields)});");
+            sb.AppendLine($"\t\t\treturn new $entityName$DTO({BuildFlatParams(EntityFields, true)});");
             sb.AppendLine("\t\t}");
             return sb.ToString();
         }
 
-        public static string BuildFlatParams(Dictionary<string, string> entityFields)
+        public static string BuildFlatParams(Dictionary<string, string> fields, bool firstCharToUpper)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in entityFields)
+            foreach (var item in fields)
             {
-                sb.Append($"{item.Key.FirstCharToUpper()}, ");
+                string p = firstCharToUpper ? item.Key.FirstCharToUpper() : item.Key;
+                sb.Append($"{p}, ");
             }
             return sb.ToString().Substring(0, sb.ToString().Length - 2);
         }
@@ -112,12 +122,23 @@ namespace FieldFactory.Utility.CreatePipeline
         /// <summary>
         /// Pour méthode ConvertIntoDto du $Provider
         /// </summary>
-        public static string BuildFlatParamsFromRaw(Dictionary<string, string> entityFields)
+        public static string BuildFlatParamsFromRaw()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in entityFields)
+            foreach (var item in EntityFields)
             {
-                sb.Append($"raw$entityName$.Value[\"{item.Key}\"], ");
+                switch (item.Value)
+                {
+                    case "int":
+                        sb.Append($"int.Parse(raw$entityName$.Value[\"{item.Key}\"]), ");
+                        break;
+                    case "DateTime":
+                        sb.Append($"DateTime.Parse(raw$entityName$.Value[\"{item.Key}\"]), ");
+                        break;
+                    default:
+                        sb.Append($"raw$entityName$.Value[\"{item.Key}\"], ");
+                        break;
+                }
             }
             return sb.ToString().Substring(0, sb.ToString().Length - 2);
         }
@@ -135,6 +156,47 @@ namespace FieldFactory.Utility.CreatePipeline
             }
             return sb.ToString();
 
+        }
+
+        public static string BuildUpdateSetOrEqualValues(Dictionary<string, string> cols)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in cols)
+            {
+                sb.Append(BuildSqlEqualComparison(item));
+            }
+            return sb.ToString().Substring(0, sb.ToString().Length - 2);
+        }
+
+
+
+        public static string BuildSqlEqualComparison(KeyValuePair<string, string> item)
+        {
+            switch (item.Value)
+            {
+                case "int":
+                    return $"{item.Key} = {{dto.{item.Key.FirstCharToUpper()}}}, ";
+                default:
+                    return $"{item.Key} = '{{dto.{item.Key.FirstCharToUpper()}}}', ";
+            }
+        }
+
+        public static string BuildInsertValues()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in EntityFields)
+            {
+                switch (item.Value)
+                {
+                    case "int":
+                        sb.Append($"{{dto.{item.Key.FirstCharToUpper()}}}, ");
+                        break;
+                    default:
+                        sb.Append($"'{{dto.{item.Key.FirstCharToUpper()}}}', ");
+                        break;
+                }
+            }
+            return sb.ToString().Substring(0, sb.ToString().Length - 2);
         }
 
         public static string BuildInteractorParam(bool isJsonDto)

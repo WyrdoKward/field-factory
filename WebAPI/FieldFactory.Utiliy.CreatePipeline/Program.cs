@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace FieldFactory.Utility.CreatePipeline
@@ -8,15 +9,20 @@ namespace FieldFactory.Utility.CreatePipeline
     public class Program
     {
         static Dictionary<string, string> PlaceHolders = new Dictionary<string, string>() {
+            { "$interactorParam$", "$interactorParam$" },
+            { "$providerRawDtoParams$", "$providerRawDtoParams$" },
             { "$entityName$", "$entityName$" },
             { "$entityNameLowerCase$", "$entityNameLowerCase$" },
-            { "$entityPath$", "$otherInteractors$" },
+            { "$entityPath$", "" },
             { "$nbColTable$", "$nbColTable$" },
-            { "$providerRawDtoParams$", "$providerRawDtoParams$" },
             { "$firstParamWithType$", "$firstParamWithType$" },
             { "$firstParamName$", "$firstParamName$" },
-            { "$interactorParam$", "$interactorParam$" },
             { "$dtoToEntityLine$", "$dtoToEntityLine$" },
+            { "$updateSetValues$", "$updateSetValues$" },
+            { "$flatParamsMin$", "$flatParamsMin$" },
+            { "$insertValues$", "$insertValues$" },
+            { "$discriminatingFieldsComparison$", "$discriminatingFieldsComparison$" },
+            { "$discriminatingFields$", "$discriminatingFields$" },
             { "$jsonDefaultFields$", "$jsonDefaultFields$" },
             { "$StaticRessourcesNamespace$", "" },
         };
@@ -35,6 +41,7 @@ namespace FieldFactory.Utility.CreatePipeline
         };
 
         static Dictionary<string, string> EntityFields = new Dictionary<string, string>();
+        static Dictionary<string, string> DiscriminatingFields = new Dictionary<string, string>();
 
         static bool _isJsonDto;
         static string _entityPath;
@@ -49,7 +56,7 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("==> Enter Interactor and Entity path ");
             Console.WriteLine("    (In /Core/{path} and /Core/Entities/{path})");
             _entityPath = Console.ReadLine();
-            PlaceHolders["$entityPath$"] = $".{_entityPath}";
+            PlaceHolders["$entityPath$"] = !string.IsNullOrEmpty(_entityPath) ? $".{_entityPath}" : "";
 
             Console.WriteLine($"==> Is Dto in Json ? (y/n)");
             _isJsonDto = Console.ReadLine() == "y" ? true : false; ;
@@ -62,12 +69,15 @@ namespace FieldFactory.Utility.CreatePipeline
             }
             else
             {
-                Console.WriteLine("==> Enter number of columns in db for this entity :");
-                PlaceHolders["$nbColTable$"] = Console.ReadLine();
                 ConfigureNonJsonEntityFieldsAndPopulateBlocks();
             }
             PlaceHolders["$interactorParam$"] = UtilityLogic.BuildInteractorParam(_isJsonDto);
 
+
+            foreach (var placeHolder in PlaceHolders)
+            {
+                Console.WriteLine($"{placeHolder.Key} : {placeHolder.Value}");
+            }
 
             //Executor
             Console.WriteLine("");
@@ -128,23 +138,39 @@ namespace FieldFactory.Utility.CreatePipeline
         internal static void ConfigureNonJsonEntityFieldsAndPopulateBlocks()
         {
             Console.WriteLine("");
-            Console.WriteLine("Please paste here SQLite CREATE param section)");
+            Console.WriteLine("Please paste here SQLite (CREATE param section)");
             Console.WriteLine("It should look like this :");
             Console.WriteLine("\"idPlayer\" text,\"intColumn\" integer, \"dateColumn\" datetime");
             string cols = Console.ReadLine();
 
-            EntityFields = UtilityLogic.ParseSQLiteParams(cols);
+            //Initialiaze EntityFields
+            UtilityLogic.ParseSQLiteParams(cols);
+            PlaceHolders["$nbColTable$"] = UtilityLogic.EntityFields.Count.ToString();
+
+            Console.WriteLine("");
+            Console.WriteLine($"What are the sql discriminating fields ? (leave empty to use {EntityFields.FirstOrDefault().Key})");
+            Console.WriteLine("Separated by comma like this :");
+            Console.WriteLine("idPlayer, otherId");
+            string discriminating = Console.ReadLine();
+            UtilityLogic.ParseSQLiteDiscriminatingParams(discriminating);
 
             //populate blocks
-            BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock(EntityFields);
-            BlocksToReplace["$BLOCK_ConstructorParams$"] = UtilityLogic.BuildConstructorDtoParams(EntityFields);
-            BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(EntityFields, false);
-            BlocksToReplace["$BLOCK_constructorWithDtoFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(EntityFields, true);
-            BlocksToReplace["$BLOCK_dtoMethods$"] = UtilityLogic.BuildEntityConvertToDTOMethods(EntityFields);
+            BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock();
+            BlocksToReplace["$BLOCK_ConstructorParams$"] = UtilityLogic.BuildConstructorDtoParams(UtilityLogic.EntityFields);
+            BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(false);
+            BlocksToReplace["$BLOCK_constructorWithDtoFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(true);
+            BlocksToReplace["$BLOCK_dtoMethods$"] = UtilityLogic.BuildEntityConvertToDTOMethods();
 
-            PlaceHolders["$providerRawDtoParams$"] = UtilityLogic.BuildFlatParamsFromRaw(EntityFields);
-            PlaceHolders["$firstParamWithType$"] = UtilityLogic.BuildMethodParamFirstOnly(EntityFields);
-            PlaceHolders["$firstParamName$"] = UtilityLogic.GetFirstParamName(EntityFields);
+            PlaceHolders["$providerRawDtoParams$"] = UtilityLogic.BuildFlatParamsFromRaw();
+            PlaceHolders["$firstParamWithType$"] = UtilityLogic.BuildMethodParamFirstOnly();
+            PlaceHolders["$firstParamName$"] = UtilityLogic.GetFirstParamName();
+            PlaceHolders["$flatParamsMin$"] = UtilityLogic.BuildFlatParams(UtilityLogic.EntityFields, false);
+            PlaceHolders["$insertValues$"] = UtilityLogic.BuildInsertValues();
+            PlaceHolders["$updateSetValues$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.EntityFields);
+            PlaceHolders["$discriminatingFields$"] = UtilityLogic.BuildFlatParams(UtilityLogic.DiscriminatingFields, false);
+            PlaceHolders["$discriminatingFieldsComparison$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.DiscriminatingFields);
+
+
         }
 
         private static void CreateFileFromTemplate(EntityInfo info)

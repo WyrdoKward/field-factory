@@ -12,11 +12,11 @@ namespace FieldFactory.Tests.Utility
         [SetUp]
         public void Setup()
         {
-            c.Outcomes = new Outcome[3]
+            UtilityLogic.EntityFields = new Dictionary<string, string>()
             {
-                new Outcome(){NextStepId = 1, Weight = 1 },
-                new Outcome(){NextStepId = 2, Weight = 1 },
-                new Outcome(){NextStepId = 3, Weight = 2 },
+                {"idPlayer", "string" },
+                {"intColumn", "int" },
+                {"dateColumn", "DateTime" },
             };
         }
 
@@ -24,14 +24,10 @@ namespace FieldFactory.Tests.Utility
         [TestCase("\"idPlayer\" text,\"intColumn\" integer, \"dateColumn\" datetime")]
         public void Test_ParseSQLiteParams(string cols)
         {
-            Dictionary<string, string> expected = new Dictionary<string, string>()
-            {
-                {"idPlayer", "string" },
-                {"intColumn", "int" },
-                {"dateColumn", "DateTime" },
-            };
-
-            var actual = UtilityLogic.ParseSQLiteParams(cols);
+            Dictionary<string, string> expected = new Dictionary<string, string>(UtilityLogic.EntityFields);
+            UtilityLogic.EntityFields.Clear();
+            UtilityLogic.ParseSQLiteParams(cols);
+            var actual = UtilityLogic.EntityFields;
 
             Assert.AreEqual(expected, actual);
         }
@@ -79,8 +75,9 @@ namespace FieldFactory.Tests.Utility
         }
 
         [Test]
-        [TestCase("IdPlayer, IntColumn, DateColumn")]
-        public void Test_BuildFlatParams(string expected)
+        [TestCase(true, "IdPlayer, IntColumn, DateColumn")]
+        [TestCase(false, "idPlayer, intColumn, dateColumn")]
+        public void Test_BuildFlatParams(bool firstCharToUpper, string expected)
         {
             Dictionary<string, string> input = new Dictionary<string, string>()
             {
@@ -89,22 +86,30 @@ namespace FieldFactory.Tests.Utility
                 {"dateColumn", "DateTime" },
             };
 
-            var actual = UtilityLogic.BuildFlatParams(input);
+            var actual = UtilityLogic.BuildFlatParams(input, firstCharToUpper);
 
             Assert.AreEqual(expected, actual);
         }
         [Test]
-        [TestCase("raw$entityName$.Value[\"idPlayer\"], raw$entityName$.Value[\"intColumn\"], raw$entityName$.Value[\"dateColumn\"]")]
+        [TestCase("raw$entityName$.Value[\"idPlayer\"], int.Parse(raw$entityName$.Value[\"intColumn\"]), DateTime.Parse(raw$entityName$.Value[\"dateColumn\"])")]
         public void Test_BuildFlatParamsFromRaw(string expected)
+        {
+            var actual = UtilityLogic.BuildFlatParamsFromRaw();
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        [TestCase("aaa = '{dto.Aaa}', bbb = {dto.Bbb}")]
+        public void Test_BuildUpdateSetValues(string expected)
         {
             Dictionary<string, string> input = new Dictionary<string, string>()
             {
-                {"idPlayer", "string" },
-                {"intColumn", "int" },
-                {"dateColumn", "DateTime" },
+                {"aaa", "string" },
+                {"bbb", "int" },
             };
 
-            var actual = UtilityLogic.BuildFlatParamsFromRaw(input);
+            var actual = UtilityLogic.BuildUpdateSetOrEqualValues(input);
 
             Assert.AreEqual(expected, actual);
         }
