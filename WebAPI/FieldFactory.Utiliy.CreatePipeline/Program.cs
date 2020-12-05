@@ -4,74 +4,69 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.SqlServer.Management.SqlParser.Parser;
 
 namespace FieldFactory.Utility.CreatePipeline
 {
     public class Program
     {
-        static Dictionary<string, string> PlaceHolders = new Dictionary<string, string>() {
-            { "$interactorParam$", "$interactorParam$" },
-            { "$interactorFlatParam$", "$interactorFlatParam$" },
-            { "$providerRawDtoParams$", "$providerRawDtoParams$" },
-            { "$entityName$", "$entityName$" },
-            { "$entityNameLowerCase$", "$entityNameLowerCase$" },
-            { "$entityPath$", "" },
-            { "$nbColTable$", "$nbColTable$" },
-            { "$firstParamWithType$", "$firstParamWithType$" },
-            { "$firstParamName$", "$firstParamName$" },
-            { "$dtoToEntityLine$", "$dtoToEntityLine$" },
-            { "$updateSetValues$", "$updateSetValues$" },
-            { "$flatParamsMin$", "$flatParamsMin$" },
-            { "$queryFlatParams$", "$queryFlatParams$" },
-            { "$insertValues$", "$insertValues$" },
-            { "$discriminatingFieldsComparison$", "$discriminatingFieldsComparison$" },
-            { "$discriminatingFieldsComparisonFromDto$", "$discriminatingFieldsComparisonFromDto$" },
-            { "$discriminatingFields$", "$discriminatingFields$" },
-            { "$discriminatingFlatParams$", "$discriminatingFlatParams$" },
-            { "$jsonDefaultFields$", "$jsonDefaultFields$" },
-            { "$StaticRessourcesNamespace$", "" },
-        };
-        static Dictionary<string, string> BlocksOnTheFly = new Dictionary<string, string>()
-        {
-            {"$BLOCK_otherInteractors$", "$BLOCK_otherInteractors$"},
-        };
-
-        static Dictionary<string, string> BlocksToReplace = new Dictionary<string, string>()
-        {
-            {"$BLOCK_publicFields$", ""},
-            {"$BLOCK_ConstructorParams$", ""},
-            {"$BLOCK_fieldsAssignation$", ""},
-            {"$BLOCK_constructorWithDtoFieldsAssignation$", ""},
-            {"$BLOCK_dtoMethods$", ""},
-            {"$BLOCK_discriminatingPublicFields$", ""},
-            {"$BLOCK_discriminatingFieldsAssignation$", ""}
-        };
-
-        static bool _isJsonDto;
         static string _entityPath;
+        static string _staticFolder = "";
         static void Main(string[] args)
         {
-            //Configuration
-            Console.WriteLine("Please enter the name of the new Entity to Create : ");
-            string entityToCreate = Console.ReadLine().FirstCharToUpper();
-            PlaceHolders["$entityName$"] = entityToCreate;
-            PlaceHolders["$entityNameLowerCase$"] = entityToCreate.ToLower();
+            //Detecting sql files
+            Console.WriteLine("Reading sql files...");
+            var files = Directory.GetFiles("input").Where(f => f.EndsWith(".sql"));
+            Console.WriteLine($"{files.Count()} sql files detected !");
+            Console.WriteLine("");
 
-            Console.WriteLine("==> Enter Interactor and Entity path ");
+            foreach (var file in files)
+            {
+                Console.WriteLine($"**** {file} ****");
+                SqlParser.ReadSqlFile(file);
+                SqlParser.ParseSql();
+                SqlParser.ExtractInfosFromTokens();
+
+                ConfigureGeneric();
+                ConfigInfo.PrintConfigInfos();
+
+                Console.WriteLine("");
+                Console.WriteLine("Configuration complete, press enter to create the files.");
+                Console.ReadLine();
+                /*foreach (var placeHolder in PlaceHolders)
+                {
+                    Console.WriteLine($"{placeHolder.Key} : {placeHolder.Value}");
+                }*/
+
+                //WriteNewFiles(_entityPath);
+
+                ConfigInfo.Clean();
+                Console.WriteLine("");
+            }
+
+
+            //END Main
+        }
+
+
+        private static void ConfigureGeneric()
+        {
+            ConfigInfo.PlaceHolders["$entityName$"] = ConfigInfo.EntityName;
+            ConfigInfo.PlaceHolders["$entityNameLowerCase$"] = ConfigInfo.EntityName.ToLower();
+            ConfigInfo.PlaceHolders["$nbColTable$"] = ConfigInfo.EntityFields.Count.ToString();
+
+            Console.WriteLine("==> Enter Interactor and Entity specific folder if needed");
             Console.WriteLine("    (In /Core/{path} and /Core/Entities/{path})");
             _entityPath = Console.ReadLine();
-            PlaceHolders["$entityPath$"] = !string.IsNullOrEmpty(_entityPath) ? $".{_entityPath}" : "";
+            ConfigInfo.PlaceHolders["$entityPath$"] = !string.IsNullOrEmpty(_entityPath) ? $".{_entityPath}" : "";
 
-            //TODO sera détecté automatiquement
-            Console.WriteLine($"==> Is Dto in Json ? (y/n)");
-            _isJsonDto = Console.ReadLine() == "y" ? true : false;
-            string staticFolder = "";
+            _staticFolder = "";
             try
             {
-                if (_isJsonDto)
+                if (ConfigInfo.IsJson)
                 {
-                    staticFolder = "StaticRessource";
-                    PlaceHolders["$StaticRessourcesNamespace$"] = ".StaticRessource";
+                    _staticFolder = "StaticRessource";
+                    ConfigInfo.PlaceHolders["$StaticRessourcesNamespace$"] = ".StaticRessource";
                 }
                 else
                 {
@@ -79,8 +74,8 @@ namespace FieldFactory.Utility.CreatePipeline
                     ConfigureNonJsonEntityFieldsAndPopulateBlocks();
 
                 }
-                PlaceHolders["$interactorParam$"] = UtilityLogic.BuildInteractorParam(_isJsonDto);
-                PlaceHolders["$interactorFlatParam$"] = UtilityLogic.BuildInteractorFlatParam(_isJsonDto);
+                ConfigInfo.PlaceHolders["$interactorParam$"] = UtilityLogic.BuildInteractorParam();
+                ConfigInfo.PlaceHolders["$interactorFlatParam$"] = UtilityLogic.BuildInteractorFlatParam();
             }
             catch (Exception e)
             {
@@ -94,84 +89,14 @@ namespace FieldFactory.Utility.CreatePipeline
                 Console.ReadLine();
                 return;
             }
-
-
-            foreach (var placeHolder in PlaceHolders)
-            {
-                Console.WriteLine($"{placeHolder.Key} : {placeHolder.Value}");
-            }
-
-            //Executor
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("***EXECUTOR***");
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, "$Executor", "FieldFactory.Framework", "Executor"));
-
-            //Query
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("***QUERY***");
-            string queryTemplate = $"{staticFolder}\\Get$Query";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, queryTemplate, "FieldFactory.Framework", "Query"));
-
-            //Interactor
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("***INTERACTOR***");
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, "$Interactor", "FieldFactory.Core", _entityPath));
-
-            //Entity
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("***ENTITY***");
-            string entityTemplate = $"{staticFolder}\\$";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, entityTemplate, "FieldFactory.Core", $"Entities\\{_entityPath}"));
-
-            //Provider
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("***PROVIDER***");
-            string providerTemplate = $"{staticFolder}\\$Provider";
-            string providerFolder = $"Providers\\{staticFolder}";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, providerTemplate, "FieldFactory.DataAccess", providerFolder));
-
-            //SqLiteQueryBuilder
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("***SQLITEQUERYBUILDER***");
-            string builderTemplate = $"{staticFolder}\\SQLite$QueryBuilder";
-            string builderFolder = $"SQLite\\{staticFolder}";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, builderTemplate, "FieldFactory.DataAccess", builderFolder));
-
-            //DTO
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("***DTO***");
-            string dtoTemplate = $"{staticFolder}\\$DTO";
-            string dtoFolder = $"DTO\\{staticFolder}";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, dtoTemplate, "FieldFactory.DataAccess", dtoFolder));
-
-            Console.WriteLine("");
-            Console.WriteLine("");
-            Console.WriteLine("Done ! Click to exit");
-            Console.ReadLine();
-
         }
 
-        internal static void ConfigureNonJsonEntityFieldsAndPopulateBlocks()
+        private static void ConfigureNonJsonEntityFieldsAndPopulateBlocks()
         {
             Console.WriteLine("");
-            Console.WriteLine("Please paste here SQLite (CREATE param section)");
-            Console.WriteLine("It should look like this :");
-            Console.WriteLine("\"idPlayer\" text,\"intColumn\" integer, \"dateColumn\" datetime");
-            string cols = Console.ReadLine();
-
-            //Initialiaze EntityFields
-            UtilityLogic.ParseSQLiteParams(cols);
-            PlaceHolders["$nbColTable$"] = UtilityLogic.EntityFields.Count.ToString();
 
             Console.WriteLine("");
-            Console.WriteLine($"What are the sql discriminating fields ? (leave empty to use {UtilityLogic.EntityFields.FirstOrDefault().Key})");
+            Console.WriteLine($"What are the sql discriminating fields ? (leave empty to use {ConfigInfo.EntityFields.FirstOrDefault().Key})");
             Console.WriteLine("Separated by comma like this :");
             Console.WriteLine("idPlayer, otherId");
             string discriminating = Console.ReadLine();
@@ -185,28 +110,90 @@ namespace FieldFactory.Utility.CreatePipeline
                 wrongParam = UtilityLogic.ParseSQLiteDiscriminatingParams(discriminating);
             }
 
-
+            UtilityLogic.CurrentDictionary = ConfigInfo.EntityFields;
             //populate blocks
-            BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock(UtilityLogic.EntityFields);
-            BlocksToReplace["$BLOCK_ConstructorParams$"] = UtilityLogic.BuildConstructorDtoParams(UtilityLogic.EntityFields);
-            BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(UtilityLogic.EntityFields, false, false);
-            BlocksToReplace["$BLOCK_constructorWithDtoFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(UtilityLogic.EntityFields, false, true);
-            BlocksToReplace["$BLOCK_dtoMethods$"] = UtilityLogic.BuildEntityConvertToDTOMethods();
-            BlocksToReplace["$BLOCK_discriminatingPublicFields$"] = UtilityLogic.BuildPublicFieldBlock(UtilityLogic.DiscriminatingFields);
-            BlocksToReplace["$BLOCK_discriminatingFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(UtilityLogic.DiscriminatingFields, true, false);
+            ConfigInfo.BlocksToReplace["$BLOCK_publicFields$"] = UtilityLogic.BuildPublicFieldBlock();
+            ConfigInfo.BlocksToReplace["$BLOCK_ConstructorParams$"] = UtilityLogic.BuildConstructorDtoParams(ConfigInfo.EntityFields);
+            ConfigInfo.BlocksToReplace["$BLOCK_fieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(false, false);
+            ConfigInfo.BlocksToReplace["$BLOCK_constructorWithDtoFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(false, true);
+            ConfigInfo.BlocksToReplace["$BLOCK_dtoMethods$"] = UtilityLogic.BuildEntityConvertToDTOMethods();
 
-            PlaceHolders["$providerRawDtoParams$"] = UtilityLogic.BuildFlatParamsFromRaw();
-            PlaceHolders["$firstParamWithType$"] = UtilityLogic.BuildMethodParamFirstOnly();
-            PlaceHolders["$firstParamName$"] = UtilityLogic.GetFirstParamName();
-            PlaceHolders["$flatParamsMin$"] = UtilityLogic.BuildFlatParams(UtilityLogic.EntityFields, false);
-            PlaceHolders["$insertValues$"] = UtilityLogic.BuildInsertValues();
-            PlaceHolders["$updateSetValues$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.EntityFields, true);
-            PlaceHolders["$discriminatingFields$"] = UtilityLogic.BuildConstructorDtoParams(UtilityLogic.DiscriminatingFields);
-            PlaceHolders["$discriminatingFieldsComparison$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.DiscriminatingFields, false);
-            PlaceHolders["$discriminatingFieldsComparisonFromDto$"] = UtilityLogic.BuildUpdateSetOrEqualValues(UtilityLogic.DiscriminatingFields, true);
-            PlaceHolders["$queryFlatParams$"] = UtilityLogic.BuildFlatParams(UtilityLogic.DiscriminatingFields, true, "query.");
-            PlaceHolders["$discriminatingFlatParams$"] = UtilityLogic.BuildFlatParams(UtilityLogic.DiscriminatingFields, false, "");
+            ConfigInfo.PlaceHolders["$flatParamsMin$"] = UtilityLogic.BuildFlatParams(ConfigInfo.EntityFields, false);
+            ConfigInfo.PlaceHolders["$updateSetValues$"] = UtilityLogic.BuildUpdateSetOrEqualValues(true);
 
+            UtilityLogic.CurrentDictionary = ConfigInfo.DiscriminatingFields;
+
+            ConfigInfo.BlocksToReplace["$BLOCK_discriminatingPublicFields$"] = UtilityLogic.BuildPublicFieldBlock();
+            ConfigInfo.BlocksToReplace["$BLOCK_discriminatingFieldsAssignation$"] = UtilityLogic.BuildFieldAssignationBlock(true, false);
+
+            ConfigInfo.PlaceHolders["$providerRawDtoParams$"] = UtilityLogic.BuildFlatParamsFromRaw();
+            ConfigInfo.PlaceHolders["$firstParamWithType$"] = UtilityLogic.BuildMethodParamFirstOnly();
+            ConfigInfo.PlaceHolders["$firstParamName$"] = UtilityLogic.GetFirstParamName();
+            ConfigInfo.PlaceHolders["$insertValues$"] = UtilityLogic.BuildInsertValues();
+            ConfigInfo.PlaceHolders["$discriminatingFields$"] = UtilityLogic.BuildConstructorDtoParams(ConfigInfo.DiscriminatingFields);
+            ConfigInfo.PlaceHolders["$discriminatingFieldsComparison$"] = UtilityLogic.BuildUpdateSetOrEqualValues(false);
+            ConfigInfo.PlaceHolders["$discriminatingFieldsComparisonFromDto$"] = UtilityLogic.BuildUpdateSetOrEqualValues(true);
+            ConfigInfo.PlaceHolders["$queryFlatParams$"] = UtilityLogic.BuildFlatParams(ConfigInfo.DiscriminatingFields, true, "query.");
+            ConfigInfo.PlaceHolders["$discriminatingFlatParams$"] = UtilityLogic.BuildFlatParams(ConfigInfo.DiscriminatingFields, false, "");
+        }
+
+        private static void WriteNewFiles(string _entityPath)
+        {
+            string entityToCreate = ConfigInfo.EntityName;
+            //Executor
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("***EXECUTOR***");
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, "$Executor", "FieldFactory.Framework", "Executor"));
+
+            //Query
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("***QUERY***");
+            string queryTemplate = $"{_staticFolder}\\Get$Query";
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, queryTemplate, "FieldFactory.Framework", "Query"));
+
+            //Interactor
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("***INTERACTOR***");
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, "$Interactor", "FieldFactory.Core", _entityPath));
+
+            //Entity
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("***ENTITY***");
+            string entityTemplate = $"{_staticFolder}\\$";
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, entityTemplate, "FieldFactory.Core", $"Entities\\{_entityPath}"));
+
+            //Provider
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("***PROVIDER***");
+            string providerTemplate = $"{_staticFolder}\\$Provider";
+            string providerFolder = $"Providers\\{_staticFolder}";
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, providerTemplate, "FieldFactory.DataAccess", providerFolder));
+
+            //SqLiteQueryBuilder
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("***SQLITEQUERYBUILDER***");
+            string builderTemplate = $"{_staticFolder}\\SQLite$QueryBuilder";
+            string builderFolder = $"SQLite\\{_staticFolder}";
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, builderTemplate, "FieldFactory.DataAccess", builderFolder));
+
+            //DTO
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("***DTO***");
+            string dtoTemplate = $"{_staticFolder}\\$DTO";
+            string dtoFolder = $"DTO\\{_staticFolder}";
+            CreateFileFromTemplate(new EntityInfo(entityToCreate, dtoTemplate, "FieldFactory.DataAccess", dtoFolder));
+
+            Console.WriteLine("");
+            Console.WriteLine("");
+            Console.WriteLine("Done ! Click to exit");
+            Console.ReadLine();
 
         }
 
@@ -237,30 +224,30 @@ namespace FieldFactory.Utility.CreatePipeline
                     while ((line = sr.ReadLine()) != null)
                     {
                         //Replace Blocks
-                        foreach (var bloc in BlocksToReplace)
+                        foreach (var bloc in ConfigInfo.BlocksToReplace)
                         {
                             line = line.Replace(bloc.Key, bloc.Value);
                         }
 
                         //Demandes à la volée
-                        if (line.Contains(BlocksOnTheFly["$BLOCK_otherInteractors$"]))
+                        if (line.Contains(ConfigInfo.BlocksOnTheFly["$BLOCK_otherInteractors$"]))
                         {
                             line = AddOtherInteractorsForExecutorOnTheFly();
                         }
 
 
                         //Configure variable lines
-                        if (line.Contains(PlaceHolders["$dtoToEntityLine$"]))
+                        if (line.Contains(ConfigInfo.PlaceHolders["$dtoToEntityLine$"]))
                         {
-                            line = UtilityLogic.BuildDtoToEntityConvertion(_isJsonDto);
+                            line = UtilityLogic.BuildDtoToEntityConvertion();
                         }
-                        if (line.Contains(PlaceHolders["$jsonDefaultFields$"]))
+                        if (line.Contains(ConfigInfo.PlaceHolders["$jsonDefaultFields$"]))
                         {
-                            line = UtilityLogic.BuildJsonDefaultFields(_isJsonDto);
+                            line = UtilityLogic.BuildJsonDefaultFields();
                         }
 
                         //Replace placeHolders
-                        foreach (var placeHolder in PlaceHolders)
+                        foreach (var placeHolder in ConfigInfo.PlaceHolders)
                         {
                             line = line.Replace(placeHolder.Key, placeHolder.Value);
                         }
@@ -284,7 +271,7 @@ namespace FieldFactory.Utility.CreatePipeline
             string otherInteractor = "123";
             while (otherInteractor != "")
             {
-                Console.WriteLine("==> Enter name of other Interactor used by executor if needed : (press 'Enter' to skip)");
+                Console.WriteLine($"==> Enter name of other Interactor used by {ConfigInfo.EntityName}Executor if needed : (press 'Enter' to skip)");
                 otherInteractor = Console.ReadLine();
                 if (!string.IsNullOrEmpty(otherInteractor))
                     sb.AppendLine($"\t\t{otherInteractor}Interactor {otherInteractor.ToLower()}Interactor = new {otherInteractor}Interactor();");

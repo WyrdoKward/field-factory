@@ -1,0 +1,20 @@
+sql/Event.sql
+TOKEN_CREATE : CREATE
+TOKEN_TABLE : TABLE
+TOKEN_ID : "Event"
+LEX_WHITE :  
+40 : (
+TOKEN_ID : "idEvent"
+TOKEN_ID : text
+44 : ,
+TOKEN_ID : "json"
+TOKEN_ID : text
+44 : ,
+TOKEN_PRIMARY : PRIMARY
+TOKEN_KEY : KEY
+LEX_WHITE :  
+40 : (
+TOKEN_ID : "idEvent"
+41 : )
+41 : )
+59 : ;

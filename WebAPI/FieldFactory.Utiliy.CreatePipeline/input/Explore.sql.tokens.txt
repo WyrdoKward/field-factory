@@ -1,0 +1,31 @@
+sql/Explore.sql
+TOKEN_CREATE : CREATE
+TOKEN_TABLE : TABLE
+TOKEN_ID : "Explore"
+LEX_WHITE :  
+40 : (
+TOKEN_ID : "idPlayer"
+TOKEN_ID : text
+44 : ,
+TOKEN_ID : "idFollower"
+TOKEN_ID : text
+44 : ,
+TOKEN_ID : "idLocation"
+TOKEN_ID : text
+44 : ,
+TOKEN_ID : "idEvent"
+TOKEN_ID : text
+44 : ,
+TOKEN_ID : "idStep"
+TOKEN_ID : integer
+44 : ,
+TOKEN_ID : "dateNextStep"
+TOKEN_ID : datetime
+44 : ,
+TOKEN_ID : "stepsHistory"
+TOKEN_ID : text
+44 : ,
+TOKEN_ID : "idChoice"
+TOKEN_ID : text
+41 : )
+59 : ;

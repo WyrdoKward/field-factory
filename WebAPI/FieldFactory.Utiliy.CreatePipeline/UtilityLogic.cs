@@ -15,10 +15,10 @@ namespace FieldFactory.Utility.CreatePipeline
             {"datetime", "DateTime" },
         };
 
-        public static Dictionary<string, string> EntityFields = new Dictionary<string, string>();
+        public static Dictionary<string, string> CurrentDictionary = new Dictionary<string, string>();
         public static Dictionary<string, string> DiscriminatingFields = new Dictionary<string, string>();
 
-        public static void ParseSQLiteParams(string sql)
+        /*public static void ParseSQLiteParams(string sql)
         {
             foreach (var col in sql.Split(','))
             {
@@ -26,27 +26,27 @@ namespace FieldFactory.Utility.CreatePipeline
                 var cSharpType = SQLiteTypeMapping[col.Split('"')[2].Trim()];
                 EntityFields.Add(colName, cSharpType);
             }
-        }
+        }*/
         public static string ParseSQLiteDiscriminatingParams(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
-                var firstParam = EntityFields.FirstOrDefault();
-                if (!EntityFields.Keys.Contains(firstParam.Key))
+                var firstParam = ConfigInfo.EntityFields.FirstOrDefault();
+                if (!ConfigInfo.EntityFields.ContainsKey(firstParam.Key))
                     return firstParam.Key;
 
-                DiscriminatingFields.Add(firstParam.Key, firstParam.Value);
+                ConfigInfo.DiscriminatingFields.Add(firstParam.Key, firstParam.Value);
             }
             else
             {
                 foreach (var col in input.Split(','))
                 {
                     var colName = col.Trim();
-                    if (!EntityFields.Keys.Contains(colName))
+                    if (!ConfigInfo.EntityFields.Keys.Contains(colName))
                         return colName;
 
-                    var cSharpType = EntityFields[colName];
-                    DiscriminatingFields.Add(colName, cSharpType);
+                    var cSharpType = ConfigInfo.EntityFields[colName];
+                    ConfigInfo.DiscriminatingFields.Add(colName, cSharpType);
                 }
             }
             return "";
@@ -54,30 +54,30 @@ namespace FieldFactory.Utility.CreatePipeline
 
         public static string BuildMethodParamFirstOnly()
         {
-            var firstParam = EntityFields.FirstOrDefault();
+            var firstParam = ConfigInfo.EntityFields.FirstOrDefault();
             var firstParamDict = new Dictionary<string, string>() { { firstParam.Key, firstParam.Value } };
             return BuildConstructorDtoParams(firstParamDict);
         }
 
         internal static string GetFirstParamName()
         {
-            return EntityFields.FirstOrDefault().Key;
+            return ConfigInfo.EntityFields.FirstOrDefault().Key;
         }
 
-        public static string BuildConstructorDtoParams(Dictionary<string, string> cols)
+        public static string BuildConstructorDtoParams(Dictionary<string, string> dict)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in cols)
+            foreach (var item in dict)
             {
                 sb.Append($"{item.Value} {item.Key}, ");
             }
 
             return sb.ToString().Substring(0, sb.ToString().Length - 2);
         }
-        public static string BuildPublicFieldBlock(Dictionary<string, string> cols)
+        public static string BuildPublicFieldBlock()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in cols)
+            foreach (var item in CurrentDictionary)
             {
                 sb.Append("\t\t");
                 sb.Append(BuildPublicFieldLine(item.Key, item.Value));
@@ -93,11 +93,11 @@ namespace FieldFactory.Utility.CreatePipeline
             return $"public {type} {name} {{ get; set; }}";
         }
 
-        public static string BuildFieldAssignationBlock(Dictionary<string, string> cols, bool validateParams, bool fromDto)
+        public static string BuildFieldAssignationBlock(bool validateParams, bool fromDto)
         {
             StringBuilder sb = new StringBuilder();
 
-            foreach (var item in cols)
+            foreach (var item in CurrentDictionary)
             {
                 sb.Append("\t\t\t");
                 sb.Append(BuildFieldAssignationLine(item.Key, validateParams, fromDto));
@@ -119,7 +119,7 @@ namespace FieldFactory.Utility.CreatePipeline
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\t\tpublic $entityName$DTO ConvertToDTO()");
             sb.AppendLine("\t\t{");
-            sb.AppendLine($"\t\t\treturn new $entityName$DTO({BuildFlatParams(EntityFields, true)});");
+            sb.AppendLine($"\t\t\treturn new $entityName$DTO({BuildFlatParams(ConfigInfo.EntityFields, true)});");
             sb.AppendLine("\t\t}");
             return sb.ToString();
         }
@@ -147,7 +147,7 @@ namespace FieldFactory.Utility.CreatePipeline
         public static string BuildFlatParamsFromRaw()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in EntityFields)
+            foreach (var item in ConfigInfo.EntityFields)
             {
                 switch (item.Value)
                 {
@@ -165,10 +165,10 @@ namespace FieldFactory.Utility.CreatePipeline
             return sb.ToString().Substring(0, sb.ToString().Length - 2);
         }
 
-        public static string BuildDtoToEntityConvertion(bool isJsonDto)
+        public static string BuildDtoToEntityConvertion()
         {
             StringBuilder sb = new StringBuilder();
-            if (isJsonDto)
+            if (ConfigInfo.IsJson)
             {
                 sb.AppendLine("$entityNameLowerCase$Id");
             }
@@ -180,10 +180,10 @@ namespace FieldFactory.Utility.CreatePipeline
 
         }
 
-        public static string BuildUpdateSetOrEqualValues(Dictionary<string, string> cols, bool paramFromDtoObject)
+        public static string BuildUpdateSetOrEqualValues(bool paramFromDtoObject)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in cols)
+            foreach (var item in CurrentDictionary)
             {
                 sb.Append(BuildSqlEqualComparison(item, paramFromDtoObject));
             }
@@ -207,7 +207,7 @@ namespace FieldFactory.Utility.CreatePipeline
         public static string BuildInsertValues()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in EntityFields)
+            foreach (var item in ConfigInfo.EntityFields)
             {
                 switch (item.Value)
                 {
@@ -222,11 +222,12 @@ namespace FieldFactory.Utility.CreatePipeline
             return sb.ToString().Substring(0, sb.ToString().Length - 2);
         }
 
-        public static string BuildInteractorParam(bool isJsonDto)
+        public static string BuildInteractorParam()
         {
-            if (isJsonDto)
+            if (ConfigInfo.IsJson)
             {
-                return "$entityNameLowerCase$Id";
+                //Vérifier
+                return "string $entityNameLowerCase$Id";
             }
             else
             {
@@ -234,9 +235,9 @@ namespace FieldFactory.Utility.CreatePipeline
             }
 
         }
-        public static string BuildInteractorFlatParam(bool isJsonDto)
+        public static string BuildInteractorFlatParam()
         {
-            if (isJsonDto)
+            if (ConfigInfo.IsJson)
             {
                 return "$entityNameLowerCase$Id";
             }
@@ -247,10 +248,11 @@ namespace FieldFactory.Utility.CreatePipeline
 
         }
 
-        public static string BuildJsonDefaultFields(bool isJsonDto)
+        public static string BuildJsonDefaultFields()
         {
+            //TODO désérializer le json pour générer les champs ? au moins le premier niveau
             StringBuilder sb = new StringBuilder();
-            if (isJsonDto)
+            if (ConfigInfo.IsJson)
             {
                 sb.AppendLine("\t\tpublic int Id;");
                 sb.AppendLine("\t\tpublic string Title;");

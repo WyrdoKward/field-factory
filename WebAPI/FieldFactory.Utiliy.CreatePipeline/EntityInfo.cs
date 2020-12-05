@@ -13,6 +13,7 @@ namespace FieldFactory.Utility.CreatePipeline
         private string _rootSlnFolder = "C:\\Users\\pierr\\Documents\\Code\\Repos\\field-factory\\WebAPI";
 
         public EntityInfo(string name, string namePattern, string project, string folderPath){
+            //TODO Séparer la logique de NamePattern et de TemplatePattern
             Name = name;
             NamePattern = namePattern;
             ProjectDir = $"{_rootSlnFolder}\\{project}\\";
