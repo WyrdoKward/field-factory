@@ -17,7 +17,6 @@ namespace FieldFactory.Utility.CreatePipeline
             string lastfield = string.Empty;
             foreach (var t in _tokens)
             {
-                //Console.WriteLine($"{t.Token} : {t.Sql}");
                 if (t.Token == Tokens.TOKEN_ID)
                 {
                     //le premier c'est la table

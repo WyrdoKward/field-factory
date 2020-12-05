@@ -18,6 +18,10 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("Reading sql files...");
             var files = Directory.GetFiles("input").Where(f => f.EndsWith(".sql"));
             Console.WriteLine($"{files.Count()} sql files detected !");
+            foreach (var file in files)
+            {
+                Console.WriteLine(file);
+            }
             Console.WriteLine("");
 
             foreach (var file in files)
@@ -164,38 +168,37 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***ENTITY***");
-            string entityTemplate = $"{_staticFolder}\\$";
-            CreateFileFromTemplate(new EntityInfo(entityTemplate, "FieldFactory.Core", $"Entities\\{_specificEntityPath}"));
+            string entityTemplate = Path.Combine(_staticFolder, "$");
+            CreateFileFromTemplate(new EntityInfo(entityTemplate, "FieldFactory.Core", Path.Combine("Entities", _specificEntityPath)));
 
             //Provider
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***PROVIDER***");
-            string providerTemplate = $"{_staticFolder}\\$Provider";
-            string providerFolder = $"Providers\\{_staticFolder}";
+            string providerTemplate = Path.Combine(_staticFolder, "$Provider");
+            string providerFolder = Path.Combine("Providers", _staticFolder);
             CreateFileFromTemplate(new EntityInfo(providerTemplate, "FieldFactory.DataAccess", providerFolder));
 
             //SqLiteQueryBuilder
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***SQLITEQUERYBUILDER***");
-            string builderTemplate = $"{_staticFolder}\\SQLite$QueryBuilder";
-            string builderFolder = $"SQLite\\{_staticFolder}";
+            string builderTemplate = Path.Combine(_staticFolder, "SQLite$QueryBuilder");
+            string builderFolder = Path.Combine("SQLite", _staticFolder);
             CreateFileFromTemplate(new EntityInfo(builderTemplate, "FieldFactory.DataAccess", builderFolder));
 
             //DTO
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***DTO***");
-            string dtoTemplate = $"{_staticFolder}\\$DTO";
-            string dtoFolder = $"DTO\\{_staticFolder}";
+            string dtoTemplate = Path.Combine(_staticFolder, "$DTO");
+            string dtoFolder = Path.Combine("DTO", _staticFolder);
             CreateFileFromTemplate(new EntityInfo(dtoTemplate, "FieldFactory.DataAccess", dtoFolder));
 
             Console.WriteLine("");
             Console.WriteLine("");
-            Console.WriteLine("Done ! Click to exit");
+            Console.WriteLine("Done ! Click to continue");
             Console.ReadLine();
-
         }
 
         private static void CreateFileFromTemplate(EntityInfo info)

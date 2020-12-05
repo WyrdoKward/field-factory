@@ -5,6 +5,7 @@ namespace FieldFactory.Utility.CreatePipeline
 {
     public class EntityInfo
     {
+        private string _fileName;
         private string _templateFile;
         private string _projectDir;
         //public string ProjectFile;
@@ -13,8 +14,15 @@ namespace FieldFactory.Utility.CreatePipeline
         private string _rootSlnFolder = Path.Combine("..",""); 
         //private string _rootSlnFolder = "C:\\Users\\pierr\\Documents\\Code\\Repos\\field-factory\\WebAPI";
 
-        public EntityInfo(string templateFile, string project, string specifiFolder)
+        public EntityInfo(string templateFile, string project, string specifiFolder, bool staticTemplate = false)
         {
+            if(templateFile.StartsWith("StaticRessource")){
+                _fileName = templateFile.Substring(16);
+            }
+            else{
+                _fileName = templateFile;
+            }
+            
             _templateFile = templateFile;
             _projectDir = $"{_rootSlnFolder}\\{project}\\";
             //ProjectFile = $"{_projectDir}{project}.csproj";
@@ -39,12 +47,12 @@ namespace FieldFactory.Utility.CreatePipeline
 
         public string GetFileName()
         {
-            return _templateFile.Replace("$", ConfigInfo.EntityName);
+            return _fileName.Replace("$", ConfigInfo.EntityName);
         }
 
         public bool CanBeOverwritten()
         {
-            if (_templateFile.EndsWith("\\$") || _templateFile.EndsWith("\\$DTO"))
+            if (_templateFile == "$" || _templateFile == "$DTO")
                 return true;
 
             return false;
