@@ -1,0 +1,4 @@
+GetQuery file 
+$safeName$plop
+
+fin

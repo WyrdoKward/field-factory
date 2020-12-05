@@ -1,0 +1,6 @@
+provider file 
+$safeName$plop
+nbColTable = $nbColTable$
+
+
+fin

@@ -1,0 +1,4 @@
+enbtity file 
+$safeName$plop
+
+fin
