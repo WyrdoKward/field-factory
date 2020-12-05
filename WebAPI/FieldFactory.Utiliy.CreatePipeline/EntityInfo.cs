@@ -20,10 +20,11 @@ namespace FieldFactory.Utility.CreatePipeline
         }
         public string GetTemplateFilePath()
         {
-            return $"templates\\{_templateFile}.cs";
+            return $"templates\\{_templateFile}";
         }
 
-        public string GetTargetFolder(){
+        public string GetTargetFolder()
+        {
             return _folderPath;
         }
         public string GetTargetFilePath()
@@ -34,6 +35,14 @@ namespace FieldFactory.Utility.CreatePipeline
         public string GetFileName()
         {
             return _templateFile.Replace("$", ConfigInfo.EntityName);
+        }
+
+        public bool CanBeOverwritten()
+        {
+            if (_templateFile.EndsWith("\\$") || _templateFile.EndsWith("\\$DTO"))
+                return true;
+
+            return false;
         }
     }
 }

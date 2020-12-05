@@ -199,17 +199,33 @@ namespace FieldFactory.Utility.CreatePipeline
 
         private static void CreateFileFromTemplate(EntityInfo info)
         {
+            string creating = "Creating";
             if (File.Exists(info.GetTargetFilePath()))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"File {info.GetTargetFilePath()} already exists.");
                 //TODO if Entity ou DTO proposer d'overwrite ?
-
-                Console.WriteLine($"Skipping to next file to create...");
-                Console.ResetColor();
-                return;
+                string ow = string.Empty;
+                if (info.CanBeOverwritten())
+                {
+                    Console.WriteLine($"Do you want to override {info.GetFileName()} with the last version ? (y/n)");
+                    ow = Console.ReadLine();
+                    if (ow != "y")
+                    {
+                        Console.WriteLine($"Skipping to next file to create...");
+                        Console.ResetColor();
+                        return;
+                    }
+                    creating = "Overwriting";
+                }
+                else
+                {
+                    Console.WriteLine($"Skipping to next file to create...");
+                    Console.ResetColor();
+                    return;
+                }
             }
-            Console.WriteLine($"    Creating {info.GetFileName()}...");
+            Console.WriteLine($"    {creating} {info.GetFileName()}...");
             string line = "";
 
             if (!Directory.Exists(info.GetTargetFolder()))
@@ -218,7 +234,7 @@ namespace FieldFactory.Utility.CreatePipeline
                 Console.WriteLine($"    Creating folder '{info.GetTargetFolder()}'...");
             }
 
-            using (StreamReader sr = new StreamReader($"templates\\{info.GetTemplateFilePath()}Template.txt"))
+            using (StreamReader sr = new StreamReader($"{info.GetTemplateFilePath()}Template.txt"))
             {
                 using (StreamWriter sw = new StreamWriter(info.GetTargetFilePath()))
                 {
