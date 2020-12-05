@@ -10,7 +10,7 @@ namespace FieldFactory.Utility.CreatePipeline
 {
     public class Program
     {
-        static string _entityPath;
+        static string _specificEntityPath;
         static string _staticFolder = "";
         static void Main(string[] args)
         {
@@ -38,7 +38,7 @@ namespace FieldFactory.Utility.CreatePipeline
                     Console.WriteLine($"{placeHolder.Key} : {placeHolder.Value}");
                 }*/
 
-                //WriteNewFiles(_entityPath);
+                WriteNewFiles(_specificEntityPath);
 
                 ConfigInfo.Clean();
                 Console.WriteLine("");
@@ -57,8 +57,8 @@ namespace FieldFactory.Utility.CreatePipeline
 
             Console.WriteLine("==> Enter Interactor and Entity specific folder if needed");
             Console.WriteLine("    (In /Core/{path} and /Core/Entities/{path})");
-            _entityPath = Console.ReadLine();
-            ConfigInfo.PlaceHolders["$entityPath$"] = !string.IsNullOrEmpty(_entityPath) ? $".{_entityPath}" : "";
+            _specificEntityPath = Console.ReadLine();
+            ConfigInfo.PlaceHolders["$entityPath$"] = !string.IsNullOrEmpty(_specificEntityPath) ? $".{_specificEntityPath}" : "";
 
             _staticFolder = "";
             try
@@ -137,7 +137,7 @@ namespace FieldFactory.Utility.CreatePipeline
             ConfigInfo.PlaceHolders["$discriminatingFlatParams$"] = UtilityLogic.BuildFlatParams(ConfigInfo.DiscriminatingFields, false, "");
         }
 
-        private static void WriteNewFiles(string _entityPath)
+        private static void WriteNewFiles(string _specificEntityPath)
         {
             string entityToCreate = ConfigInfo.EntityName;
             //Executor
@@ -150,21 +150,22 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***QUERY***");
-            string queryTemplate = $"{_staticFolder}\\Get$Query";
+            //string queryTemplate = $"{_staticFolder}\\Get$Query";
+            string queryTemplate = Path.Combine(_staticFolder, "Get$Query");
             CreateFileFromTemplate(new EntityInfo(queryTemplate, "FieldFactory.Framework", "Query"));
 
             //Interactor
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***INTERACTOR***");
-            CreateFileFromTemplate(new EntityInfo("$Interactor", "FieldFactory.Core", _entityPath));
+            CreateFileFromTemplate(new EntityInfo("$Interactor", "FieldFactory.Core", _specificEntityPath));
 
             //Entity
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***ENTITY***");
             string entityTemplate = $"{_staticFolder}\\$";
-            CreateFileFromTemplate(new EntityInfo(entityTemplate, "FieldFactory.Core", $"Entities\\{_entityPath}"));
+            CreateFileFromTemplate(new EntityInfo(entityTemplate, "FieldFactory.Core", $"Entities\\{_specificEntityPath}"));
 
             //Provider
             Console.WriteLine("");

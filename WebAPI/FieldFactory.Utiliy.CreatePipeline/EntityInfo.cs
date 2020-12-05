@@ -1,3 +1,4 @@
+using System.IO;
 using System;
 
 namespace FieldFactory.Utility.CreatePipeline
@@ -9,18 +10,21 @@ namespace FieldFactory.Utility.CreatePipeline
         //public string ProjectFile;
         private string _folderPath;
 
-        private string _rootSlnFolder = "C:\\Users\\pierr\\Documents\\Code\\Repos\\field-factory\\WebAPI";
+        private string _rootSlnFolder = Path.Combine("..",""); 
+        //private string _rootSlnFolder = "C:\\Users\\pierr\\Documents\\Code\\Repos\\field-factory\\WebAPI";
 
         public EntityInfo(string templateFile, string project, string specifiFolder)
         {
             _templateFile = templateFile;
             _projectDir = $"{_rootSlnFolder}\\{project}\\";
             //ProjectFile = $"{_projectDir}{project}.csproj";
-            _folderPath = $"{_projectDir}{specifiFolder}\\";
+            _folderPath = Path.Combine(_rootSlnFolder, project, specifiFolder);
+            //_folderPath = $"{_projectDir}{specifiFolder}\\";
         }
         public string GetTemplateFilePath()
         {
-            return $"templates\\{_templateFile}";
+            return Path.Combine("templates", _templateFile);
+            //return $"templates\\{_templateFile}";
         }
 
         public string GetTargetFolder()
@@ -29,7 +33,8 @@ namespace FieldFactory.Utility.CreatePipeline
         }
         public string GetTargetFilePath()
         {
-            return $"{_folderPath}{GetFileName()}.cs";
+            //return $"{_folderPath}{GetFileName()}.cs";
+            return Path.Combine(_folderPath, $"{GetFileName()}.cs");
         }
 
         public string GetFileName()
