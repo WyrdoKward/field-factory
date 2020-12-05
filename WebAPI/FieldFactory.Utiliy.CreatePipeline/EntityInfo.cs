@@ -4,29 +4,36 @@ namespace FieldFactory.Utility.CreatePipeline
 {
     public class EntityInfo
     {
-        public string Name;
-        public string NamePattern;
-        public string ProjectDir;
-        public string ProjectFile;
-        public string FolderPath;
+        private string _templateFile;
+        private string _projectDir;
+        //public string ProjectFile;
+        private string _folderPath;
 
         private string _rootSlnFolder = "C:\\Users\\pierr\\Documents\\Code\\Repos\\field-factory\\WebAPI";
 
-        public EntityInfo(string name, string namePattern, string project, string folderPath){
-            //TODO Séparer la logique de NamePattern et de TemplatePattern
-            Name = name;
-            NamePattern = namePattern;
-            ProjectDir = $"{_rootSlnFolder}\\{project}\\";
-            ProjectFile = $"{ProjectDir}{project}.csproj";
-            FolderPath = $"{ProjectDir}{folderPath}\\";
+        public EntityInfo(string templateFile, string project, string specifiFolder)
+        {
+            _templateFile = templateFile;
+            _projectDir = $"{_rootSlnFolder}\\{project}\\";
+            //ProjectFile = $"{_projectDir}{project}.csproj";
+            _folderPath = $"{_projectDir}{specifiFolder}\\";
+        }
+        public string GetTemplateFilePath()
+        {
+            return $"templates\\{_templateFile}.cs";
         }
 
-        public string GetFilePath(){
-            return $"{FolderPath}{GetFileName()}.cs";
+        public string GetTargetFolder(){
+            return _folderPath;
+        }
+        public string GetTargetFilePath()
+        {
+            return $"{_folderPath}{GetFileName()}.cs";
         }
 
-        public string GetFileName(){
-            return NamePattern.Replace("$", Name);
+        public string GetFileName()
+        {
+            return _templateFile.Replace("$", ConfigInfo.EntityName);
         }
     }
 }

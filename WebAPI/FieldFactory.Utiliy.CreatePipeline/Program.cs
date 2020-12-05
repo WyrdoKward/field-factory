@@ -144,27 +144,27 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***EXECUTOR***");
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, "$Executor", "FieldFactory.Framework", "Executor"));
+            CreateFileFromTemplate(new EntityInfo("$Executor", "FieldFactory.Framework", "Executor"));
 
             //Query
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***QUERY***");
             string queryTemplate = $"{_staticFolder}\\Get$Query";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, queryTemplate, "FieldFactory.Framework", "Query"));
+            CreateFileFromTemplate(new EntityInfo(queryTemplate, "FieldFactory.Framework", "Query"));
 
             //Interactor
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***INTERACTOR***");
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, "$Interactor", "FieldFactory.Core", _entityPath));
+            CreateFileFromTemplate(new EntityInfo("$Interactor", "FieldFactory.Core", _entityPath));
 
             //Entity
             Console.WriteLine("");
             Console.WriteLine("");
             Console.WriteLine("***ENTITY***");
             string entityTemplate = $"{_staticFolder}\\$";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, entityTemplate, "FieldFactory.Core", $"Entities\\{_entityPath}"));
+            CreateFileFromTemplate(new EntityInfo(entityTemplate, "FieldFactory.Core", $"Entities\\{_entityPath}"));
 
             //Provider
             Console.WriteLine("");
@@ -172,7 +172,7 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("***PROVIDER***");
             string providerTemplate = $"{_staticFolder}\\$Provider";
             string providerFolder = $"Providers\\{_staticFolder}";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, providerTemplate, "FieldFactory.DataAccess", providerFolder));
+            CreateFileFromTemplate(new EntityInfo(providerTemplate, "FieldFactory.DataAccess", providerFolder));
 
             //SqLiteQueryBuilder
             Console.WriteLine("");
@@ -180,7 +180,7 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("***SQLITEQUERYBUILDER***");
             string builderTemplate = $"{_staticFolder}\\SQLite$QueryBuilder";
             string builderFolder = $"SQLite\\{_staticFolder}";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, builderTemplate, "FieldFactory.DataAccess", builderFolder));
+            CreateFileFromTemplate(new EntityInfo(builderTemplate, "FieldFactory.DataAccess", builderFolder));
 
             //DTO
             Console.WriteLine("");
@@ -188,7 +188,7 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine("***DTO***");
             string dtoTemplate = $"{_staticFolder}\\$DTO";
             string dtoFolder = $"DTO\\{_staticFolder}";
-            CreateFileFromTemplate(new EntityInfo(entityToCreate, dtoTemplate, "FieldFactory.DataAccess", dtoFolder));
+            CreateFileFromTemplate(new EntityInfo(dtoTemplate, "FieldFactory.DataAccess", dtoFolder));
 
             Console.WriteLine("");
             Console.WriteLine("");
@@ -199,10 +199,12 @@ namespace FieldFactory.Utility.CreatePipeline
 
         private static void CreateFileFromTemplate(EntityInfo info)
         {
-            if (File.Exists(info.GetFilePath()))
+            if (File.Exists(info.GetTargetFilePath()))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"File {info.GetFilePath()} already exists.");
+                Console.WriteLine($"File {info.GetTargetFilePath()} already exists.");
+                //TODO if Entity ou DTO proposer d'overwrite ?
+
                 Console.WriteLine($"Skipping to next file to create...");
                 Console.ResetColor();
                 return;
@@ -210,15 +212,15 @@ namespace FieldFactory.Utility.CreatePipeline
             Console.WriteLine($"    Creating {info.GetFileName()}...");
             string line = "";
 
-            if (!Directory.Exists(info.FolderPath))
+            if (!Directory.Exists(info.GetTargetFolder()))
             {
-                Directory.CreateDirectory(info.FolderPath);
-                Console.WriteLine($"    Creating folder '{info.FolderPath}'...");
+                Directory.CreateDirectory(info.GetTargetFolder());
+                Console.WriteLine($"    Creating folder '{info.GetTargetFolder()}'...");
             }
 
-            using (StreamReader sr = new StreamReader($"templates\\{info.NamePattern}Template.txt"))
+            using (StreamReader sr = new StreamReader($"templates\\{info.GetTemplateFilePath()}Template.txt"))
             {
-                using (StreamWriter sw = new StreamWriter(info.GetFilePath()))
+                using (StreamWriter sw = new StreamWriter(info.GetTargetFilePath()))
                 {
 
                     while ((line = sr.ReadLine()) != null)
@@ -259,9 +261,8 @@ namespace FieldFactory.Utility.CreatePipeline
             }
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"File {info.GetFilePath()} created");
+            Console.WriteLine($"File {info.GetTargetFilePath()} created");
             Console.ResetColor();
-
         }
 
 
