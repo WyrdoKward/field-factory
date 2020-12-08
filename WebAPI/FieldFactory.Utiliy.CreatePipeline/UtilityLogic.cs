@@ -69,7 +69,7 @@ namespace FieldFactory.Utility.CreatePipeline
             StringBuilder sb = new StringBuilder();
             foreach (var item in dict)
             {
-                sb.Append($"{item.Value} {item.Key}, ");
+                sb.Append($"{SQLiteTypeMapping[item.Value]} {item.Key}, ");
             }
 
             return sb.ToString().Substring(0, sb.ToString().Length - 2);
@@ -90,7 +90,7 @@ namespace FieldFactory.Utility.CreatePipeline
         public static string BuildPublicFieldLine(string name, string @type)
         {
             name = name.FirstCharToUpper();
-            return $"public {type} {name} {{ get; set; }}";
+            return $"public {SQLiteTypeMapping[@type]} {name} {{ get; set; }}";
         }
 
         public static string BuildFieldAssignationBlock(bool validateParams, bool fromDto)
@@ -117,7 +117,7 @@ namespace FieldFactory.Utility.CreatePipeline
         public static string BuildEntityConvertToDTOMethods()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"\t\tpublic $entityName$DTO ConvertToDTO()");
+            sb.AppendLine($"public $entityName$DTO ConvertToDTO()");
             sb.AppendLine("\t\t{");
             sb.AppendLine($"\t\t\treturn new $entityName$DTO({BuildFlatParams(ConfigInfo.EntityFields, true)});");
             sb.AppendLine("\t\t}");
@@ -151,10 +151,10 @@ namespace FieldFactory.Utility.CreatePipeline
             {
                 switch (item.Value)
                 {
-                    case "int":
+                    case "integer":
                         sb.Append($"int.Parse(raw$entityName$.Value[\"{item.Key}\"]), ");
                         break;
-                    case "DateTime":
+                    case "datetime":
                         sb.Append($"DateTime.Parse(raw$entityName$.Value[\"{item.Key}\"]), ");
                         break;
                     default:
@@ -194,6 +194,7 @@ namespace FieldFactory.Utility.CreatePipeline
 
         public static string BuildSqlEqualComparison(KeyValuePair<string, string> item, bool paramFromDtoObject)
         {
+            //TODo pk c'est le meme traitement ?
             string dtoParam = paramFromDtoObject ? $"dto.{item.Key.FirstCharToUpper()}" : item.Key;
             switch (item.Value)
             {
