@@ -11,8 +11,10 @@ namespace FieldFactory.Utility.CreatePipeline
         //public string ProjectFile;
         private string _folderPath;
 
-        private string _rootSlnFolder = Path.Combine("..",""); 
-        //private string _rootSlnFolder = "C:\\Users\\pierr\\Documents\\Code\\Repos\\field-factory\\WebAPI";
+        //Debug VS code linux
+        //private string _rootSlnFolder = Path.Combine("..",""); 
+        //Windows
+        private string _rootSlnFolder = "C:\\Users\\pierr\\Documents\\Code\\Repos\\field-factory\\WebAPI";
 
         public EntityInfo(string templateFile, string project, string specifiFolder, bool staticTemplate = false)
         {
@@ -25,14 +27,12 @@ namespace FieldFactory.Utility.CreatePipeline
             
             _templateFile = templateFile;
             _projectDir = $"{_rootSlnFolder}\\{project}\\";
-            //ProjectFile = $"{_projectDir}{project}.csproj";
             _folderPath = Path.Combine(_rootSlnFolder, project, specifiFolder);
             //_folderPath = $"{_projectDir}{specifiFolder}\\";
         }
         public string GetTemplateFilePath()
         {
             return Path.Combine("templates", _templateFile);
-            //return $"templates\\{_templateFile}";
         }
 
         public string GetTargetFolder()

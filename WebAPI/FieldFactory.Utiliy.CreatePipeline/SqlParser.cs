@@ -22,7 +22,7 @@ namespace FieldFactory.Utility.CreatePipeline
                     //le premier c'est la table
                     if (!tableFound)
                     {
-                        ConfigInfo.EntityName = CleanToken(t.Sql).ToLower().FirstCharToUpper();
+                        ConfigInfo.EntityName = CleanToken(t.Sql).FirstCharToUpper();
                         tableFound = true;
                     }
                     else

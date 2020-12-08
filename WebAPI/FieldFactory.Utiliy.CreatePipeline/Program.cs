@@ -56,7 +56,7 @@ namespace FieldFactory.Utility.CreatePipeline
         private static void ConfigureGeneric()
         {
             ConfigInfo.PlaceHolders["$entityName$"] = ConfigInfo.EntityName;
-            ConfigInfo.PlaceHolders["$entityNameLowerCase$"] = ConfigInfo.EntityName.ToLower();
+            ConfigInfo.PlaceHolders["$entityNameLowerCase$"] = ConfigInfo.EntityName.FirstCharToLower();
             ConfigInfo.PlaceHolders["$nbColTable$"] = ConfigInfo.EntityFields.Count.ToString();
 
             Console.WriteLine("==> Enter Interactor and Entity specific folder if needed");
