@@ -11,6 +11,7 @@ namespace FieldFactory.Utility.CreatePipeline
         public static Dictionary<string, string> EntityFields = new Dictionary<string, string>();
         public static Dictionary<string, string> DiscriminatingFields = new Dictionary<string, string>();
         public static Dictionary<string, string> PlaceHolders = new Dictionary<string, string>() {
+            { "$queryFlatParams$", "$queryFlatParams$" },
             { "$interactorParam$", "$interactorParam$" },
             { "$interactorFlatParam$", "$interactorFlatParam$" },
             { "$providerRawDtoParams$", "$providerRawDtoParams$" },
@@ -23,7 +24,6 @@ namespace FieldFactory.Utility.CreatePipeline
             { "$dtoToEntityLine$", "$dtoToEntityLine$" },
             { "$updateSetValues$", "$updateSetValues$" },
             { "$flatParamsMin$", "$flatParamsMin$" },
-            { "$queryFlatParams$", "$queryFlatParams$" },
             { "$insertValues$", "$insertValues$" },
             { "$discriminatingFieldsComparison$", "$discriminatingFieldsComparison$" },
             { "$discriminatingFieldsComparisonFromDto$", "$discriminatingFieldsComparisonFromDto$" },

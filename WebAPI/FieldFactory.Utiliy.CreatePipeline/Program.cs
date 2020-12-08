@@ -71,13 +71,15 @@ namespace FieldFactory.Utility.CreatePipeline
                 {
                     _staticFolder = "StaticRessource";
                     ConfigInfo.PlaceHolders["$StaticRessourcesNamespace$"] = ".StaticRessource";
+                    ConfigInfo.PlaceHolders["$queryFlatParams$"] = UtilityLogic.BuildFlatParams(new Dictionary<string, string>() { { "$entityName$Id", "" } }, true, "query.");
                 }
                 else
                 {
-
+                    ConfigInfo.PlaceHolders["$StaticRessourcesNamespace$"] = "";
                     ConfigureNonJsonEntityFieldsAndPopulateBlocks();
 
                 }
+                
                 ConfigInfo.PlaceHolders["$interactorParam$"] = UtilityLogic.BuildInteractorParam();
                 ConfigInfo.PlaceHolders["$interactorFlatParam$"] = UtilityLogic.BuildInteractorFlatParam();
             }

@@ -99,6 +99,10 @@ namespace FieldFactory.Utility.CreatePipeline
 
             foreach (var item in CurrentDictionary)
             {
+                //TODO Gérer les types autres que string ?
+                if (item.Value != "text")
+                    validateParams = false;
+                
                 sb.Append("\t\t\t");
                 sb.Append(BuildFieldAssignationLine(item.Key, validateParams, fromDto));
                 sb.Append("\r\n");
@@ -170,7 +174,7 @@ namespace FieldFactory.Utility.CreatePipeline
             StringBuilder sb = new StringBuilder();
             if (ConfigInfo.IsJson)
             {
-                sb.AppendLine("$entityNameLowerCase$Id");
+                sb.AppendLine($"\t\t\tvar $entityNameLowerCase$ = JsonConvert.DeserializeObject<$entityName$>($entityNameLowerCase$Dto.Json);");
             }
             else
             {
