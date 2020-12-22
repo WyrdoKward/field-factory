@@ -18,4 +18,8 @@
     <ProjectReference Include="..\FieldFactory.Utiliy.CreatePipeline\FieldFactory.Utiliy.CreatePipeline.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DataAccess\Provider\" />
+  </ItemGroup>
+
 </Project>

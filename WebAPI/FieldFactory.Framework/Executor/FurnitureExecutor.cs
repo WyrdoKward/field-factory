@@ -1,5 +1,6 @@
 ﻿using FieldFactory.Core.Entities;
 using FieldFactory.Core.Entities.Headquarters;
+using FieldFactory.Core.Headquarters;
 using FieldFactory.Framework.Authorizer;
 using FieldFactory.Framework.Query;
 using System;
@@ -9,7 +10,7 @@ namespace FieldFactory.Framework.Executor
 {
     public class FurnitureExecutor : BaseExecutor
     {
-       // FurnitureInteractor interactorToRename = new FurnitureInteractor();
+        FurnitureInteractor furnitureInteractor = new FurnitureInteractor();
 
         public FurnitureExecutor(Identity identity)
         {
@@ -19,8 +20,7 @@ namespace FieldFactory.Framework.Executor
 
         public List<Furniture> Execute(GetPossessedFurnituresQuery query)
         {
-            //return interactorToRename.GetList(query.IdPlayer);
-            return null;
+            return furnitureInteractor.GetPlayerFurnitures(query.IdPlayer);
         }
     }
 }

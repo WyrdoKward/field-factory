@@ -8,7 +8,7 @@ using NUnit.Framework;
 
 namespace FieldFactory.Tests.DataAccess
 {
-    public class SQLiteBaseProviderTests
+    public class SQLiteBaseProviderTests : SQLiteBaseProvider
     {
         [Test]
         public void ReadColumnByName()
@@ -66,6 +66,13 @@ namespace FieldFactory.Tests.DataAccess
             Assert.AreEqual("no@no.com", player.Email);
             Assert.AreEqual("pwd", player.Hashpwd);
             Assert.AreEqual("O7P06l/u0UukSubJhfFYsA==", player.Token);
+        }
+
+        [Test]
+        public void SelectAll()
+        {
+            var query = SQLiteFurnitureQueryBuilder.SelectAllFurnitures();
+            var json = ReadJsonLines(query);
         }
     }
 }

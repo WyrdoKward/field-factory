@@ -7,31 +7,29 @@
         {
 		"level":"1",
 		"description" : "The level 1 offers a bonus",
-		"cost":
+		"cost":[
 			{
-			"gold":"200",
-			"otherRessource":"10"
-			}
+               "Type":"gold",
+               "Amount":20
+            }]
 		},
 		{
 		"level":"2",
 		"description" : "Overrides previous desc if present",
-		"cost":
+		"cost":[
 			{
-			"gold":"500",
-			"otherRessource":"15",
-			"thirdRessource":"2"
-			}
+               "Type":"gold",
+               "Amount":40
+            }]
 		},	
 		{
 		"level":"3",
 		"description" : "The third level enables dummySwitch",
-		"cost":
+		"cost":[
 			{
-			"gold":"600",
-			"otherRessource":"20",
-			"thirdRessource":"5"
-			},
+               "Type":"gold",
+               "Amount":100
+            }],
 		"switch":"dummySwitch"
 		}
     ]

@@ -8,7 +8,12 @@ namespace FieldFactory.DataAccess.SQLite
     {
         internal static string SelectFurnitureByIdQuery(string idFurniture)
         {
-            return $"SELECT json FROM Event WHERE idEvent = '{idFurniture}'";
+            return $"SELECT json FROM Furniture WHERE idFurniture = '{idFurniture}'";
+        }
+
+        internal static string SelectAllFurnitures()
+        {
+            return $"SELECT idFurniture, json FROM Furniture";
         }
     }
 }

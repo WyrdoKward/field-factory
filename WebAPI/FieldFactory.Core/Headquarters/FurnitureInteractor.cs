@@ -1,4 +1,5 @@
 ﻿using FieldFactory.Core.Entities.Headquarters;
+using FieldFactory.DataAccess.DTO;
 using FieldFactory.DataAccess.Providers;
 using Newtonsoft.Json;
 using System;
@@ -10,19 +11,32 @@ namespace FieldFactory.Core.Headquarters
     public class FurnitureInteractor
     {
         FurnitureProvider furnitureProvider = new FurnitureProvider();
-        //PlayerHqProvider playerHqProvider = new PlayerHqFurnitureProvider();
+        PlayerHeadquartersProvider playerHqProvider = new PlayerHeadquartersProvider();
 
         public List<Furniture> GetPlayerFurnitures(string playerId)
         {
             //Récupérer la ligne qui correspond aux constructions faites par la player dans son HQ
-            //var playerHqDto = playerHqProvider.Get(playerId);
+            var playerHqDto = playerHqProvider.Get(playerId);
+            var playerHQ = new PlayerHeadquarters(playerHqDto);
+
+            Dictionary<string, int> playerHqFurnitures = playerHQ.ConstructedFurnitures();
 
             //On récupère toutes les fournitures construites dans le HQ
-            /*var furnitureDto = furnitureProvider.Get(playerId);
-            var furniture = JsonConvert.DeserializeObject<Furniture>(furnitureDto.Json);*/
+            List<FurnitureDTO> furnituresDto = furnitureProvider.GetAll();
+            List<Furniture> furnitures = new List<Furniture>();
 
-            //Pour chaque furniture on récupère la description qui correspond à son level
-            List<Furniture> furnitures = null;
+            foreach (var dto in furnituresDto)
+            {
+                //filtrer sur celles que possède le player
+                if (!playerHqFurnitures.ContainsKey(dto.Id))
+                    continue;
+
+                var furniture = JsonConvert.DeserializeObject<Furniture>(dto.Json, new Newtonsoft.Json.Converters.StringEnumConverter());
+                furniture._currentLevel = playerHqFurnitures[dto.Id];
+                furniture.RemoveNotCurrentLevels();
+                //récupérer que le furniturelevel construit ?
+                furnitures.Add(furniture);
+            }
 
             return furnitures;
         }

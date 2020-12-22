@@ -14,5 +14,24 @@ namespace FieldFactory.DataAccess.Providers
             var json = ReadScalar(query);
             return new FurnitureDTO(idFurniture, json.ToString());
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="playerFurnitures"></param>
+        /// <returns></returns>
+        public List<FurnitureDTO> GetAll()
+        {
+            List<FurnitureDTO> res = new List<FurnitureDTO>();
+            var query = SQLiteFurnitureQueryBuilder.SelectAllFurnitures();
+            var jsonLines = ReadJsonLines(query);
+
+            foreach (var line in jsonLines)
+            {
+                res.Add(new FurnitureDTO(line.Key, line.Value));
+            }
+
+            return res;
+        }
     }
 }

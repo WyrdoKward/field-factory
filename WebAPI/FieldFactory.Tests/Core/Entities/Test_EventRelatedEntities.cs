@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace FieldFactory.Tests.Core.Entities
 {
-    public class Tests
+    public class Test_EventRelatedEntities
     {
         Choice c = new Choice();
 

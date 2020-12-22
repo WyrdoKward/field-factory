@@ -14,5 +14,10 @@
     <Folder Include="Providers\StaticRessource\" />
     <Folder Include="SQLite\StaticRessource\" />
   </ItemGroup>
-
+  
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+    <_Parameter1>FieldFactory.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>

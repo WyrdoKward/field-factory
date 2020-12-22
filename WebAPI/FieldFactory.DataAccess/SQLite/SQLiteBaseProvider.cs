@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace FieldFactory.DataAccess.SQLite
 {
@@ -100,6 +101,28 @@ namespace FieldFactory.DataAccess.SQLite
             }
 
             return res;
+        }
+
+        internal Dictionary<string, string> ReadJsonLines(string selectQuery)
+        {
+            Dictionary<string, string> jsonLines = new Dictionary<string, string>();
+            using (var connection = new SqliteConnection(ConnectionStringBuilder.ConnectionString))
+            {
+                connection.Open();
+                var selectCmd = connection.CreateCommand();
+                selectCmd.CommandText = selectQuery;
+                selectCmd.CommandType = CommandType.Text;
+
+                using (var reader = selectCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        jsonLines.Add(reader.GetString(0), reader.GetString("json"));
+                    }
+                }
+            }
+
+            return jsonLines;
         }
     }
 }
